@@ -35,8 +35,9 @@ class ClassStudentStudentsController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'max:255', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:1024'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
+            'password_show' => ['required', 'max:255', 'string'],
             'user_id' => ['required', 'exists:users,id'],
         ]);
 

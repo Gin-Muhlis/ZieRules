@@ -105,6 +105,8 @@ return [
         'show_title' => 'Tampilkan Siswa',
         'inputs' => [
             'name' => 'Nama Siswa',
+            'nis' => 'NIS Siswa',
+            'password' => 'Password',
             'image' => 'Gambar Profil',
             'gender' => 'Gender',
             'class_id' => 'Kelas',

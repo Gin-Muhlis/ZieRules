@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('image')->nullable();
             $table->enum('gender', ['laki-laki', 'perempuan']);
+            $table->string('password_show');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('class_id');
 

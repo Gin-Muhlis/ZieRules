@@ -11,9 +11,18 @@ class Student extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['name', 'image', 'gender', 'user_id', 'class_id'];
+    protected $fillable = [
+        'name',
+        'image',
+        'gender',
+        'password_show',
+        'user_id',
+        'class_id',
+    ];
 
     protected $searchableFields = ['*'];
+
+    protected $hidden = ['password_show'];
 
     public function user()
     {

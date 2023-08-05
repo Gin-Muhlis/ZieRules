@@ -30,7 +30,7 @@ class UserUpdateRequest extends FormRequest
                 'nullable',
                 Rule::unique('users', 'nis')->ignore($this->user),
                 'string',
-                'digits:value',
+                'digits:9',
             ],
             'password' => ['nullable'],
             'roles' => 'array',

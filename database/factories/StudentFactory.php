@@ -25,6 +25,7 @@ class StudentFactory extends Factory
         return [
             'name' => $this->faker->text(255),
             'gender' => 'laki-laki',
+            'password_show' => $this->faker->password(),
             'user_id' => \App\Models\User::factory(),
             'class_id' => \App\Models\ClassStudent::factory(),
         ];

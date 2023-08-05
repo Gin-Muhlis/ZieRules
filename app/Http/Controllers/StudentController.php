@@ -39,9 +39,8 @@ class StudentController extends Controller
         $this->authorize('create', Student::class);
 
         $classes = ClassStudent::pluck('name', 'id');
-        $users = User::pluck('email', 'id');
 
-        return view('app.students.create', compact('classes', 'users'));
+        return view('app.students.create', compact('classes'));
     }
 
     /**
@@ -56,7 +55,27 @@ class StudentController extends Controller
             $validated['image'] = $request->file('image')->store('public');
         }
 
-        $student = Student::create($validated);
+        // create user for student
+        $userStudent = User::create([
+            'email' => null,
+            'nis' => $validated['nis'],
+            'password' => bcrypt($validated['password'])
+        ]);
+
+        // assign role user to student
+        $userStudent->assignRole('user');
+
+        // create format data to students table
+        $dataStudent = [
+            'user_id'  => $userStudent->id,
+            'name' => $validated['name'],
+            'image' => $validated['image'],
+            'gender' => $validated['gender'],
+            'password_show' => $validated['password'],
+            'class_id' => $validated['class_id']
+        ];
+
+        $student = Student::create($dataStudent);
 
         return redirect()
             ->route('students.edit', $student)
@@ -107,7 +126,19 @@ class StudentController extends Controller
             $validated['image'] = $request->file('image')->store('public');
         }
 
-        $student->update($validated);
+        $userStudent = User::findOrFail($student->id);
+
+        $dataStudent = [
+            'user_id'  => $userStudent->id,
+            'name' => $validated['name'],
+            'image' => $validated['image'],
+            'gender' => $validated['gender'],
+            'password_show' => $validated['password'],
+            'class_id' => $validated['class_id']
+        ];
+
+
+        $student->update($dataStudent);
 
         return redirect()
             ->route('students.edit', $student)

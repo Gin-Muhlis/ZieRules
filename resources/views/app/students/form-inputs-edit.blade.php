@@ -18,7 +18,7 @@
     <div class="form-group col-sm-12">
         <label>Password</label>
         <input type="text" class="form-control" id="password" name="password" label="Password" maxlength="255"
-            placeholder="Password" style="pointer-events: none" value="{{ $editing ? $student->password_show : '' }}">
+            placeholder="Password" value="{{ $editing ? $student->password_show : '' }}">
         @error('password')
             <p class="text-danger" role="alert">{{ $message }}</p>
         @enderror
@@ -69,43 +69,3 @@
     </x-inputs.group>
 
 </div>
-
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            // add pointer event none to password input when focus
-            $("#password").on("focus", function() {
-                $("#password").css({
-                    'pointer-events': 'none'
-                })
-            })
-
-            // add pointer event none to password input when input
-            $("#password").on("input", function() {
-                $("#password").css({
-                    'pointer-events': 'none'
-                })
-
-                generatePassword()
-            })
-
-
-            // generate password
-            $("#nis").on("change", function() {
-                let nis = this.value
-
-                generatePassword()
-
-            })
-
-            // fuunction to generate password and set to input password
-            function generatePassword() {
-                let now = new Date();
-                let time = new String(now.getTime())
-                let year = now.getFullYear()
-                let randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
-                $("#password").val(`${year}${randomNumber}${time.substr(8, 3)}`)
-            }
-        })
-    </script>
-@endpush

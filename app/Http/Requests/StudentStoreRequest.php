@@ -23,8 +23,9 @@ class StudentStoreRequest extends FormRequest
             'name' => ['required', 'max:255', 'string'],
             'image' => ['nullable', 'image', 'max:2048'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
-            'class_id' => ['required', 'exists:classes,id'],
-            'user_id' => ['required', 'exists:users,id'],
+            'class_id' => ['required', 'exists:class_students,id'],
+            'nis' => ['required', 'unique:users,nis', 'string', 'digits:9'],
+            'password' => ['required'],
         ];
     }
 }

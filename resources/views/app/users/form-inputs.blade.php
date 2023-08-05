@@ -16,6 +16,7 @@
             name="nis"
             label="Nis"
             :value="old('nis', ($editing ? $user->nis : ''))"
+            maxlength="255"
             placeholder="Nis"
         ></x-inputs.text>
     </x-inputs.group>

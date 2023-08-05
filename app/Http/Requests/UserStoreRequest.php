@@ -22,7 +22,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'email' => ['nullable', 'unique:users,email', 'email'],
-            'nis' => ['nullable', 'unique:users,nis', 'string', 'digits:value'],
+            'nis' => ['nullable', 'unique:users,nis', 'string', 'digits:9'],
             'password' => ['required'],
             'roles' => 'array',
         ];
