@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Violation;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\ViolationStoreRequest;
+use App\Http\Requests\ViolationUpdateRequest;
+
+class ViolationController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): View
+    {
+        $this->authorize('view-any', Violation::class);
+
+        $search = $request->get('search', '');
+
+        $violations = Violation::search($search)
+            ->latest()
+            ->paginate(5)
+            ->withQueryString();
+
+        return view('app.violations.index', compact('violations', 'search'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request): View
+    {
+        $this->authorize('create', Violation::class);
+
+        return view('app.violations.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(ViolationStoreRequest $request): RedirectResponse
+    {
+        $this->authorize('create', Violation::class);
+
+        $validated = $request->validated();
+
+        $violation = Violation::create($validated);
+
+        return redirect()
+            ->route('violations.edit', $violation)
+            ->withSuccess(__('crud.common.created'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request, Violation $violation): View
+    {
+        $this->authorize('view', $violation);
+
+        return view('app.violations.show', compact('violation'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Request $request, Violation $violation): View
+    {
+        $this->authorize('update', $violation);
+
+        return view('app.violations.edit', compact('violation'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(
+        ViolationUpdateRequest $request,
+        Violation $violation
+    ): RedirectResponse {
+        $this->authorize('update', $violation);
+
+        $validated = $request->validated();
+
+        $violation->update($validated);
+
+        return redirect()
+            ->route('violations.edit', $violation)
+            ->withSuccess(__('crud.common.saved'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(
+        Request $request,
+        Violation $violation
+    ): RedirectResponse {
+        $this->authorize('delete', $violation);
+
+        $violation->delete();
+
+        return redirect()
+            ->route('violations.index')
+            ->withSuccess(__('crud.common.removed'));
+    }
+}
