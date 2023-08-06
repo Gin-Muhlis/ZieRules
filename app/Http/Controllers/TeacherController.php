@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Teacher;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\TeacherStoreRequest;
@@ -37,9 +37,7 @@ class TeacherController extends Controller
     {
         $this->authorize('create', Teacher::class);
 
-        $users = User::pluck('email', 'id');
-
-        return view('app.teachers.create', compact('users'));
+        return view('app.teachers.create');
     }
 
     /**
@@ -50,11 +48,17 @@ class TeacherController extends Controller
         $this->authorize('create', Teacher::class);
 
         $validated = $request->validated();
+
+        $validated['password_show'] = $validated['password'];
+        $validated['password'] = Hash::make($validated['password']);
+
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('public');
         }
 
         $teacher = Teacher::create($validated);
+
+        $teacher->assignRole($validated['role']);
 
         return redirect()
             ->route('teachers.edit', $teacher)
@@ -78,9 +82,7 @@ class TeacherController extends Controller
     {
         $this->authorize('update', $teacher);
 
-        $users = User::pluck('email', 'id');
-
-        return view('app.teachers.edit', compact('teacher', 'users'));
+        return view('app.teachers.edit', compact('teacher'));
     }
 
     /**
@@ -93,6 +95,14 @@ class TeacherController extends Controller
         $this->authorize('update', $teacher);
 
         $validated = $request->validated();
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password_show'] = $validated['password'];
+            $validated['password'] = Hash::make($validated['password']);
+        }
+
         if ($request->hasFile('image')) {
             if ($teacher->image) {
                 Storage::delete($teacher->image);

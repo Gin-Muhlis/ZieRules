@@ -96,24 +96,6 @@ return [
         ],
     ],
 
-    'siswa' => [
-        'name' => 'Siswa',
-        'index_title' => 'Daftar Siswa',
-        'new_title' => 'Siswa Baru',
-        'create_title' => 'Buat Siswa',
-        'edit_title' => 'Edit Siswa',
-        'show_title' => 'Tampilkan Siswa',
-        'inputs' => [
-            'name' => 'Nama Siswa',
-            'nis' => 'NIS Siswa',
-            'password' => 'Password',
-            'image' => 'Gambar Profil',
-            'gender' => 'Gender',
-            'class_id' => 'Kelas',
-            'user_id' => 'User',
-        ],
-    ],
-
     'tugas' => [
         'name' => 'Tugas',
         'index_title' => 'Daftar Tugas',
@@ -123,35 +105,6 @@ return [
         'show_title' => 'Tampilkan Tugas',
         'inputs' => [
             'name' => 'Nama Tugas',
-        ],
-    ],
-
-    'guru' => [
-        'name' => 'Guru',
-        'index_title' => 'Daftar Guru',
-        'new_title' => 'Guru Baru',
-        'create_title' => 'Buat Guru',
-        'edit_title' => 'Edit Guru',
-        'show_title' => 'Tampilkan Guru',
-        'inputs' => [
-            'name' => 'Nama Guru',
-            'image' => 'Gambar Profil',
-            'gender' => 'Gender',
-            'user_id' => 'User',
-        ],
-    ],
-
-    'user' => [
-        'name' => 'User',
-        'index_title' => 'Daftar User',
-        'new_title' => 'User Baru',
-        'create_title' => 'Buat User',
-        'edit_title' => 'Edit User',
-        'show_title' => 'Tampilkan User',
-        'inputs' => [
-            'email' => 'Email',
-            'nis' => 'Nis',
-            'password' => 'Password',
         ],
     ],
 
@@ -191,6 +144,55 @@ return [
         'inputs' => [
             'name' => 'Nama Kelas',
             'code' => 'Kode/Singkatan Kelas',
+        ],
+    ],
+
+    'siswa' => [
+        'name' => 'Siswa',
+        'index_title' => 'Daftar Siswa',
+        'new_title' => 'Siswa Baru',
+        'create_title' => 'Buat Siswa',
+        'edit_title' => 'Edit Siswa',
+        'show_title' => 'Tampilkan Siswa',
+        'inputs' => [
+            'name' => 'Nama',
+            'nis' => 'Nis',
+            'password' => 'Password',
+            'password_show' => 'Password Show',
+            'image' => 'Gambar Profil',
+            'gender' => 'Gender',
+            'class_id' => 'Kelas',
+        ],
+    ],
+
+    'guru' => [
+        'name' => 'Guru',
+        'index_title' => 'Daftar Guru',
+        'new_title' => 'Guru Baru',
+        'create_title' => 'Buat Guru',
+        'edit_title' => 'Edit Guru',
+        'show_title' => 'Tampilkan Guru',
+        'inputs' => [
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Password',
+            'password_show' => 'Password Show',
+            'image' => 'Gambar Profil',
+            'gender' => 'Gender',
+        ],
+    ],
+
+    'user' => [
+        'name' => 'User',
+        'index_title' => 'Daftar User',
+        'new_title' => 'User Baru',
+        'create_title' => 'Buat User',
+        'edit_title' => 'Edit User',
+        'show_title' => 'Tampilkan User',
+        'inputs' => [
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Password',
         ],
     ],
 

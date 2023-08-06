@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TeacherStoreRequest extends FormRequest
@@ -21,9 +22,11 @@ class TeacherStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'email' => ['required', 'unique:teachers,email', 'email'],
+            'password' => ['required'],
+            'image' => ['nullable', 'image', 'max:1024'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
-            'user_id' => ['required', 'exists:users,id'],
+            'role' => ['required', 'in:guru-mapel,wali-kelas'],
         ];
     }
 }

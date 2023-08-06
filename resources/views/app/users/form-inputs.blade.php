@@ -2,23 +2,25 @@
 
 <div class="row">
     <x-inputs.group class="col-sm-12">
+        <x-inputs.text
+            name="name"
+            label="Nama"
+            :value="old('name', ($editing ? $user->name : ''))"
+            maxlength="255"
+            placeholder="Nama"
+            required
+        ></x-inputs.text>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-12">
         <x-inputs.email
             name="email"
             label="Email"
             :value="old('email', ($editing ? $user->email : ''))"
             maxlength="255"
             placeholder="Email"
+            required
         ></x-inputs.email>
-    </x-inputs.group>
-
-    <x-inputs.group class="col-sm-12">
-        <x-inputs.text
-            name="nis"
-            label="Nis"
-            :value="old('nis', ($editing ? $user->nis : ''))"
-            maxlength="255"
-            placeholder="Nis"
-        ></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-12">

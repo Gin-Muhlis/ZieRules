@@ -112,8 +112,8 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
+            'name' => $this->faker->name(),
             'email' => $this->faker->unique->email(),
-            'nis' => $this->faker->text(255),
         ];
 
         $data['password'] = \Str::random('8');

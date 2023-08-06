@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('email')->unique();
             $table->string('name');
+            $table->string('password');
+            $table->string('password_show');
             $table->string('image')->nullable();
             $table->enum('gender', ['laki-laki', 'perempuan']);
-            $table->unsignedBigInteger('user_id');
 
             $table->timestamps();
         });

@@ -19,7 +19,7 @@
     <x-inputs.group class="col-sm-12">
         <label for="password">Password</label>
         <input type="text" name="password" id="password" class="form-control" maxlength="255" placeholder="Password"
-            style="pointer-events: none" required>
+            style="pointer-events: none" value="{{ $editing ? $teacher->password_show : '' }}" required>
         @error('password')
             <p class="text-danger" role="alert">{{ $message }}</p>
         @enderror
@@ -57,62 +57,4 @@
             <option value="perempuan" {{ $selected == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
         </x-inputs.select>
     </x-inputs.group>
-
-    <x-inputs.group class="col-sm-12">
-        <x-inputs.select name="role" label="Role">
-
-            <option value="guru-mapel">Guru Mapel</option>
-            <option value="wali-kelas">Wali Kelas</option>
-        </x-inputs.select>
-    </x-inputs.group>
 </div>
-
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            // add pointer event none to password input when focus
-            $("#password").on("focus", function() {
-                $("#password").css({
-                    'pointer-events': 'none'
-                })
-            })
-
-            // add pointer event none to password input when input
-            $("#password").on("input", function() {
-                $("#password").css({
-                    'pointer-events': 'none'
-                })
-
-                generatePassword()
-            })
-
-
-            // generate password
-            $("#email").on("change", function() {
-
-                generatePassword()
-
-            })
-
-            // fuunction to generate password and set to input password
-            function generatePassword() {
-                let now = new Date();
-                let time = new String(now.getTime())
-                let year = now.getFullYear()
-
-                let str = `${year}${time}`;
-                let arrayStr = str.split('');
-                for (let i = arrayStr.length - 1; i > 0; i--) {
-                    let n = Math.floor(Math.random() * (i + 1));
-                    [arrayStr[i], arrayStr[n]] = [arrayStr[n], arrayStr[i]]
-                }
-
-                let password = arrayStr.splice(0, 9).join('');
-
-                $("#password").val(password);
-
-
-            }
-        })
-    </script>
-@endpush

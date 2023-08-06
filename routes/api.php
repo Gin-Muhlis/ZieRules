@@ -24,9 +24,9 @@ use App\Http\Controllers\Api\TeacherHomeroomsController;
 use App\Http\Controllers\Api\StudentHistoryScansController;
 use App\Http\Controllers\Api\TeacherHistoryScansController;
 use App\Http\Controllers\Api\ClassStudentStudentsController;
+use App\Http\Controllers\Api\ClassStudentHomeroomsController;
 use App\Http\Controllers\Api\StudentDataViolationsController;
 use App\Http\Controllers\Api\TeacherDataViolationsController;
-use App\Http\Controllers\Api\ClassStudentHomeroomsController;
 use App\Http\Controllers\Api\StudentDataAchievmentsController;
 use App\Http\Controllers\Api\TeacherDataAchievmentsController;
 use App\Http\Controllers\Api\ViolationDataViolationsController;
@@ -44,6 +44,11 @@ use App\Http\Controllers\Api\AchievmentDataAchievmentsController;
 */
 
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+
+// student login
+Route::post('/login/student', [AuthController::class, 'loginStudent'])->name('student.api.login');
+Route::post('/logout/student', [AuthController::class, 'logoutStudent'])->name('student.api.logout');
+Route::get('/profile/student', [StudentController::class, 'profile'])->name('profile.student');
 
 Route::middleware('auth:sanctum')
     ->get('/user', function (Request $request) {
@@ -76,6 +81,54 @@ Route::name('api.')
         Route::apiResource('data-violations', DataViolationController::class);
 
         Route::apiResource('homerooms', HomeroomController::class);
+
+        Route::apiResource('tasks', TaskController::class);
+
+        // Task Data Tasks
+        Route::get('/tasks/{task}/data-tasks', [
+            TaskDataTasksController::class,
+            'index',
+        ])->name('tasks.data-tasks.index');
+        Route::post('/tasks/{task}/data-tasks', [
+            TaskDataTasksController::class,
+            'store',
+        ])->name('tasks.data-tasks.store');
+
+        Route::apiResource('violations', ViolationController::class);
+
+        // Violation Data Violations
+        Route::get('/violations/{violation}/data-violations', [
+            ViolationDataViolationsController::class,
+            'index',
+        ])->name('violations.data-violations.index');
+        Route::post('/violations/{violation}/data-violations', [
+            ViolationDataViolationsController::class,
+            'store',
+        ])->name('violations.data-violations.store');
+
+        Route::apiResource('history-scans', HistoryScanController::class);
+
+        Route::apiResource('class-students', ClassStudentController::class);
+
+        // ClassStudent Students
+        Route::get('/class-students/{classStudent}/students', [
+            ClassStudentStudentsController::class,
+            'index',
+        ])->name('class-students.students.index');
+        Route::post('/class-students/{classStudent}/students', [
+            ClassStudentStudentsController::class,
+            'store',
+        ])->name('class-students.students.store');
+
+        // ClassStudent Homerooms
+        Route::get('/class-students/{classStudent}/homerooms', [
+            ClassStudentHomeroomsController::class,
+            'index',
+        ])->name('class-students.homerooms.index');
+        Route::post('/class-students/{classStudent}/homerooms', [
+            ClassStudentHomeroomsController::class,
+            'store',
+        ])->name('class-students.homerooms.store');
 
         Route::apiResource('students', StudentController::class);
 
@@ -118,18 +171,6 @@ Route::name('api.')
             StudentHistoryScansController::class,
             'store',
         ])->name('students.history-scans.store');
-
-        Route::apiResource('tasks', TaskController::class);
-
-        // Task Data Tasks
-        Route::get('/tasks/{task}/data-tasks', [
-            TaskDataTasksController::class,
-            'index',
-        ])->name('tasks.data-tasks.index');
-        Route::post('/tasks/{task}/data-tasks', [
-            TaskDataTasksController::class,
-            'store',
-        ])->name('tasks.data-tasks.store');
 
         Route::apiResource('teachers', TeacherController::class);
 
@@ -184,40 +225,4 @@ Route::name('api.')
         ])->name('teachers.history-scans.store');
 
         Route::apiResource('users', UserController::class);
-
-        Route::apiResource('violations', ViolationController::class);
-
-        // Violation Data Violations
-        Route::get('/violations/{violation}/data-violations', [
-            ViolationDataViolationsController::class,
-            'index',
-        ])->name('violations.data-violations.index');
-        Route::post('/violations/{violation}/data-violations', [
-            ViolationDataViolationsController::class,
-            'store',
-        ])->name('violations.data-violations.store');
-
-        Route::apiResource('history-scans', HistoryScanController::class);
-
-        Route::apiResource('class-students', ClassStudentController::class);
-
-        // ClassStudent Students
-        Route::get('/class-students/{classStudent}/students', [
-            ClassStudentStudentsController::class,
-            'index',
-        ])->name('class-students.students.index');
-        Route::post('/class-students/{classStudent}/students', [
-            ClassStudentStudentsController::class,
-            'store',
-        ])->name('class-students.students.store');
-
-        // ClassStudent Homerooms
-        Route::get('/class-students/{classStudent}/homerooms', [
-            ClassStudentHomeroomsController::class,
-            'index',
-        ])->name('class-students.homerooms.index');
-        Route::post('/class-students/{classStudent}/homerooms', [
-            ClassStudentHomeroomsController::class,
-            'store',
-        ])->name('class-students.homerooms.store');
     });

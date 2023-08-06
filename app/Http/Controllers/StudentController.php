@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Student;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\ClassStudent;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StudentStoreRequest;
@@ -38,9 +38,9 @@ class StudentController extends Controller
     {
         $this->authorize('create', Student::class);
 
-        $classes = ClassStudent::pluck('name', 'id');
+        $classStudents = ClassStudent::pluck('name', 'id');
 
-        return view('app.students.create', compact('classes'));
+        return view('app.students.create', compact('classStudents'));
     }
 
     /**
@@ -51,31 +51,17 @@ class StudentController extends Controller
         $this->authorize('create', Student::class);
 
         $validated = $request->validated();
+
+        $validated['password_show'] = $validated['password'];
+        $validated['password'] = Hash::make($validated['password']);
+
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('public');
         }
 
-        // create user for student
-        $userStudent = User::create([
-            'email' => null,
-            'nis' => $validated['nis'],
-            'password' => bcrypt($validated['password'])
-        ]);
+        $student = Student::create($validated);
 
-        // assign role user to student
-        $userStudent->assignRole('user');
-
-        // create format data to students table
-        $dataStudent = [
-            'user_id'  => $userStudent->id,
-            'name' => $validated['name'],
-            'image' => $validated['image'],
-            'gender' => $validated['gender'],
-            'password_show' => $validated['password'],
-            'class_id' => $validated['class_id']
-        ];
-
-        $student = Student::create($dataStudent);
+        $student->assignRole('siswa');
 
         return redirect()
             ->route('students.edit', $student)
@@ -99,13 +85,9 @@ class StudentController extends Controller
     {
         $this->authorize('update', $student);
 
-        $classes = ClassStudent::pluck('name', 'id');
-        $users = User::pluck('email', 'id');
+        $classStudents = ClassStudent::pluck('name', 'id');
 
-        return view(
-            'app.students.edit',
-            compact('student', 'classes', 'users')
-        );
+        return view('app.students.edit', compact('student', 'classStudents'));
     }
 
     /**
@@ -118,6 +100,14 @@ class StudentController extends Controller
         $this->authorize('update', $student);
 
         $validated = $request->validated();
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password_show'] = $validated['password'];
+            $validated['password'] = Hash::make($validated['password']);
+        }
+
         if ($request->hasFile('image')) {
             if ($student->image) {
                 Storage::delete($student->image);
@@ -126,19 +116,7 @@ class StudentController extends Controller
             $validated['image'] = $request->file('image')->store('public');
         }
 
-        $userStudent = User::findOrFail($student->id);
-
-        $dataStudent = [
-            'user_id'  => $userStudent->id,
-            'name' => $validated['name'],
-            'image' => $validated['image'],
-            'gender' => $validated['gender'],
-            'password_show' => $validated['password'],
-            'class_id' => $validated['class_id']
-        ];
-
-
-        $student->update($dataStudent);
+        $student->update($validated);
 
         return redirect()
             ->route('students.edit', $student)

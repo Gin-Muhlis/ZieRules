@@ -81,11 +81,6 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update violations']);
         Permission::create(['name' => 'delete violations']);
 
-        // Create user role and assign existing permissions
-        $currentPermissions = Permission::all();
-        $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo($currentPermissions);
-
         // Create admin exclusive permissions
         Permission::create(['name' => 'list roles']);
         Permission::create(['name' => 'view roles']);

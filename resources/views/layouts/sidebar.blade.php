@@ -72,35 +72,11 @@
                                 </a>
                             </li>
                             @endcan
-                            @can('view-any', App\Models\Student::class)
-                            <li class="nav-item">
-                                <a href="{{ route('students.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                    <p>Siswa</p>
-                                </a>
-                            </li>
-                            @endcan
                             @can('view-any', App\Models\Task::class)
                             <li class="nav-item">
                                 <a href="{{ route('tasks.index') }}" class="nav-link">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
                                     <p>Tugas</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('view-any', App\Models\Teacher::class)
-                            <li class="nav-item">
-                                <a href="{{ route('teachers.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                    <p>Guru</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('view-any', App\Models\User::class)
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                    <p>User</p>
                                 </a>
                             </li>
                             @endcan
@@ -125,6 +101,30 @@
                                 <a href="{{ route('class-students.index') }}" class="nav-link">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
                                     <p>Kelas</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\Student::class)
+                            <li class="nav-item">
+                                <a href="{{ route('students.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Siswa</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\Teacher::class)
+                            <li class="nav-item">
+                                <a href="{{ route('teachers.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Guru</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\User::class)
+                            <li class="nav-item">
+                                <a href="{{ route('users.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>User</p>
                                 </a>
                             </li>
                             @endcan

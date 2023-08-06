@@ -45,6 +45,16 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        'student_api' => [
+            'driver' => 'session',
+            'provider' => 'students',
+            'hash' => false,
+        ],
+        'teacher_api' => [
+            'driver' => 'session',
+            'provider' => 'teachers',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -68,6 +78,14 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
+        ],
+        'teachers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Teacher::class,
         ],
 
         // 'users' => [

@@ -44,7 +44,7 @@
                                     @lang('crud.siswa.inputs.nis')
                                 </th>
                                 <th class="text-left">
-                                    @lang('crud.siswa.inputs.password')
+                                    @lang('crud.siswa.inputs.password_show')
                                 </th>
                                 <th class="text-left">
                                     @lang('crud.siswa.inputs.image')
@@ -55,9 +55,6 @@
                                 <th class="text-left">
                                     @lang('crud.siswa.inputs.class_id')
                                 </th>
-                                <th class="text-left">
-                                    @lang('crud.siswa.inputs.user_id')
-                                </th>
                                 <th class="text-center">
                                     @lang('crud.common.actions')
                                 </th>
@@ -67,7 +64,7 @@
                             @forelse($students as $student)
                                 <tr>
                                     <td>{{ $student->name ?? '-' }}</td>
-                                    <td>{{ $student->user->nis ?? '-' }}</td>
+                                    <td>{{ $student->nis ?? '-' }}</td>
                                     <td>{{ $student->password_show ?? '-' }}</td>
                                     <td>
                                         <x-partials.thumbnail
@@ -76,9 +73,6 @@
                                     <td>{{ $student->gender ?? '-' }}</td>
                                     <td>
                                         {{ optional($student->class)->name ?? '-' }}
-                                    </td>
-                                    <td>
-                                        {{ optional($student->user)->email ?? '-' }}
                                     </td>
                                     <td class="text-center" style="width: 134px;">
                                         <div role="group" aria-label="Row Actions" class="btn-group">

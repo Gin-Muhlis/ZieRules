@@ -45,10 +45,10 @@
                     <thead>
                         <tr>
                             <th class="text-left">
-                                @lang('crud.user.inputs.email')
+                                @lang('crud.user.inputs.name')
                             </th>
                             <th class="text-left">
-                                @lang('crud.user.inputs.nis')
+                                @lang('crud.user.inputs.email')
                             </th>
                             <th class="text-center">
                                 @lang('crud.common.actions')
@@ -58,8 +58,8 @@
                     <tbody>
                         @forelse($users as $user)
                         <tr>
+                            <td>{{ $user->name ?? '-' }}</td>
                             <td>{{ $user->email ?? '-' }}</td>
-                            <td>{{ $user->nis ?? '-' }}</td>
                             <td class="text-center" style="width: 134px;">
                                 <div
                                     role="group"

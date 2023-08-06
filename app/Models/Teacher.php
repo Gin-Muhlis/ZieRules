@@ -2,23 +2,34 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use App\Models\Scopes\Searchable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Teacher extends Model
+class Teacher extends Authenticatable
 {
+    use HasRoles;
     use HasFactory;
     use Searchable;
+    use HasApiTokens;
 
-    protected $fillable = ['name', 'image', 'gender', 'user_id'];
+    protected $fillable = [
+        'email',
+        'name',
+        'password',
+        'password_show',
+        'image',
+        'gender',
+    ];
+
+    protected $guard_name = 'web';
+    protected $guard = 'teacher_api';
 
     protected $searchableFields = ['*'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $hidden = ['password'];
 
     public function dataViolations()
     {

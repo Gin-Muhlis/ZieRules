@@ -23,10 +23,11 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
+            'nis' => $this->faker->unique->text(9),
             'name' => $this->faker->text(255),
-            'gender' => 'laki-laki',
+            'password' => $this->faker->password(),
             'password_show' => $this->faker->password(),
-            'user_id' => \App\Models\User::factory(),
+            'gender' => 'laki-laki',
             'class_id' => \App\Models\ClassStudent::factory(),
         ];
     }

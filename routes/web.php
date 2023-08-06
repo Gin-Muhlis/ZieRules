@@ -47,11 +47,11 @@ Route::prefix('/')
         Route::resource('data-tasks', DataTaskController::class);
         Route::resource('data-violations', DataViolationController::class);
         Route::resource('homerooms', HomeroomController::class);
-        Route::resource('students', StudentController::class);
         Route::resource('tasks', TaskController::class);
-        Route::resource('teachers', TeacherController::class);
-        Route::resource('users', UserController::class);
         Route::resource('violations', ViolationController::class);
         Route::resource('history-scans', HistoryScanController::class);
         Route::resource('class-students', ClassStudentController::class);
+        Route::resource('students', StudentController::class);
+        Route::resource('teachers', TeacherController::class);
+        Route::resource('users', UserController::class);
     });

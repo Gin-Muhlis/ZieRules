@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TeacherUpdateRequest extends FormRequest
@@ -21,9 +22,15 @@ class TeacherUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'email' => [
+                'required',
+                Rule::unique('teachers', 'email')->ignore($this->teacher),
+                'email',
+            ],
+            'password' => ['nullable'],
+            'image' => ['nullable', 'image', 'max:1024'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
-            'user_id' => ['required', 'exists:users,id'],
+            'role' => ['required', 'in:guru-mapel,wali-kelas'],
         ];
     }
 }

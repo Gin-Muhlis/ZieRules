@@ -12,11 +12,12 @@ return new class extends Migration {
     {
         Schema::create('students', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nis', 9)->unique();
             $table->string('name');
+            $table->string('password');
+            $table->string('password_show');
             $table->string('image')->nullable();
             $table->enum('gender', ['laki-laki', 'perempuan']);
-            $table->string('password_show');
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('class_id');
 
             $table->timestamps();

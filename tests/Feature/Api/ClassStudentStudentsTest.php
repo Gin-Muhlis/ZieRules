@@ -58,11 +58,14 @@ class ClassStudentStudentsTest extends TestCase
                 'class_id' => $classStudent->id,
             ])
             ->toArray();
+        $data['password'] = \Str::random('8');
 
         $response = $this->postJson(
             route('api.class-students.students.store', $classStudent),
             $data
         );
+
+        unset($data['password']);
 
         $this->assertDatabaseHas('students', $data);
 

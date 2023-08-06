@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\ClassStudent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentCollection;
 
@@ -35,11 +36,14 @@ class ClassStudentStudentsController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'max:255', 'string'],
+            'nis' => ['required', 'unique:students,nis', 'max:9', 'numeric'],
+            'password' => ['required'],
+            'password_show' => ['required'],
             'image' => ['nullable', 'image', 'max:1024'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
-            'password_show' => ['required', 'max:255', 'string'],
-            'user_id' => ['required', 'exists:users,id'],
         ]);
+
+        $validated['password'] = Hash::make($validated['password']);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('public');

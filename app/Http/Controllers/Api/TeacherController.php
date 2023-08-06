@@ -6,6 +6,7 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\TeacherResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\TeacherCollection;
@@ -32,6 +33,9 @@ class TeacherController extends Controller
         $this->authorize('create', Teacher::class);
 
         $validated = $request->validated();
+
+        $validated['password'] = Hash::make($validated['password']);
+
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('public');
         }
@@ -55,6 +59,12 @@ class TeacherController extends Controller
         $this->authorize('update', $teacher);
 
         $validated = $request->validated();
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = Hash::make($validated['password']);
+        }
 
         if ($request->hasFile('image')) {
             if ($teacher->image) {

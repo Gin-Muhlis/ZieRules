@@ -37,7 +37,7 @@ class UserTest extends TestCase
 
         $response = $this->getJson(route('api.users.index'));
 
-        $response->assertOk()->assertSee($users[0]->email);
+        $response->assertOk()->assertSee($users[0]->name);
     }
 
     /**
@@ -68,8 +68,8 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
+            'name' => $this->faker->name(),
             'email' => $this->faker->unique->email(),
-            'nis' => $this->faker->text(255),
         ];
 
         $data['password'] = \Str::random('8');

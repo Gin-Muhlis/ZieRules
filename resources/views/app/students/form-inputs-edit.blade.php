@@ -9,7 +9,7 @@
     <div class="form-group col-sm-12">
         <label>NIS</label>
         <input type="text" class="form-control" id="nis" name="nis" label="Nis" maxlength="9"
-            value="{{ old('nis', $editing ? $student->user->nis : '') }}" placeholder="NIS">
+            value="{{ old('nis', $editing ? $student->nis : '') }}" placeholder="NIS">
         @error('nis')
             <p class="text-danger" role="alert">{{ $message }}</p>
         @enderror
@@ -36,7 +36,7 @@
         <x-inputs.select name="class_id" label="Kelas" required>
             @php $selected = old('class_id', ($editing ? $student->class_id : '')) @endphp
             <option disabled {{ empty($selected) ? 'selected' : '' }}>Silahkan Pilih Kelas</option>
-            @foreach ($classes as $value => $label)
+            @foreach ($classStudents as $value => $label)
                 <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}
                 </option>
             @endforeach

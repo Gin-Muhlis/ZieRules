@@ -61,8 +61,11 @@ class TeacherControllerTest extends TestCase
         $data = Teacher::factory()
             ->make()
             ->toArray();
+        $data['password'] = \Str::random('8');
 
         $response = $this->post(route('teachers.store'), $data);
+
+        unset($data['password']);
 
         $this->assertDatabaseHas('teachers', $data);
 
@@ -108,15 +111,18 @@ class TeacherControllerTest extends TestCase
     {
         $teacher = Teacher::factory()->create();
 
-        $user = User::factory()->create();
-
         $data = [
+            'email' => $this->faker->text(255),
             'name' => $this->faker->text(255),
+            'password_show' => $this->faker->text(255),
             'gender' => 'laki-laki',
-            'user_id' => $user->id,
         ];
 
+        $data['password'] = \Str::random('8');
+
         $response = $this->put(route('teachers.update', $teacher), $data);
+
+        unset($data['password']);
 
         $data['id'] = $teacher->id;
 

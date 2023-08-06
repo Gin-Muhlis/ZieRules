@@ -51,13 +51,16 @@
                                 @lang('crud.guru.inputs.name')
                             </th>
                             <th class="text-left">
+                                @lang('crud.guru.inputs.email')
+                            </th>
+                            <th class="text-left">
+                                @lang('crud.guru.inputs.password_show')
+                            </th>
+                            <th class="text-left">
                                 @lang('crud.guru.inputs.image')
                             </th>
                             <th class="text-left">
                                 @lang('crud.guru.inputs.gender')
-                            </th>
-                            <th class="text-left">
-                                @lang('crud.guru.inputs.user_id')
                             </th>
                             <th class="text-center">
                                 @lang('crud.common.actions')
@@ -68,15 +71,14 @@
                         @forelse($teachers as $teacher)
                         <tr>
                             <td>{{ $teacher->name ?? '-' }}</td>
+                            <td>{{ $teacher->email ?? '-' }}</td>
+                            <td>{{ $teacher->password_show ?? '-' }}</td>
                             <td>
                                 <x-partials.thumbnail
                                     src="{{ $teacher->image ? \Storage::url($teacher->image) : '' }}"
                                 />
                             </td>
                             <td>{{ $teacher->gender ?? '-' }}</td>
-                            <td>
-                                {{ optional($teacher->user)->email ?? '-' }}
-                            </td>
                             <td class="text-center" style="width: 134px;">
                                 <div
                                     role="group"
@@ -125,7 +127,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 @lang('crud.common.no_items_found')
                             </td>
                         </tr>
@@ -133,7 +135,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5">{!! $teachers->render() !!}</td>
+                            <td colspan="6">{!! $teachers->render() !!}</td>
                         </tr>
                     </tfoot>
                 </table>

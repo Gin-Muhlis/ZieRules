@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'email' => 'admin@admin.com',
                 'password' => Hash::make('admin'),
-                'nis' => '-'
             ]);
         $this->call(PermissionsSeeder::class);
 

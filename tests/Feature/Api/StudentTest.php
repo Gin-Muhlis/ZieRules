@@ -51,8 +51,11 @@ class StudentTest extends TestCase
         $data = Student::factory()
             ->make()
             ->toArray();
+        $data['password'] = \Str::random('8');
 
         $response = $this->postJson(route('api.students.store'), $data);
+
+        unset($data['password']);
 
         $this->assertDatabaseHas('students', $data);
 
@@ -66,20 +69,23 @@ class StudentTest extends TestCase
     {
         $student = Student::factory()->create();
 
-        $user = User::factory()->create();
         $classStudent = ClassStudent::factory()->create();
 
         $data = [
+            'nis' => $this->faker->unique->text(9),
             'name' => $this->faker->text(255),
             'gender' => 'laki-laki',
-            'user_id' => $user->id,
             'class_id' => $classStudent->id,
         ];
+
+        $data['password'] = \Str::random('8');
 
         $response = $this->putJson(
             route('api.students.update', $student),
             $data
         );
+
+        unset($data['password']);
 
         $data['id'] = $student->id;
 

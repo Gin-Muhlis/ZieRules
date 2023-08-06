@@ -17,6 +17,14 @@
                     <span>{{ $teacher->name ?? '-' }}</span>
                 </div>
                 <div class="mb-4">
+                    <h5>@lang('crud.guru.inputs.email')</h5>
+                    <span>{{ $teacher->email ?? '-' }}</span>
+                </div>
+                <div class="mb-4">
+                    <h5>@lang('crud.guru.inputs.password_show')</h5>
+                    <span>{{ $teacher->password_show ?? '-' }}</span>
+                </div>
+                <div class="mb-4">
                     <h5>@lang('crud.guru.inputs.image')</h5>
                     <x-partials.thumbnail
                         src="{{ $teacher->image ? \Storage::url($teacher->image) : '' }}"
@@ -26,10 +34,6 @@
                 <div class="mb-4">
                     <h5>@lang('crud.guru.inputs.gender')</h5>
                     <span>{{ $teacher->gender ?? '-' }}</span>
-                </div>
-                <div class="mb-4">
-                    <h5>@lang('crud.guru.inputs.user_id')</h5>
-                    <span>{{ optional($teacher->user)->email ?? '-' }}</span>
                 </div>
             </div>
 

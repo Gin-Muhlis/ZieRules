@@ -17,8 +17,9 @@
 
     <div class="form-group col-sm-12">
         <label>Password</label>
-        <input type="text" class="form-control" id="password" name="password" label="Password" maxlength="255"
-            placeholder="Password" style="pointer-events: none" value="{{ $editing ? $student->password_show : '' }}">
+        <input type="text" class="form-control" id="password" name="password" required label="Password"
+            maxlength="255" placeholder="Password" style="pointer-events: none"
+            value="{{ $editing ? $student->password_show : '' }}">
         @error('password')
             <p class="text-danger" role="alert">{{ $message }}</p>
         @enderror
@@ -36,7 +37,7 @@
         <x-inputs.select name="class_id" label="Kelas" required>
             @php $selected = old('class_id', ($editing ? $student->class_id : '')) @endphp
             <option disabled {{ empty($selected) ? 'selected' : '' }}>Silahkan Pilih Kelas</option>
-            @foreach ($classes as $value => $label)
+            @foreach ($classStudents as $value => $label)
                 <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}
                 </option>
             @endforeach
@@ -92,7 +93,6 @@
 
             // generate password
             $("#nis").on("change", function() {
-                let nis = this.value
 
                 generatePassword()
 
@@ -103,8 +103,19 @@
                 let now = new Date();
                 let time = new String(now.getTime())
                 let year = now.getFullYear()
-                let randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
-                $("#password").val(`${year}${randomNumber}${time.substr(8, 3)}`)
+
+                let str = `${year}${time}`;
+                let arrayStr = str.split('');
+                for (let i = arrayStr.length - 1; i > 0; i--) {
+                    let n = Math.floor(Math.random() * (i + 1));
+                    [arrayStr[i], arrayStr[n]] = [arrayStr[n], arrayStr[i]]
+                }
+
+                let password = arrayStr.splice(0, 9).join('');
+
+                $("#password").val(password);
+
+
             }
         })
     </script>

@@ -17,6 +17,10 @@
                     <span>{{ $student->name ?? '-' }}</span>
                 </div>
                 <div class="mb-4">
+                    <h5>@lang('crud.siswa.inputs.nis')</h5>
+                    <span>{{ $student->nis ?? '-' }}</span>
+                </div>
+                <div class="mb-4">
                     <h5>@lang('crud.siswa.inputs.image')</h5>
                     <x-partials.thumbnail
                         src="{{ $student->image ? \Storage::url($student->image) : '' }}"
@@ -30,10 +34,6 @@
                 <div class="mb-4">
                     <h5>@lang('crud.siswa.inputs.class_id')</h5>
                     <span>{{ optional($student->class)->name ?? '-' }}</span>
-                </div>
-                <div class="mb-4">
-                    <h5>@lang('crud.siswa.inputs.user_id')</h5>
-                    <span>{{ optional($student->user)->email ?? '-' }}</span>
                 </div>
             </div>
 

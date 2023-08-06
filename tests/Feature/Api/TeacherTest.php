@@ -49,8 +49,11 @@ class TeacherTest extends TestCase
         $data = Teacher::factory()
             ->make()
             ->toArray();
+        $data['password'] = \Str::random('8');
 
         $response = $this->postJson(route('api.teachers.store'), $data);
+
+        unset($data['password']);
 
         $this->assertDatabaseHas('teachers', $data);
 
@@ -64,18 +67,21 @@ class TeacherTest extends TestCase
     {
         $teacher = Teacher::factory()->create();
 
-        $user = User::factory()->create();
-
         $data = [
+            'email' => $this->faker->text(255),
             'name' => $this->faker->text(255),
+            'password_show' => $this->faker->text(255),
             'gender' => 'laki-laki',
-            'user_id' => $user->id,
         ];
+
+        $data['password'] = \Str::random('8');
 
         $response = $this->putJson(
             route('api.teachers.update', $teacher),
             $data
         );
+
+        unset($data['password']);
 
         $data['id'] = $teacher->id;
 
