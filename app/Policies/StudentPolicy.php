@@ -26,6 +26,11 @@ class StudentPolicy
         return $user->hasPermissionTo('view students');
     }
 
+    public function studentView(Student $user): bool
+    {
+        return $user->hasPermissionTo('view students');
+    }
+
     /**
      * Determine whether the student can create models.
      */

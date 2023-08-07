@@ -13,17 +13,17 @@ use App\Http\Requests\AchievmentUpdateRequest;
 
 class AchievmentController extends Controller
 {
-    public function index(Request $request): AchievmentCollection
+    public function __construct()
     {
-        $this->authorize('view-any', Achievment::class);
+        $this->middleware('auth:sanctum');
+    }
+    public function index(Request $request)
+    {
+        $this->authorize('student-view-any', Achievment::class);
 
-        $search = $request->get('search', '');
+        $achievments = Achievment::latest()->get();
 
-        $achievments = Achievment::search($search)
-            ->latest()
-            ->paginate();
-
-        return new AchievmentCollection($achievments);
+        return AchievmentResource::collection($achievments);
     }
 
     public function store(AchievmentStoreRequest $request): AchievmentResource

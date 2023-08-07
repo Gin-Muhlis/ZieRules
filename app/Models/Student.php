@@ -56,4 +56,9 @@ class Student extends Authenticatable
     {
         return $this->hasMany(HistoryScan::class);
     }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super-admin');
+    }
 }

@@ -26,6 +26,8 @@ class StudentController extends Controller
 
     public function profile(Request $request)
     {
+        $this->authorize('student-view', Student::class);
+
         $student = $request->user();
 
         $dataViolations = DataViolation::with('teacher')->where('student_id', $student->id)->get();

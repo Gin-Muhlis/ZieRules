@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Student;
 use App\Models\User;
 use App\Models\Violation;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -14,6 +15,11 @@ class ViolationPolicy
      * Determine whether the violation can view any models.
      */
     public function viewAny(User $user): bool
+    {
+        return $user->hasPermissionTo('list violations');
+    }
+
+    public function studentViewAny(Student $user): bool
     {
         return $user->hasPermissionTo('list violations');
     }

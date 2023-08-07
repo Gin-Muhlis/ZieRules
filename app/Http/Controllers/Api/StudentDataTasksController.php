@@ -10,21 +10,27 @@ use App\Http\Resources\DataTaskCollection;
 
 class StudentDataTasksController extends Controller
 {
-    public function index(
-        Request $request,
-        Student $student
-    ): DataTaskCollection {
-        $this->authorize('view', $student);
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
 
-        $search = $request->get('search', '');
+    public function studentTasks(Request $request)
+    {
+        $student = $request->user();
 
-        $dataTasks = $student
-            ->dataTasks()
-            ->search($search)
-            ->latest()
-            ->paginate();
+        $this->authorize('student-view', $student);
 
-        return new DataTaskCollection($dataTasks);
+        $results = [];
+
+        foreach ($student->dataTasks as $task) {
+            $results = [
+                'id' => $task->id,
+                'name' => $task->task->name
+            ];
+        }
+
+        return response()->json($results);
     }
 
     public function store(Request $request, Student $student): DataTaskResource

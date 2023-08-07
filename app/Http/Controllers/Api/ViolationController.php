@@ -13,17 +13,25 @@ use App\Http\Requests\ViolationUpdateRequest;
 
 class ViolationController extends Controller
 {
-    public function index(Request $request): ViolationCollection
+    /**
+     * inisialisasi middleware
+     */
+    public function __construct()
     {
-        $this->authorize('view-any', Violation::class);
+        $this->middleware('auth:sanctum');
+    }
 
-        $search = $request->get('search', '');
+    /**
+     * get all violation
+     * @return ViolationCollection
+     */
+    public function index()
+    {
+        $this->authorize('student-view-any', Violation::class);
 
-        $violations = Violation::search($search)
-            ->latest()
-            ->paginate();
+        $violations = Violation::latest()->get();
 
-        return new ViolationCollection($violations);
+        return ViolationResource::collection($violations);
     }
 
     public function store(ViolationStoreRequest $request): ViolationResource

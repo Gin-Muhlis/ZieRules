@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Achievment;
+use App\Models\Student;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AchievmentPolicy
@@ -14,6 +15,11 @@ class AchievmentPolicy
      * Determine whether the achievment can view any models.
      */
     public function viewAny(User $user): bool
+    {
+        return $user->hasPermissionTo('list achievments');
+    }
+
+    public function studentViewAny(Student $user): bool
     {
         return $user->hasPermissionTo('list achievments');
     }

@@ -13,17 +13,17 @@ use App\Http\Requests\TaskUpdateRequest;
 
 class TaskController extends Controller
 {
-    public function index(Request $request): TaskCollection
+    public function __construct()
     {
-        $this->authorize('view-any', Task::class);
+        $this->middleware('auth:sanctum');
+    }
+    public function index(Request $request)
+    {
+        $this->authorize('student-view-any', Task::class);
 
-        $search = $request->get('search', '');
+        $tasks = Task::latest()->get();
 
-        $tasks = Task::search($search)
-            ->latest()
-            ->paginate();
-
-        return new TaskCollection($tasks);
+        return TaskResource::collection($tasks);
     }
 
     public function store(TaskStoreRequest $request): TaskResource

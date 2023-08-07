@@ -44,17 +44,6 @@ class AuthController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Login Berhasil',
-            'student' => [
-                'nis' => $student->nis,
-                'name' => $student->name,
-                'image' => $student->image,
-                'gender' => $student->gender,
-                'class' => [
-                    'name' => $student->class->name,
-                    'code' => $student->class->code
-                ],
-                'role' => $student->getRoleNames()->first()
-            ],
             'token' => $token->plainTextToken
         ]);
     }

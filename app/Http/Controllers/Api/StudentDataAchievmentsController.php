@@ -10,21 +10,34 @@ use App\Http\Resources\DataAchievmentCollection;
 
 class StudentDataAchievmentsController extends Controller
 {
-    public function index(
-        Request $request,
-        Student $student
-    ): DataAchievmentCollection {
-        $this->authorize('view', $student);
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+    public function studentAchievments(Request $request)
+    {
+        $student = $request->user();
 
-        $search = $request->get('search', '');
+        $this->authorize('student-view', $student);
 
-        $dataAchievments = $student
-            ->dataAchievments()
-            ->search($search)
-            ->latest()
-            ->paginate();
+        $results = [];
+        $total_point = 0;
 
-        return new DataAchievmentCollection($dataAchievments);
+        foreach ($student->dataAchievments as $achievment) {
+            $total_point += $achievment->achievment->point;
+            $results[] = [
+                'id' => $achievment->id,
+                'name' => $achievment->achievment->name,
+                'point' => $achievment->achievment->point,
+                'teacher' => $achievment->teacher->name,
+                'description' => $achievment->description
+            ];
+        }
+
+        return response()->json([
+            'total_point' => $total_point,
+            'data_achievments' => $results
+        ]);
     }
 
     public function store(
