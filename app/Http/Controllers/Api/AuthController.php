@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -15,7 +16,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('loginStudent');
+        $this->middleware('auth:sanctum')->except('loginStudent', 'loginTeacher');
     }
 
     /**
@@ -54,11 +55,42 @@ class AuthController extends Controller
      * 
      * @return [type]
      */
-    public function logoutStudent(Request $request)
+    public function logout(Request $request)
     {
-        $student = $request->user();
-        $student->tokens()->delete();
+        $user = $request->user();
+        $user->tokens()->delete();
 
         return response()->json(['message' => 'Logout Berhasil']);
+    }
+
+    /**
+     * login for teacher
+     * @param Request $request
+     * 
+     * @return [type]
+     */
+    public function loginTeacher(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (!Auth::guard('teacher_api')->attempt($credentials)) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Email atau Password salah'
+            ]);
+        }
+
+        $teacher = Teacher::whereEmail($request->email)->firstOrFail();
+        $token = $teacher->createTOken('teacher-token');
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Login Berhasil',
+            'role' => $teacher->getRoleNames()->first(),
+            'token' => $token->plainTextToken
+        ]);
     }
 }

@@ -46,9 +46,8 @@ class StudentDataViolationsController extends Controller
     }
 
     public function store(
-        Request $request,
-        Student $student
-    ): DataViolationResource {
+        Request $request
+    ) {
         $this->authorize('create', DataViolation::class);
 
         $validated = $request->validate([
@@ -58,8 +57,10 @@ class StudentDataViolationsController extends Controller
             'description' => ['required', 'string'],
         ]);
 
-        $dataViolation = $student->dataViolations()->create($validated);
+        $student = $request->user();
 
-        return new DataViolationResource($dataViolation);
+        $student->dataViolations()->create($validated);
+
+        return response()->json(['message' => 'Pelanggaran berhasil ditambahkan']);
     }
 }

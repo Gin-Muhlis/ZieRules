@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DataTaskController;
@@ -16,6 +16,7 @@ use App\Http\Controllers\HistoryScanController;
 use App\Http\Controllers\ClassStudentController;
 use App\Http\Controllers\DataViolationController;
 use App\Http\Controllers\DataAchievmentController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------

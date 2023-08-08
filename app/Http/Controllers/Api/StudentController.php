@@ -21,7 +21,7 @@ class StudentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('loginStudent');
+        $this->middleware('auth:sanctum');
     }
 
     public function profile(Request $request)
@@ -40,10 +40,7 @@ class StudentController extends Controller
                 'nis' => $student->nis,
                 'gender' => $student->gender,
                 'image' => $student->image,
-                'class' => [
-                    'name' => $student->class->name,
-                    'code' => $student->class->code
-                ],
+                'class' => $student->class->code,
                 'role' => $student->getRoleNames()->first()
             ],
             'dataViolations' => $dataViolations->count(),
@@ -52,5 +49,13 @@ class StudentController extends Controller
         ];
 
         return response()->json($result);
+    }
+
+    public function detailSiswa($nis)
+    {
+        $this->authorize('teacher-student-view', Student::class);
+        $student = Student::whereNis($nis)->first();
+
+        return response()->json($student);
     }
 }

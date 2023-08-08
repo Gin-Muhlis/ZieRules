@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\DataViolation;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DataViolationPolicy
@@ -30,6 +31,11 @@ class DataViolationPolicy
      * Determine whether the dataViolation can create models.
      */
     public function create(User $user): bool
+    {
+        return $user->hasPermissionTo('create dataviolations');
+    }
+
+    public function teacherCreate(Teacher $user): bool
     {
         return $user->hasPermissionTo('create dataviolations');
     }

@@ -26,6 +26,11 @@ class TeacherPolicy
         return $user->hasPermissionTo('view teachers');
     }
 
+    public function teacherView(Teacher $user): bool
+    {
+        return $user->hasPermissionTo('view teachers');
+    }
+
     /**
      * Determine whether the teacher can create models.
      */

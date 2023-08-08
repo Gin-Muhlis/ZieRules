@@ -21,7 +21,7 @@ class HomeroomStoreRequest extends FormRequest
     {
         return [
             'teacher_id' => ['required', 'exists:teachers,id'],
-            'class_id' => ['required', 'exists:classes,id'],
+            'class_id' => ['required', 'exists:class_students,id'],
         ];
     }
 }

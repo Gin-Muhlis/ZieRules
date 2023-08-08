@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentPolicy
@@ -18,6 +19,11 @@ class StudentPolicy
         return $user->hasPermissionTo('list students');
     }
 
+    public function studentViewAny(Teacher $user): bool
+    {
+        return $user->hasPermissionTo('list students');
+    }
+
     /**
      * Determine whether the student can view the model.
      */
@@ -27,6 +33,11 @@ class StudentPolicy
     }
 
     public function studentView(Student $user): bool
+    {
+        return $user->hasPermissionTo('view students');
+    }
+
+    public function teacherStudentView(Teacher $user): bool
     {
         return $user->hasPermissionTo('view students');
     }
