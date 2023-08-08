@@ -45,6 +45,24 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update dataviolations']);
         Permission::create(['name' => 'delete dataviolations']);
 
+        Permission::create(['name' => 'list historyachievments']);
+        Permission::create(['name' => 'view historyachievments']);
+        Permission::create(['name' => 'create historyachievments']);
+        Permission::create(['name' => 'update historyachievments']);
+        Permission::create(['name' => 'delete historyachievments']);
+
+        Permission::create(['name' => 'list historytasks']);
+        Permission::create(['name' => 'view historytasks']);
+        Permission::create(['name' => 'create historytasks']);
+        Permission::create(['name' => 'update historytasks']);
+        Permission::create(['name' => 'delete historytasks']);
+
+        Permission::create(['name' => 'list historyviolations']);
+        Permission::create(['name' => 'view historyviolations']);
+        Permission::create(['name' => 'create historyviolations']);
+        Permission::create(['name' => 'update historyviolations']);
+        Permission::create(['name' => 'delete historyviolations']);
+
         Permission::create(['name' => 'list historyscans']);
         Permission::create(['name' => 'view historyscans']);
         Permission::create(['name' => 'create historyscans']);

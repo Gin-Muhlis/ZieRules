@@ -19,4 +19,9 @@ class Violation extends Model
     {
         return $this->hasMany(DataViolation::class);
     }
+
+    public function historyViolations()
+    {
+        return $this->hasMany(HistoryViolation::class);
+    }
 }

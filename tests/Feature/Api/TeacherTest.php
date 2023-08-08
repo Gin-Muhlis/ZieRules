@@ -68,7 +68,7 @@ class TeacherTest extends TestCase
         $teacher = Teacher::factory()->create();
 
         $data = [
-            'email' => $this->faker->text(255),
+            'email' => $this->faker->unique->email(),
             'name' => $this->faker->text(255),
             'password_show' => $this->faker->text(255),
             'gender' => 'laki-laki',

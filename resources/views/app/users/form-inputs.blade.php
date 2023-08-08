@@ -13,6 +13,16 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-12">
+        <x-inputs.password
+            name="password"
+            label="Password"
+            maxlength="255"
+            placeholder="Password"
+            :required="!$editing"
+        ></x-inputs.password>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-12">
         <x-inputs.email
             name="email"
             label="Email"
@@ -21,16 +31,6 @@
             placeholder="Email"
             required
         ></x-inputs.email>
-    </x-inputs.group>
-
-    <x-inputs.group class="col-sm-12">
-        <x-inputs.password
-            name="password"
-            label="Password"
-            maxlength="255"
-            placeholder="Password"
-            :required="!$editing"
-        ></x-inputs.password>
     </x-inputs.group>
 
     <div class="form-group col-sm-12 mt-4">

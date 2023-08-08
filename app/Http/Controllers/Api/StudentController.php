@@ -35,6 +35,7 @@ class StudentController extends Controller
         $dataTasks = DataTask::with('teacher')->where('student_id', $student->id)->get();
 
         $result = [
+            'status' => 200,
             'student' => [
                 'name' => $student->name,
                 'nis' => $student->nis,

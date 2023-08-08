@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\TeacherStoreRequest;
 use App\Http\Requests\TeacherUpdateRequest;
+use App\Models\ClassStudent;
+use App\Models\Homeroom;
 
 class TeacherController extends Controller
 {
@@ -21,6 +23,7 @@ class TeacherController extends Controller
         $this->authorize('view-any', Teacher::class);
 
         $search = $request->get('search', '');
+
 
         $teachers = Teacher::search($search)
             ->latest()
@@ -37,7 +40,9 @@ class TeacherController extends Controller
     {
         $this->authorize('create', Teacher::class);
 
-        return view('app.teachers.create');
+        $classes = ClassStudent::pluck('name', 'id');
+
+        return view('app.teachers.create', compact('classes'));
     }
 
     /**
@@ -56,9 +61,24 @@ class TeacherController extends Controller
             $validated['image'] = $request->file('image')->store('public');
         }
 
+        $class_id = false;
+
+        if ($validated['class_id']) {
+            $class_id = $validated['class_id'];
+            unset($validated['class_id']);
+        }
+
         $teacher = Teacher::create($validated);
 
         $teacher->assignRole($validated['role']);
+
+        if ($class_id) {
+            Homeroom::create([
+                'teacher_id' => $teacher->id,
+                'class_id' => $class_id
+            ]);
+        }
+
 
         return redirect()
             ->route('teachers.edit', $teacher)

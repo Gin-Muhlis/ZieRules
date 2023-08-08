@@ -96,18 +96,6 @@ return [
         ],
     ],
 
-    'tugas' => [
-        'name' => 'Tugas',
-        'index_title' => 'Daftar Tugas',
-        'new_title' => 'Tugas Baru',
-        'create_title' => 'Buat Tugas',
-        'edit_title' => 'Edit Tugas',
-        'show_title' => 'Tampilkan Tugas',
-        'inputs' => [
-            'name' => 'Nama Tugas',
-        ],
-    ],
-
     'pelanggaran' => [
         'name' => 'Pelanggaran',
         'index_title' => 'Daftar Pelanggaran',
@@ -118,19 +106,6 @@ return [
         'inputs' => [
             'name' => 'Nama Pelanggaran',
             'point' => 'Poin',
-        ],
-    ],
-
-    'catatan_scan' => [
-        'name' => 'Catatan Scan',
-        'index_title' => 'Daftar Catatan Scan',
-        'new_title' => 'Catatan Scan Baru',
-        'create_title' => 'Buat Catatan Scan',
-        'edit_title' => 'Edti Catatan Scan',
-        'show_title' => 'Tampilkan Catatan Scan',
-        'inputs' => [
-            'teacher_id' => 'Guru',
-            'student_id' => 'Siswa',
         ],
     ],
 
@@ -147,21 +122,62 @@ return [
         ],
     ],
 
-    'siswa' => [
-        'name' => 'Siswa',
-        'index_title' => 'Daftar Siswa',
-        'new_title' => 'Siswa Baru',
-        'create_title' => 'Buat Siswa',
-        'edit_title' => 'Edit Siswa',
-        'show_title' => 'Tampilkan Siswa',
+    'catatan_scan_prestasi' => [
+        'name' => 'Catatan Scan Prestasi',
+        'index_title' => 'Daftar Catatan Scan Prestasi',
+        'new_title' => 'Catatan Scan Prestasi Baru',
+        'create_title' => 'Buat Catatan Scan Prestasi',
+        'edit_title' => 'Edit Catatan Scan Prestasi',
+        'show_title' => 'Tampilkan Catatan Scan Prestasi',
+        'inputs' => [
+            'student_id' => 'Siswa',
+            'teacher_id' => 'Guru',
+            'achievment_id' => 'Prestasi',
+            'date' => 'Tanggal',
+        ],
+    ],
+
+    'catatan_scan_tugas' => [
+        'name' => 'Catatan Scan Tugas',
+        'index_title' => 'Daftar Catatan Scan Tugas',
+        'new_title' => 'Catatan Scan Tugas Baru',
+        'create_title' => 'Buat Catatan Scan Tugas',
+        'edit_title' => 'Edit Catatan Scan Tugas',
+        'show_title' => 'Tampilkan Catatan Scan Tugas',
+        'inputs' => [
+            'student_id' => 'Siswa',
+            'teacher_id' => 'Guru',
+            'task_id' => 'Tugas',
+            'date' => 'Tanggal',
+        ],
+    ],
+
+    'catatan_scan_pelanggaran' => [
+        'name' => 'Catatan Scan Pelanggaran',
+        'index_title' => 'Daftar Catatan Scan Pelanggaran',
+        'new_title' => 'Catatan Scan Pelanggaran Baru',
+        'create_title' => 'Buat Catatan Scan Pelanggaran',
+        'edit_title' => 'Edit Catatan Scan Pelanggaran',
+        'show_title' => 'Tampilkan Catatan Scan Pelanggaran',
+        'inputs' => [
+            'student_id' => 'Siswa',
+            'teacher_id' => 'Guru',
+            'violation_id' => 'Pelanggaran ',
+            'date' => 'Date',
+        ],
+    ],
+
+    'tugas' => [
+        'name' => 'Tugas',
+        'index_title' => 'Daftar Tugas',
+        'new_title' => 'Tugas Baru',
+        'create_title' => 'Buat Tugas',
+        'edit_title' => 'Edit Tugas',
+        'show_title' => 'Tampilkan Tugas',
         'inputs' => [
             'name' => 'Nama',
-            'nis' => 'Nis',
-            'password' => 'Password',
-            'password_show' => 'Password Show',
-            'image' => 'Gambar Profil',
-            'gender' => 'Gender',
-            'class_id' => 'Kelas',
+            'class' => 'Kelas',
+            'description' => 'Deskripsi',
         ],
     ],
 
@@ -173,12 +189,30 @@ return [
         'edit_title' => 'Edit Guru',
         'show_title' => 'Tampilkan Guru',
         'inputs' => [
-            'name' => 'Nama',
             'email' => 'Email',
+            'name' => 'Nama',
             'password' => 'Password',
             'password_show' => 'Password Show',
             'image' => 'Gambar Profil',
             'gender' => 'Gender',
+        ],
+    ],
+
+    'siswa' => [
+        'name' => 'Siswa',
+        'index_title' => 'Daftar Siswa',
+        'new_title' => 'Siswa Baru',
+        'create_title' => 'Buat Siswa',
+        'edit_title' => 'Edit Siswa',
+        'show_title' => 'Tampilkan Siswa',
+        'inputs' => [
+            'nis' => 'Nis',
+            'name' => 'Nama',
+            'password' => 'Password',
+            'password_show' => 'Password Show',
+            'image' => 'Gambar Profil',
+            'gender' => 'Gender',
+            'class_id' => 'Kelas',
         ],
     ],
 
@@ -191,8 +225,8 @@ return [
         'show_title' => 'Tampilkan User',
         'inputs' => [
             'name' => 'Nama',
-            'email' => 'Email',
             'password' => 'Password',
+            'email' => 'Email',
         ],
     ],
 

@@ -23,7 +23,7 @@ class TeacherFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => $this->faker->text(255),
+            'email' => $this->faker->unique->email(),
             'name' => $this->faker->text(255),
             'password' => $this->faker->password(),
             'password_show' => $this->faker->text(255),

@@ -21,6 +21,8 @@ class TaskUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255', 'string'],
+            'class' => ['required', 'max:255', 'string'],
+            'description' => ['required', 'max:255', 'string'],
         ];
     }
 }

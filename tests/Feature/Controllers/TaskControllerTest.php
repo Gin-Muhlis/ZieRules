@@ -110,6 +110,8 @@ class TaskControllerTest extends TestCase
 
         $data = [
             'name' => $this->faker->name(),
+            'class' => $this->faker->text(255),
+            'description' => $this->faker->sentence(15),
         ];
 
         $response = $this->put(route('tasks.update', $task), $data);

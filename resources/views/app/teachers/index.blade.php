@@ -48,10 +48,10 @@
                     <thead>
                         <tr>
                             <th class="text-left">
-                                @lang('crud.guru.inputs.name')
+                                @lang('crud.guru.inputs.email')
                             </th>
                             <th class="text-left">
-                                @lang('crud.guru.inputs.email')
+                                @lang('crud.guru.inputs.name')
                             </th>
                             <th class="text-left">
                                 @lang('crud.guru.inputs.password_show')
@@ -70,8 +70,8 @@
                     <tbody>
                         @forelse($teachers as $teacher)
                         <tr>
-                            <td>{{ $teacher->name ?? '-' }}</td>
                             <td>{{ $teacher->email ?? '-' }}</td>
+                            <td>{{ $teacher->name ?? '-' }}</td>
                             <td>{{ $teacher->password_show ?? '-' }}</td>
                             <td>
                                 <x-partials.thumbnail

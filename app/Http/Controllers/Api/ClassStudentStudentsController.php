@@ -35,8 +35,8 @@ class ClassStudentStudentsController extends Controller
         $this->authorize('create', Student::class);
 
         $validated = $request->validate([
+            'nis' => ['required', 'unique:students,nis', 'max:9', 'string'],
             'name' => ['required', 'max:255', 'string'],
-            'nis' => ['required', 'unique:students,nis', 'max:9', 'numeric'],
             'password' => ['required'],
             'password_show' => ['required'],
             'image' => ['nullable', 'image', 'max:1024'],

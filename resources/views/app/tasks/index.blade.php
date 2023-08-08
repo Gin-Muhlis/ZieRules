@@ -47,6 +47,12 @@
                             <th class="text-left">
                                 @lang('crud.tugas.inputs.name')
                             </th>
+                            <th class="text-left">
+                                @lang('crud.tugas.inputs.class')
+                            </th>
+                            <th class="text-left">
+                                @lang('crud.tugas.inputs.description')
+                            </th>
                             <th class="text-center">
                                 @lang('crud.common.actions')
                             </th>
@@ -56,6 +62,8 @@
                         @forelse($tasks as $task)
                         <tr>
                             <td>{{ $task->name ?? '-' }}</td>
+                            <td>{{ $task->class ?? '-' }}</td>
+                            <td>{{ $task->description ?? '-' }}</td>
                             <td class="text-center" style="width: 134px;">
                                 <div
                                     role="group"
@@ -100,7 +108,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="2">
+                            <td colspan="4">
                                 @lang('crud.common.no_items_found')
                             </td>
                         </tr>
@@ -108,7 +116,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2">{!! $tasks->render() !!}</td>
+                            <td colspan="4">{!! $tasks->render() !!}</td>
                         </tr>
                     </tfoot>
                 </table>

@@ -16,6 +16,14 @@
                     <h5>@lang('crud.tugas.inputs.name')</h5>
                     <span>{{ $task->name ?? '-' }}</span>
                 </div>
+                <div class="mb-4">
+                    <h5>@lang('crud.tugas.inputs.class')</h5>
+                    <span>{{ $task->class ?? '-' }}</span>
+                </div>
+                <div class="mb-4">
+                    <h5>@lang('crud.tugas.inputs.description')</h5>
+                    <span>{{ $task->description ?? '-' }}</span>
+                </div>
             </div>
 
             <div class="mt-4">

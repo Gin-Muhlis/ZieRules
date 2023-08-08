@@ -59,10 +59,19 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-12">
-        <x-inputs.select name="role" label="Role">
-
+        <x-inputs.select name="role" label="Role" id="role">
             <option value="guru-mapel">Guru Mapel</option>
             <option value="wali-kelas">Wali Kelas</option>
+        </x-inputs.select>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-12 class-homerooms d-none">
+        <x-inputs.select name="class_id" label="Kelas" required>
+            <option disabled>Silahkan Pilih Kelas</option>
+            @foreach ($classes as $value => $label)
+                <option value="{{ $value }}">{{ $label }}
+                </option>
+            @endforeach
         </x-inputs.select>
     </x-inputs.group>
 </div>
@@ -70,6 +79,17 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            // show and hidden when role teacher
+            $("#role").on("input", function() {
+                let value = $(this).val()
+
+                if (value === 'wali-kelas') {
+                    $(".class-homerooms").removeClass("d-none");
+                } else {
+                    $(".class-homerooms").addClass("d-none");
+                }
+            })
+
             // add pointer event none to password input when focus
             $("#password").on("focus", function() {
                 $("#password").css({

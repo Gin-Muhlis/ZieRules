@@ -72,27 +72,11 @@
                                 </a>
                             </li>
                             @endcan
-                            @can('view-any', App\Models\Task::class)
-                            <li class="nav-item">
-                                <a href="{{ route('tasks.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                    <p>Tugas</p>
-                                </a>
-                            </li>
-                            @endcan
                             @can('view-any', App\Models\Violation::class)
                             <li class="nav-item">
                                 <a href="{{ route('violations.index') }}" class="nav-link">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
                                     <p>Pelanggaran</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('view-any', App\Models\HistoryScan::class)
-                            <li class="nav-item">
-                                <a href="{{ route('history-scans.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                    <p>Catatan Scan</p>
                                 </a>
                             </li>
                             @endcan
@@ -104,11 +88,35 @@
                                 </a>
                             </li>
                             @endcan
-                            @can('view-any', App\Models\Student::class)
+                            @can('view-any', App\Models\HistoryAchievment::class)
                             <li class="nav-item">
-                                <a href="{{ route('students.index') }}" class="nav-link">
+                                <a href="{{ route('history-achievments.index') }}" class="nav-link">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                    <p>Siswa</p>
+                                    <p>Catatan Scan Prestasi</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\HistoryTask::class)
+                            <li class="nav-item">
+                                <a href="{{ route('history-tasks.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Catatan Scan Tugas</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\HistoryViolation::class)
+                            <li class="nav-item">
+                                <a href="{{ route('history-violations.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Catatan Scan Pelanggaran</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\Task::class)
+                            <li class="nav-item">
+                                <a href="{{ route('tasks.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Tugas</p>
                                 </a>
                             </li>
                             @endcan
@@ -117,6 +125,14 @@
                                 <a href="{{ route('teachers.index') }}" class="nav-link">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
                                     <p>Guru</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\Student::class)
+                            <li class="nav-item">
+                                <a href="{{ route('students.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Siswa</p>
                                 </a>
                             </li>
                             @endcan

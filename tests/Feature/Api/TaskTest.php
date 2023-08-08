@@ -66,6 +66,8 @@ class TaskTest extends TestCase
 
         $data = [
             'name' => $this->faker->name(),
+            'class' => $this->faker->text(255),
+            'description' => $this->faker->sentence(15),
         ];
 
         $response = $this->putJson(route('api.tasks.update', $task), $data);

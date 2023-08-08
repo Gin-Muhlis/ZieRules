@@ -13,12 +13,12 @@
 
             <div class="mt-4">
                 <div class="mb-4">
-                    <h5>@lang('crud.siswa.inputs.name')</h5>
-                    <span>{{ $student->name ?? '-' }}</span>
-                </div>
-                <div class="mb-4">
                     <h5>@lang('crud.siswa.inputs.nis')</h5>
                     <span>{{ $student->nis ?? '-' }}</span>
+                </div>
+                <div class="mb-4">
+                    <h5>@lang('crud.siswa.inputs.name')</h5>
+                    <span>{{ $student->name ?? '-' }}</span>
                 </div>
                 <div class="mb-4">
                     <h5>@lang('crud.siswa.inputs.image')</h5>

@@ -19,4 +19,9 @@ class Achievment extends Model
     {
         return $this->hasMany(DataAchievment::class);
     }
+
+    public function historyAchievments()
+    {
+        return $this->hasMany(HistoryAchievment::class);
+    }
 }

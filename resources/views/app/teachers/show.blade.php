@@ -13,12 +13,12 @@
 
             <div class="mt-4">
                 <div class="mb-4">
-                    <h5>@lang('crud.guru.inputs.name')</h5>
-                    <span>{{ $teacher->name ?? '-' }}</span>
-                </div>
-                <div class="mb-4">
                     <h5>@lang('crud.guru.inputs.email')</h5>
                     <span>{{ $teacher->email ?? '-' }}</span>
+                </div>
+                <div class="mb-4">
+                    <h5>@lang('crud.guru.inputs.name')</h5>
+                    <span>{{ $teacher->name ?? '-' }}</span>
                 </div>
                 <div class="mb-4">
                     <h5>@lang('crud.guru.inputs.password_show')</h5>

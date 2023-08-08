@@ -2,21 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\DataTaskController;
 use App\Http\Controllers\HomeroomController;
 use App\Http\Controllers\ViolationController;
 use App\Http\Controllers\AchievmentController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\HistoryScanController;
+use App\Http\Controllers\HistoryTaskController;
 use App\Http\Controllers\ClassStudentController;
 use App\Http\Controllers\DataViolationController;
 use App\Http\Controllers\DataAchievmentController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HistoryViolationController;
+use App\Http\Controllers\HistoryAchievmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,11 +49,19 @@ Route::prefix('/')
         Route::resource('data-tasks', DataTaskController::class);
         Route::resource('data-violations', DataViolationController::class);
         Route::resource('homerooms', HomeroomController::class);
-        Route::resource('tasks', TaskController::class);
         Route::resource('violations', ViolationController::class);
-        Route::resource('history-scans', HistoryScanController::class);
         Route::resource('class-students', ClassStudentController::class);
-        Route::resource('students', StudentController::class);
+        Route::resource(
+            'history-achievments',
+            HistoryAchievmentController::class
+        );
+        Route::resource('history-tasks', HistoryTaskController::class);
+        Route::resource(
+            'history-violations',
+            HistoryViolationController::class
+        );
+        Route::resource('tasks', TaskController::class);
         Route::resource('teachers', TeacherController::class);
+        Route::resource('students', StudentController::class);
         Route::resource('users', UserController::class);
     });
