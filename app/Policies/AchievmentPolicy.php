@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Achievment;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AchievmentPolicy
@@ -20,6 +21,11 @@ class AchievmentPolicy
     }
 
     public function studentViewAny(Student $user): bool
+    {
+        return $user->hasPermissionTo('list achievments');
+    }
+
+    public function teacherViewAny(Teacher $user): bool
     {
         return $user->hasPermissionTo('list achievments');
     }

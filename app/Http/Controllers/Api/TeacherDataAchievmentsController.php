@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DataAchievmentResource;
-use App\Http\Resources\DataAchievmentCollection;
 use App\Models\HistoryAchievment;
 use Illuminate\Support\Facades\Validator;
 

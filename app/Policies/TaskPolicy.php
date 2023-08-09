@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Student;
 use App\Models\Task;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -20,6 +21,11 @@ class TaskPolicy
     }
 
     public function studentViewAny(Student $user): bool
+    {
+        return $user->hasPermissionTo('list tasks');
+    }
+
+    public function teacherViewAny(Teacher $user): bool
     {
         return $user->hasPermissionTo('list tasks');
     }

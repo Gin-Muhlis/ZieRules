@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Violation;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ViolationResource;
 use App\Http\Resources\ViolationCollection;
-use App\Http\Requests\ViolationStoreRequest;
-use App\Http\Requests\ViolationUpdateRequest;
 
 class ViolationController extends Controller
 {
@@ -25,7 +21,7 @@ class ViolationController extends Controller
      * get all violation
      * @return ViolationCollection
      */
-    public function index()
+    public function indexStudent()
     {
         $this->authorize('student-view-any', Violation::class);
 
@@ -34,45 +30,12 @@ class ViolationController extends Controller
         return ViolationResource::collection($violations);
     }
 
-    public function store(ViolationStoreRequest $request): ViolationResource
+    public function indexTeacher()
     {
-        $this->authorize('create', Violation::class);
+        $this->authorize('teacher-view-any', Violation::class);
 
-        $validated = $request->validated();
+        $violations = Violation::latest()->get();
 
-        $violation = Violation::create($validated);
-
-        return new ViolationResource($violation);
-    }
-
-    public function show(
-        Request $request,
-        Violation $violation
-    ): ViolationResource {
-        $this->authorize('view', $violation);
-
-        return new ViolationResource($violation);
-    }
-
-    public function update(
-        ViolationUpdateRequest $request,
-        Violation $violation
-    ): ViolationResource {
-        $this->authorize('update', $violation);
-
-        $validated = $request->validated();
-
-        $violation->update($validated);
-
-        return new ViolationResource($violation);
-    }
-
-    public function destroy(Request $request, Violation $violation): Response
-    {
-        $this->authorize('delete', $violation);
-
-        $violation->delete();
-
-        return response()->noContent();
+        return ViolationResource::collection($violations);
     }
 }

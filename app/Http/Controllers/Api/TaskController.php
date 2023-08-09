@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Task;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Resources\TaskResource;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TaskCollection;
-use App\Http\Requests\TaskStoreRequest;
-use App\Http\Requests\TaskUpdateRequest;
 
 class TaskController extends Controller
 {
@@ -17,7 +12,8 @@ class TaskController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function index(Request $request)
+
+    public function indexStudent()
     {
         $this->authorize('student-view-any', Task::class);
 
@@ -26,41 +22,12 @@ class TaskController extends Controller
         return TaskResource::collection($tasks);
     }
 
-    public function store(TaskStoreRequest $request): TaskResource
+    public function indexTeacher()
     {
-        $this->authorize('create', Task::class);
+        $this->authorize('teacher-view-any', Task::class);
 
-        $validated = $request->validated();
+        $tasks = Task::latest()->get();
 
-        $task = Task::create($validated);
-
-        return new TaskResource($task);
-    }
-
-    public function show(Request $request, Task $task): TaskResource
-    {
-        $this->authorize('view', $task);
-
-        return new TaskResource($task);
-    }
-
-    public function update(TaskUpdateRequest $request, Task $task): TaskResource
-    {
-        $this->authorize('update', $task);
-
-        $validated = $request->validated();
-
-        $task->update($validated);
-
-        return new TaskResource($task);
-    }
-
-    public function destroy(Request $request, Task $task): Response
-    {
-        $this->authorize('delete', $task);
-
-        $task->delete();
-
-        return response()->noContent();
+        return TaskResource::collection($tasks);
     }
 }

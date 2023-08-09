@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DataTaskResource;
-use App\Http\Resources\DataTaskCollection;
 use App\Models\HistoryTask;
 use Illuminate\Support\Facades\Validator;
 

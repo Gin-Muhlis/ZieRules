@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Violation;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -20,6 +21,11 @@ class ViolationPolicy
     }
 
     public function studentViewAny(Student $user): bool
+    {
+        return $user->hasPermissionTo('list violations');
+    }
+
+    public function teacherViewAny(Teacher $user): bool
     {
         return $user->hasPermissionTo('list violations');
     }

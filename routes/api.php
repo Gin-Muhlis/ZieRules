@@ -16,33 +16,56 @@ use App\Http\Controllers\Api\TeacherDataViolationsController;
 use App\Http\Controllers\Api\ViolationController;
 
 
-Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+// route siswa
+Route::prefix('student')->group(function () {
+    // Auth
+    Route::post('/login', [AuthController::class, 'loginStudent']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-// student routes
-Route::post('/login/student', [AuthController::class, 'loginStudent']);
-Route::post('/logout/student', [AuthController::class, 'logout']);
-Route::get('/profile/student', [StudentController::class, 'profile']);
-Route::get('/students/data-violations', [StudentDataViolationsController::class, 'studentViolations']);
-Route::get('/students/data-achievments', [StudentDataAchievmentsController::class, 'studentAchievments']);
-Route::get('/students/data-tasks', [StudentDataTasksController::class, 'studentTasks']);
-Route::get('/student/{nis}', [StudentController::class, 'detailSiswa']);
+    // Data siswa
+    Route::get('/profile', [StudentController::class, 'profile']);
+    Route::get('/{nis}', [StudentController::class, 'detailSiswa']);
 
-// data ruotes
-Route::get('/violations', [ViolationController::class, 'index']);
-Route::get('achievments', [AchievmentController::class, 'index']);
-Route::get('/tasks', [TaskController::class, 'index']);
+    // Data pelanggaran
+    Route::get('/list/violation', [ViolationController::class, 'indexStudent']);
+    Route::get('/data-violations', [StudentDataViolationsController::class, 'studentViolations']);
 
-// teacher routes
-Route::post('/login/teacher', [AuthController::class, 'loginTeacher']);
-Route::post('/logout/teacher', [AuthController::class, 'logout']);
-Route::get('/profile/teacher', [TeacherController::class, 'profile']);
-Route::get('/list/student/teacher', [TeacherController::class, 'listStudent']);
+    // Data prestasi
+    Route::get('/list/achievment', [AchievmentController::class, 'indexStudent']);
+    Route::get('/data-achievments', [StudentDataAchievmentsController::class, 'studentAchievments']);
 
-Route::post('/add/student/violation', [TeacherDataViolationsController::class, 'addViolation']);
-Route::post('/add/students/violation', [TeacherDataViolationsController::class, 'addViolations']);
-Route::post('/add/student/achievment', [TeacherDataAchievmentsController::class, 'addAchievment']);
-Route::post('add/students/achievment', [TeacherDataAchievmentsController::class, 'addAchievments']);
-Route::post('/add/student/task', [TeacherDataTasksController::class, 'addTask']);
-Route::post('/add/students/task', [TeacherDataTasksController::class, 'addTasks']);
+    // Data tugas
+    Route::get('/data-tasks', [StudentDataTasksController::class, 'studentTasks']);
+    Route::get('/list/task', [TaskController::class, 'indexStudent']);
+});
 
-Route::get('/teacher/history/scan', [TeacherController::class, 'historyScans']);
+// route guru
+Route::prefix('teacher')->group(function () {
+    // Auth
+    Route::post('/login', [AuthController::class, 'loginTeacher']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Data guru 
+    Route::get('/profile', [TeacherController::class, 'profile']);
+
+    // Daftar siswa
+    Route::get('/list/student', [TeacherController::class, 'listStudent']);
+
+    // Data pelanggaran
+    Route::get('/list/violation', [ViolationController::class, 'indexTeacher']);
+    Route::post('/add/student/violation', [TeacherDataViolationsController::class, 'addViolation']);
+    Route::post('/add/students/violation', [TeacherDataViolationsController::class, 'addViolations']);
+
+    // Data Prestasi
+    Route::get('/list/achievment', [AchievmentController::class, 'indexTeacher']);
+    Route::post('/add/student/achievment', [TeacherDataAchievmentsController::class, 'addAchievment']);
+    Route::post('/add/students/achievment', [TeacherDataAchievmentsController::class, 'addAchievments']);
+
+    // Data tugas
+    Route::get('/list/task', [TaskController::class, 'indexTeacher']);
+    Route::post('/add/student/task', [TeacherDataTasksController::class, 'addTask']);
+    Route::post('/add/students/task', [TeacherDataTasksController::class, 'addTasks']);
+
+    // Data scan
+    Route::get('/history/scan', [TeacherController::class, 'historyScans']);
+});

@@ -4,18 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Resources\StudentResource;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\StudentCollection;
-use App\Http\Requests\StudentStoreRequest;
-use App\Http\Requests\StudentUpdateRequest;
 use App\Models\DataAchievment;
 use App\Models\DataTask;
 use App\Models\DataViolation;
-use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -37,6 +29,7 @@ class StudentController extends Controller
         $result = [
             'status' => 200,
             'student' => [
+                'id' => $student->id,
                 'name' => $student->name,
                 'nis' => $student->nis,
                 'gender' => $student->gender,

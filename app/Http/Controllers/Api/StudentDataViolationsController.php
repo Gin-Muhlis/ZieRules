@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DataViolationResource;
-use App\Http\Resources\DataViolationCollection;
-use App\Models\DataViolation;
 
 class StudentDataViolationsController extends Controller
 {
@@ -43,24 +39,5 @@ class StudentDataViolationsController extends Controller
             'total_point' => $total_point,
             'data_violations' => $results
         ]);
-    }
-
-    public function store(
-        Request $request
-    ) {
-        $this->authorize('create', DataViolation::class);
-
-        $validated = $request->validate([
-            'violation_id' => ['required', 'exists:violations,id'],
-            'teacher_id' => ['required', 'exists:teachers,id'],
-            'date' => ['required', 'date'],
-            'description' => ['required', 'string'],
-        ]);
-
-        $student = $request->user();
-
-        $student->dataViolations()->create($validated);
-
-        return response()->json(['message' => 'Pelanggaran berhasil ditambahkan']);
     }
 }
