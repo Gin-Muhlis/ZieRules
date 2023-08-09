@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\DataAchievment;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DataAchievmentPolicy
@@ -30,6 +31,11 @@ class DataAchievmentPolicy
      * Determine whether the dataAchievment can create models.
      */
     public function create(User $user): bool
+    {
+        return $user->hasPermissionTo('create dataachievments');
+    }
+
+    public function teacherCreate(Teacher $user): bool
     {
         return $user->hasPermissionTo('create dataachievments');
     }

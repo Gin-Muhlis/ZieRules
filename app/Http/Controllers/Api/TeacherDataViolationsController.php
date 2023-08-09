@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DataViolationResource;
-use App\Http\Resources\DataViolationCollection;
-use App\Models\HistoryScan;
+use App\Models\HistoryViolation;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherDataViolationsController extends Controller
@@ -42,9 +40,11 @@ class TeacherDataViolationsController extends Controller
 
         $teacher->dataViolations()->create($request->all());
 
-        HistoryScan::create([
+        HistoryViolation::create([
             'teacher_id' => $teacher->id,
-            'student_id' => $request->student_id
+            'student_id' => $request->student_id,
+            'violation_id' => $request->violation_id,
+            'date' => $request->date
         ]);
 
         return response()->json(['message' => 'Pelanggaran berhasil ditambahkan']);
@@ -70,21 +70,23 @@ class TeacherDataViolationsController extends Controller
         }
 
         $teacher = $request->user();
+        $validated = $validator->validate();
 
-        foreach ($request->students as $student) {
+        foreach ($validated['students'] as $student) {
             $data = [
-                'violation_id' => $request->violation_id,
+                'violation_id' => $validated['iolation_id'],
                 'student_id' => $student,
-                'date' => $request->date,
-                'description' => $request->description,
+                'date' => $validated['date'],
+                'description' => $validated['description'],
             ];
-
 
             $teacher->dataViolations()->create($data);
 
-            HistoryScan::create([
+            HistoryViolation::create([
                 'teacher_id' => $teacher->id,
-                'student_id' => $student
+                'student_id' => $student,
+                'violation_id' => $request->violation_id,
+                'date' => $request->date
             ]);
         }
 

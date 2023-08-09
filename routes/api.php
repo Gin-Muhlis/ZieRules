@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\StudentDataTasksController;
 use App\Http\Controllers\Api\StudentDataViolationsController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TeacherController;
+use App\Http\Controllers\Api\TeacherDataAchievmentsController;
+use App\Http\Controllers\Api\TeacherDataTasksController;
 use App\Http\Controllers\Api\TeacherDataViolationsController;
 use App\Http\Controllers\Api\ViolationController;
 
@@ -35,6 +37,12 @@ Route::post('/login/teacher', [AuthController::class, 'loginTeacher']);
 Route::post('/logout/teacher', [AuthController::class, 'logout']);
 Route::get('/profile/teacher', [TeacherController::class, 'profile']);
 Route::get('/list/student/teacher', [TeacherController::class, 'listStudent']);
+
 Route::post('/add/student/violation', [TeacherDataViolationsController::class, 'addViolation']);
 Route::post('/add/students/violation', [TeacherDataViolationsController::class, 'addViolations']);
-Route::get('/teacher/history/scan', [TeacherController::class, 'historyScan']);
+Route::post('/add/student/achievment', [TeacherDataAchievmentsController::class, 'addAchievment']);
+Route::post('add/students/achievment', [TeacherDataAchievmentsController::class, 'addAchievments']);
+Route::post('/add/student/task', [TeacherDataTasksController::class, 'addTask']);
+Route::post('/add/students/task', [TeacherDataTasksController::class, 'addTasks']);
+
+Route::get('/teacher/history/scan', [TeacherController::class, 'historyScans']);

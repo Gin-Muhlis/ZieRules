@@ -38,14 +38,60 @@ class TeacherController extends Controller
         return StudentResource::collection($listStudent);
     }
 
-    public function historyScan(Request $request)
+    public function historyScans(Request $request)
     {
         $teacher = $request->user();
 
         $this->authorize('teacher-view', $teacher);
 
-        $historyScans = $teacher->historyScans;
+        $historyScansViolation = $teacher->historyViolations;
+        $historyScansAchievment = $teacher->historyAchievments;
+        $historyScansTasks = $teacher->historytasks;
 
-        return HistoryScanResource::collection($historyScans);
+
+        $historyScans = $this->generateHistory($historyScansViolation, $historyScansAchievment, $historyScansTasks);
+
+        return response()->json($historyScans);
+    }
+
+    private function generateHistory($violations, $achievments, $tasks)
+    {
+        $dataViolations = [];
+        foreach ($violations as  $violation) {
+            $dataViolations[] = [
+                'teacher' => $violation->teacher->name,
+                'student' => $violation->student->name,
+                'violation' => $violation->violation->name,
+                'date' => $violation->date->toDateString()
+            ];
+        }
+
+        $dataAchievments = [];
+        foreach ($achievments as  $achievment) {
+            $dataAchievments[] = [
+                'teacher' => $achievment->teacher->name,
+                'student' => $achievment->student->name,
+                'aachievment' => $achievment->achievment->name,
+                'date' => $achievment->date->toDateString()
+            ];
+        }
+
+        $dataTasks = [];
+        foreach ($tasks as  $task) {
+            $dataTasks[] = [
+                'teacher' => $task->teacher->name,
+                'student' => $task->student->name,
+                'task' => $task->task->name,
+                'date' => $task->date->toDateString()
+            ];
+        }
+
+        $result = array_merge($dataViolations, $dataAchievments, $dataTasks);
+
+        usort($result, function ($a, $b) {
+            return strtotime($b['date']) - strtotime($a['date']);
+        });
+
+        return $result;
     }
 }

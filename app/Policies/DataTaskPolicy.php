@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\DataTask;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DataTaskPolicy
@@ -30,6 +31,11 @@ class DataTaskPolicy
      * Determine whether the dataTask can create models.
      */
     public function create(User $user): bool
+    {
+        return $user->hasPermissionTo('create datatasks');
+    }
+
+    public function teacherCreate(Teacher $user): bool
     {
         return $user->hasPermissionTo('create datatasks');
     }
