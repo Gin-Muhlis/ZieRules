@@ -35,9 +35,10 @@ class TeacherDataViolationsController extends Controller
             ]);
         }
 
+        $validated = $validator->validate();
         $teacher = $request->user();
 
-        $teacher->dataViolations()->create($request->all());
+        $teacher->dataViolations()->create($validated);
 
         HistoryViolation::create([
             'teacher_id' => $teacher->id,
@@ -55,7 +56,7 @@ class TeacherDataViolationsController extends Controller
 
         $validator = Validator::make($request->all(), [
             'violation_id' => ['required', 'exists:violations,id'],
-            'students' => ['required', 'array'],
+            'student_id' => ['required', 'array'],
             'date' => ['required', 'date'],
             'description' => ['required', 'string'],
         ]);
@@ -71,21 +72,15 @@ class TeacherDataViolationsController extends Controller
         $teacher = $request->user();
         $validated = $validator->validate();
 
-        foreach ($validated['students'] as $student) {
-            $data = [
-                'violation_id' => $validated['iolation_id'],
-                'student_id' => $student,
-                'date' => $validated['date'],
-                'description' => $validated['description'],
-            ];
-
-            $teacher->dataViolations()->create($data);
+        foreach ($validated['student_id'] as $student) {
+            $validated['student_id'] = $student;
+            $teacher->dataViolations()->create($validated);
 
             HistoryViolation::create([
                 'teacher_id' => $teacher->id,
-                'student_id' => $student,
-                'violation_id' => $request->violation_id,
-                'date' => $request->date
+                'student_id' => $validated['student_id'],
+                'violation_id' => $validated['violation_id'],
+                'date' => $validated['date']
             ]);
         }
 

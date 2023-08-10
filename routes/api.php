@@ -28,14 +28,14 @@ Route::prefix('student')->group(function () {
 
     // Data pelanggaran
     Route::get('/list/violation', [ViolationController::class, 'indexStudent']);
-    Route::get('/data-violations', [StudentDataViolationsController::class, 'studentViolations']);
+    Route::get('/data/violation', [StudentDataViolationsController::class, 'studentViolations']);
 
     // Data prestasi
     Route::get('/list/achievment', [AchievmentController::class, 'indexStudent']);
-    Route::get('/data-achievments', [StudentDataAchievmentsController::class, 'studentAchievments']);
+    Route::get('/data/achievment', [StudentDataAchievmentsController::class, 'studentAchievments']);
 
     // Data tugas
-    Route::get('/data-tasks', [StudentDataTasksController::class, 'studentTasks']);
+    Route::get('/data/task', [StudentDataTasksController::class, 'studentTasks']);
     Route::get('/list/task', [TaskController::class, 'indexStudent']);
 });
 

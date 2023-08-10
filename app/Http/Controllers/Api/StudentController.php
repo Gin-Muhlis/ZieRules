@@ -50,6 +50,13 @@ class StudentController extends Controller
         $this->authorize('teacher-student-view', Student::class);
         $student = Student::whereNis($nis)->first();
 
-        return response()->json($student);
+        return response()->json([
+            'id' => $student->id,
+            'nis' => $student->nis,
+            'name' => $student->name,
+            'image' => $student->image,
+            'gender' => $student->gender,
+            'class' => $student->class->name
+        ]);
     }
 }
