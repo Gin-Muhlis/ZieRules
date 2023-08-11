@@ -17,6 +17,45 @@ class PermissionsSeeder extends Seeder
         // Create default permissions
         Permission::create(['name' => 'list achievments']);
         Permission::create(['name' => 'view achievments']);
+        Permission::create(['name' => 'list dataachievments']);
+        Permission::create(['name' => 'view dataachievments']);
+        Permission::create(['name' => 'list datatasks']);
+        Permission::create(['name' => 'view datatasks']);
+        Permission::create(['name' => 'list dataviolations']);
+        Permission::create(['name' => 'view dataviolations']);
+        Permission::create(['name' => 'view students']);
+        Permission::create(['name' => 'list tasks']);
+        Permission::create(['name' => 'view tasks']);
+        Permission::create(['name' => 'list violations']);
+        Permission::create(['name' => 'view violations']);
+        // membuat role siswa dan asign permission
+        $studentPermissions = Permission::all();
+        $siswaRole = Role::create(['name' => 'siswa']);
+        $siswaRole->givePermissionTo($studentPermissions);
+
+        Permission::create(['name' => 'create dataachievments']);
+        Permission::create(['name' => 'create datatasks']);
+        Permission::create(['name' => 'create dataviolations']);
+        Permission::create(['name' => 'list historyachievments']);
+        Permission::create(['name' => 'view historyachievments']);
+        Permission::create(['name' => 'create historyachievments']);
+        Permission::create(['name' => 'list historytasks']);
+        Permission::create(['name' => 'view historytasks']);
+        Permission::create(['name' => 'create historytasks']);
+        Permission::create(['name' => 'list historyviolations']);
+        Permission::create(['name' => 'view historyviolations']);
+        Permission::create(['name' => 'create historyviolations']);
+        // membuat role guru dan asign permission
+        $teacherPermission = Permission::all();
+        $teacherRole = Role::create(['name' => 'guru']);
+        $teacherRole->givePermissionTo($teacherPermission);
+
+        Permission::create(['name' => 'list students']);
+        // membuat role wali-kelas dan asign permission
+        $homeroomPermission = Permission::all();
+        $homeroomRole = Role::create(['name' => 'wali-kelas']);
+        $homeroomRole->givePermissionTo($homeroomPermission);
+
         Permission::create(['name' => 'create achievments']);
         Permission::create(['name' => 'update achievments']);
         Permission::create(['name' => 'delete achievments']);
@@ -27,47 +66,23 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update classstudents']);
         Permission::create(['name' => 'delete classstudents']);
 
-        Permission::create(['name' => 'list dataachievments']);
-        Permission::create(['name' => 'view dataachievments']);
-        Permission::create(['name' => 'create dataachievments']);
         Permission::create(['name' => 'update dataachievments']);
         Permission::create(['name' => 'delete dataachievments']);
 
-        Permission::create(['name' => 'list datatasks']);
-        Permission::create(['name' => 'view datatasks']);
-        Permission::create(['name' => 'create datatasks']);
         Permission::create(['name' => 'update datatasks']);
         Permission::create(['name' => 'delete datatasks']);
 
-        Permission::create(['name' => 'list dataviolations']);
-        Permission::create(['name' => 'view dataviolations']);
-        Permission::create(['name' => 'create dataviolations']);
         Permission::create(['name' => 'update dataviolations']);
         Permission::create(['name' => 'delete dataviolations']);
 
-        Permission::create(['name' => 'list historyachievments']);
-        Permission::create(['name' => 'view historyachievments']);
-        Permission::create(['name' => 'create historyachievments']);
         Permission::create(['name' => 'update historyachievments']);
         Permission::create(['name' => 'delete historyachievments']);
 
-        Permission::create(['name' => 'list historytasks']);
-        Permission::create(['name' => 'view historytasks']);
-        Permission::create(['name' => 'create historytasks']);
         Permission::create(['name' => 'update historytasks']);
         Permission::create(['name' => 'delete historytasks']);
 
-        Permission::create(['name' => 'list historyviolations']);
-        Permission::create(['name' => 'view historyviolations']);
-        Permission::create(['name' => 'create historyviolations']);
         Permission::create(['name' => 'update historyviolations']);
         Permission::create(['name' => 'delete historyviolations']);
-
-        Permission::create(['name' => 'list historyscans']);
-        Permission::create(['name' => 'view historyscans']);
-        Permission::create(['name' => 'create historyscans']);
-        Permission::create(['name' => 'update historyscans']);
-        Permission::create(['name' => 'delete historyscans']);
 
         Permission::create(['name' => 'list homerooms']);
         Permission::create(['name' => 'view homerooms']);
@@ -75,14 +90,10 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update homerooms']);
         Permission::create(['name' => 'delete homerooms']);
 
-        Permission::create(['name' => 'list students']);
-        Permission::create(['name' => 'view students']);
         Permission::create(['name' => 'create students']);
         Permission::create(['name' => 'update students']);
         Permission::create(['name' => 'delete students']);
 
-        Permission::create(['name' => 'list tasks']);
-        Permission::create(['name' => 'view tasks']);
         Permission::create(['name' => 'create tasks']);
         Permission::create(['name' => 'update tasks']);
         Permission::create(['name' => 'delete tasks']);
@@ -93,8 +104,6 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update teachers']);
         Permission::create(['name' => 'delete teachers']);
 
-        Permission::create(['name' => 'list violations']);
-        Permission::create(['name' => 'view violations']);
         Permission::create(['name' => 'create violations']);
         Permission::create(['name' => 'update violations']);
         Permission::create(['name' => 'delete violations']);
