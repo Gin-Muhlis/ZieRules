@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+require_once app_path() . '/helpers/helpers.php';
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +15,7 @@ class StudentDataViolationsController extends Controller
      */
     public function __construct()
     {
-        return $this->middleware('auth:sanctum');
+       $this->middleware('auth:sanctum');
     }
 
     public function studentViolations(Request $request)
@@ -31,13 +33,15 @@ class StudentDataViolationsController extends Controller
                 'name' => $violation->violation->name,
                 'point' => $violation->violation->point,
                 'teacher' => $violation->teacher->name,
+                'date' => generateDate($violation->date->toDateString()),
                 'description' => $violation->description
             ];
         }
 
         return response()->json([
-            'total_point' => $total_point,
-            'data_violations' => $results
+            'status' => 200,
+            'totalPoint' => $total_point,
+            'dataViolation' => $results
         ]);
     }
 }

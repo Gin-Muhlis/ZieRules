@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+require_once app_path() . '/helpers/helpers.php';
+
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,7 +24,21 @@ class TeacherController extends Controller
 
         $teacher = $request->user();
 
-        return new TeacherResource($teacher);
+        $dataTeacher = new TeacherResource($teacher);
+        return response()->json([
+            'status' => 200,
+            'dataTeacher' => $dataTeacher
+        ]);
+    }
+
+    public function allStudent() {
+        $this->authorize('student-view-any', Student::class);
+        $students = Student::all();
+
+        return response()->json([
+          'status' => 200,
+          'students' => $students
+        ]);
     }
 
     public function listStudent(Request $request)
@@ -34,7 +50,11 @@ class TeacherController extends Controller
 
         $listStudent = Student::where('class_id', $teacher->homerooms[0]->class_id)->get();
 
-        return StudentResource::collection($listStudent);
+        $dataListStudent = StudentResource::collection($listStudent);
+        return response()->json([
+            'status' => 200,
+            'dataListStudent' => $dataListStudent
+        ]);
     }
 
     public function historyScans(Request $request)
@@ -50,7 +70,10 @@ class TeacherController extends Controller
 
         $historyScans = $this->generateHistory($historyScansViolation, $historyScansAchievment, $historyScansTasks);
 
-        return response()->json($historyScans);
+        return response()->json([
+            'status' => 200,
+            'dataHistoryScan' => $historyScans
+        ]);
     }
 
     private function generateHistory($violations, $achievments, $tasks)
@@ -61,7 +84,7 @@ class TeacherController extends Controller
                 'teacher' => $violation->teacher->name,
                 'student' => $violation->student->name,
                 'violation' => $violation->violation->name,
-                'date' => $violation->date->toDateString()
+                'date' => generateDate($violation->date->toDateString())
             ];
         }
 
@@ -71,7 +94,7 @@ class TeacherController extends Controller
                 'teacher' => $achievment->teacher->name,
                 'student' => $achievment->student->name,
                 'aachievment' => $achievment->achievment->name,
-                'date' => $achievment->date->toDateString()
+                'date' => generateDate($achievment->date->toDateString())
             ];
         }
 
@@ -81,7 +104,7 @@ class TeacherController extends Controller
                 'teacher' => $task->teacher->name,
                 'student' => $task->student->name,
                 'task' => $task->task->name,
-                'date' => $task->date->toDateString()
+                'date' => generateDate($task->date->toDateString())
             ];
         }
 

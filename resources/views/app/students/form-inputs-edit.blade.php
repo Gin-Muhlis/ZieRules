@@ -68,4 +68,15 @@
         </div>
     </x-inputs.group>
 
+    <x-inputs.group class="col-sm-12">
+        <x-inputs.text
+            name="code"
+            label="Kode"
+            :value="old('code', ($editing ? $student->code : ''))"
+            maxlength="11"
+            placeholder="Kode"
+            required
+        ></x-inputs.text>
+    </x-inputs.group>
+
 </div>

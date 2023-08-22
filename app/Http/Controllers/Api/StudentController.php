@@ -27,22 +27,22 @@ class StudentController extends Controller
         $dataTasks = DataTask::with('teacher')->where('student_id', $student->id)->get();
 
         $result = [
-            'status' => 200,
-            'student' => [
-                'id' => $student->id,
-                'name' => $student->name,
-                'nis' => $student->nis,
-                'gender' => $student->gender,
-                'image' => $student->image,
-                'class' => $student->class->code,
-                'role' => $student->getRoleNames()->first()
-            ],
+            'id' => $student->id,
+            'name' => $student->name,
+            'nis' => $student->nis,
+            'gender' => $student->gender,
+            'image' => $student->image ?? 'public/default.jpg',
+            'class' => $student->class->code,
+            'role' => $student->getRoleNames()->first(),
             'dataViolations' => $dataViolations->count(),
             'dataAchievements' => $dataAchievments->count(),
             'dataTasks' => $dataTasks->count()
         ];
 
-        return response()->json($result);
+        return response()->json([
+            'status' => 200,
+            'student' => $result
+        ]);
     }
 
     public function detailSiswa($nis)
@@ -51,12 +51,15 @@ class StudentController extends Controller
         $student = Student::whereNis($nis)->first();
 
         return response()->json([
+            'status' => 200,
             'id' => $student->id,
             'nis' => $student->nis,
             'name' => $student->name,
-            'image' => $student->image,
+            'image' => $student->image ?? 'public/default.jpg',
             'gender' => $student->gender,
             'class' => $student->class->name
         ]);
     }
+
+    
 }

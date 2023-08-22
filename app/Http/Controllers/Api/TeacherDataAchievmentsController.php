@@ -48,7 +48,10 @@ class TeacherDataAchievmentsController extends Controller
             'date' => $validated['date']
         ]);
 
-        return response()->json(['message' => 'Prestasi berhasil ditambahkan']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Prestasi berhasil ditambahkan'
+        ]);
     }
 
     public function addAchievments(Request $request)
@@ -87,6 +90,9 @@ class TeacherDataAchievmentsController extends Controller
         }
 
 
-        return response()->json(['message' => 'Prestasi berhasil ditambahkan']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Prestasi berhasil ditambahkan'
+        ]);
     }
 }

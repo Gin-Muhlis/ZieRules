@@ -47,7 +47,10 @@ class TeacherDataViolationsController extends Controller
             'date' => $request->date
         ]);
 
-        return response()->json(['message' => 'Pelanggaran berhasil ditambahkan']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Pelanggaran berhasil ditambahkan'
+        ]);
     }
 
     public function addViolations(request $request)
@@ -84,6 +87,9 @@ class TeacherDataViolationsController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Pelanggaran berhasil ditambahkan']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Pelanggaran berhasil ditambahkan'
+        ]);
     }
 }

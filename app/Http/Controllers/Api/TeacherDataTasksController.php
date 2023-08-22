@@ -46,10 +46,13 @@ class TeacherDataTasksController extends Controller
             'date' => $validated['date']
         ]);
 
-        return response()->json(['message' => 'Pencapaian tugas berhasil ditambahkan']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Pencapaian tugas berhasil ditambahkan'
+        ]);
     }
 
-    public function addTasks(Request $request,)
+    public function addTasks(Request $request)
     {
         $this->authorize('teacher-create', DataTask::class);
 
@@ -84,6 +87,9 @@ class TeacherDataTasksController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Pencapaian tugas berhasil ditambahkan']);
+        return response()->json([
+            'status=>' => 200,
+            'message' => 'Pencapaian tugas berhasil ditambahkan']
+        );
     }
 }

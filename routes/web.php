@@ -18,6 +18,9 @@ use App\Http\Controllers\DataViolationController;
 use App\Http\Controllers\DataAchievmentController;
 use App\Http\Controllers\HistoryViolationController;
 use App\Http\Controllers\HistoryAchievmentController;
+use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\StudentAbsenceController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +67,24 @@ Route::prefix('/')
         Route::resource('teachers', TeacherController::class);
         Route::resource('students', StudentController::class);
         Route::resource('users', UserController::class);
+        Route::resource('presences', PresenceController::class);
+        Route::resource('student-absences', StudentAbsenceController::class);
+
+        Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
+        Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');
+        Route::get('data-tasks-report', [DataTaskController::class, 'report'])->name('data.tasks.report');
+
+        Route::get('show/data-violations-report/{student}', [DataViolationController::class, 'detailReport'])->name('data.violations.show.report');
+
+        Route::get('violation/export', [DataViolationController::class, 'exportData'])->name('data.violation.export');
+        Route::get('achievment/export', [DataAchievmentController::class, 'exportData'])->name('data.achievment.export');
+        Route::get('task/export', [DataTaskController::class, 'exportData'])->name('data.achievment.export');
+
+        Route::get('violation-detail/export/{student}', [DataViolationController::class, 'exportData'])->name('data.violation.export.detail');
+
+        Route::post('violation/import', [ViolationController::class, 'import'])->name('violation.import');
+        Route::post('achievment/import', [AchievmentController::class, 'import'])->name('achievment.import');
+        Route::post('task/import', [TaskController::class, 'import'])->name('task.import');
+        Route::post('student/import', [StudentController::class, 'import'])->name('student.import');
+        Route::post('teacher/import', [TeacherController::class, 'import'])->name('teacher.import');
     });

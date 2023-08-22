@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Api\AchievmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,11 +46,12 @@ Route::prefix('teacher')->group(function () {
     Route::post('/login', [AuthController::class, 'loginTeacher']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Data guru 
+    // Data guru
     Route::get('/profile', [TeacherController::class, 'profile']);
 
     // Daftar siswa
     Route::get('/list/student', [TeacherController::class, 'listStudent']);
+    Route::get('/all/student', [TeacherController::class, 'allStudent']);
 
     // Data pelanggaran
     Route::get('/list/violation', [ViolationController::class, 'indexTeacher']);

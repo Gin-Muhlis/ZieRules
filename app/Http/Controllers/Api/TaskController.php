@@ -19,7 +19,11 @@ class TaskController extends Controller
 
         $tasks = Task::latest()->get();
 
-        return TaskResource::collection($tasks);
+        $dataTasks = TaskResource::collection($tasks);
+        return response()->json([
+            'status' => 200,
+            'dataTask' => $dataTasks
+        ]);
     }
 
     public function indexTeacher()
@@ -28,6 +32,10 @@ class TaskController extends Controller
 
         $tasks = Task::latest()->get();
 
-        return TaskResource::collection($tasks);
+        $dataTasks = TaskResource::collection($tasks);
+        return response()->json([
+            'status' => 200,
+            'dataTask' => $dataTasks
+        ]);
     }
 }

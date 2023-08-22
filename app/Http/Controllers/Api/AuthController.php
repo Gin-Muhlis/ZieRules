@@ -19,7 +19,7 @@ class AuthController extends Controller
     /**
      * login for student
      * @param Request $request
-     * 
+     *
      * @return [type]
      */
     public function loginStudent(Request $request)
@@ -49,7 +49,7 @@ class AuthController extends Controller
     /**
      * logout student
      * @param Request $request
-     * 
+     *
      * @return [type]
      */
     public function logout(Request $request)
@@ -57,13 +57,16 @@ class AuthController extends Controller
         $user = $request->user();
         $user->tokens()->delete();
 
-        return response()->json(['message' => 'Logout Berhasil']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Logout Berhasil'
+        ]);
     }
 
     /**
      * login for teacher
      * @param Request $request
-     * 
+     *
      * @return [type]
      */
     public function loginTeacher(Request $request)

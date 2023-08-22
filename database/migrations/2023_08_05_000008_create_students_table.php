@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('image')->nullable();
             $table->enum('gender', ['laki-laki', 'perempuan']);
             $table->unsignedBigInteger('class_id');
+            $table->string('code', 11);
 
             $table->timestamps();
         });

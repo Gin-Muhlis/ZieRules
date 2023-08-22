@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\TaskImport;
 use App\Models\Task;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
@@ -104,5 +107,26 @@ class TaskController extends Controller
         return redirect()
             ->route('tasks.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function import(Request $request) {
+        $this->authorize('create', Task::class);
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,csv'
+        ], [
+            'file.mimes' => 'File harus ber ekstensi .xlsx atau .csv'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validate();
+
+        Excel::import(new TaskImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+
     }
 }

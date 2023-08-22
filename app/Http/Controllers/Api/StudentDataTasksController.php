@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+require_once app_path() . '/helpers/helpers.php';
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 
 class StudentDataTasksController extends Controller
 {
@@ -19,14 +23,47 @@ class StudentDataTasksController extends Controller
         $this->authorize('student-view', $student);
 
         $results = [];
+        $tasks = DB::table('tasks')->select('id', 'name', 'class', 'description')->get();
 
         foreach ($student->dataTasks as $task) {
-            $results = [
+            $results[] = [
                 'id' => $task->id,
-                'name' => $task->task->name
+                'teacher' => $task->teacher->name,
+                'date' =>generateDate( $task->date->toDateString()),
+                'description' => $task->description
             ];
         }
 
-        return response()->json($results);
+        $finishedTasks = [];
+        $unfinishedTasks = [];
+
+        foreach($tasks as $task) {
+            if (!is_null(collect($results)->firstWhere('id', $task->id))) {
+                $finishedTasks[] = [
+                    'finished' => true,
+                    'id' => $task->id,
+                    'name' => $task->name,
+                    'class' => $task->class,
+                    'description' => $task->description,
+                    'result' => collect($results)->firstWhere('id', $task->id)
+                ];
+            } else {
+                $unfinishedTasks[] = [
+                    'finished' => false,
+                    'id' => $task->id,
+                    'name' => $task->name,
+                    'class' => $task->class,
+                    'description' => $task->description
+                ];
+            }
+            
+        } 
+
+        $dataTask = array_merge($unfinishedTasks, $finishedTasks);
+
+        return response()->json([
+            'status' => 200,
+            'dataTask' => $dataTask
+        ]);
     }
 }

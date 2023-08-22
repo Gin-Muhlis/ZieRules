@@ -23,6 +23,7 @@ class Student extends Authenticatable
         'image',
         'gender',
         'class_id',
+        'code',
     ];
 
     protected $guard_name = 'web';
@@ -52,10 +53,26 @@ class Student extends Authenticatable
         return $this->hasMany(DataTask::class);
     }
 
-    public function historyScans()
+    public function historyViolations()
     {
-        return $this->hasMany(HistoryScan::class);
+        return $this->hasMany(HistoryViolation::class);
     }
+
+    public function historyAchievments()
+    {
+        return $this->hasMany(HistoryAchievment::class);
+    }
+
+    public function historyTasks()
+    {
+        return $this->hasMany(HistoryTask::class);
+    }
+
+    public function studentAbsences()
+    {
+        return $this->hasMany(StudentAbsence::class);
+    }
+
 
     public function isSuperAdmin(): bool
     {

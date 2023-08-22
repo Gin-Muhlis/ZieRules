@@ -19,7 +19,11 @@ class AchievmentController extends Controller
 
         $achievments = Achievment::latest()->get();
 
-        return AchievmentResource::collection($achievments);
+        $dataAchievments = AchievmentResource::collection($achievments);
+        return response()->json([
+            'status' => 200,
+            'achievments' => $dataAchievments
+        ]);
     }
 
     public function indexTeacher()
@@ -28,6 +32,10 @@ class AchievmentController extends Controller
 
         $achievments = Achievment::latest()->get();
 
-        return AchievmentResource::collection($achievments);
+        $dataAchievments = AchievmentResource::collection($achievments);
+        return response()->json([
+            'status' => 200,
+            'achievments' => $dataAchievments
+        ]);
     }
 }

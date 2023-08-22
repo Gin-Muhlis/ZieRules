@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataTaskExport;
 use App\Models\Task;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\DataTaskStoreRequest;
 use App\Http\Requests\DataTaskUpdateRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataTaskController extends Controller
 {
@@ -123,5 +125,37 @@ class DataTaskController extends Controller
         return redirect()
             ->route('data-tasks.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function report(Request $request)
+    {
+        $this->authorize('view-any', DataTask::class);
+
+        $date_start = $request->input('date-start') ?? null;
+        $date_end = $request->input('date-end') ?? null;
+
+        $dataTasks = DataTask::with(['task', 'teacher', 'student'])->get();
+
+        if (!is_null($date_start) && !is_null($date_end)) {
+            // dd($date_end);
+            $dataTasks = DataTask::with(['task', 'teacher', 'student'])->whereBetween('date', [$date_start, $date_end], 'and')->latest()->get();
+        }
+
+        return view(
+            'app.data_tasks.report',
+            compact('dataTasks', 'date_start', 'date_end')
+        );
+
+    }
+    public function exportData(Request $request)
+    {
+        $date_start = $request->input('date-start') ?? null;
+        $date_end = $request->input('date-end') ?? null;
+
+        if (!is_null($date_start) && !is_null($date_end)) {
+            return Excel::download(new DataTaskExport($date_start, $date_end), 'data_tugas.xlsx');
+        }
+
+        return Excel::download(new DataTaskExport, 'data_tugas.xlsx');
     }
 }

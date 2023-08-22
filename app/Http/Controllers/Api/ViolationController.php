@@ -17,17 +17,18 @@ class ViolationController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    /**
-     * get all violation
-     * @return ViolationCollection
-     */
     public function indexStudent()
     {
         $this->authorize('student-view-any', Violation::class);
 
         $violations = Violation::latest()->get();
 
-        return ViolationResource::collection($violations);
+        $dataViolations =ViolationResource::collection($violations);
+
+        return response()->json([
+            'status' => 200,
+            'dataViolation' => $dataViolations
+        ]);
     }
 
     public function indexTeacher()
@@ -35,7 +36,11 @@ class ViolationController extends Controller
         $this->authorize('teacher-view-any', Violation::class);
 
         $violations = Violation::latest()->get();
+        $dataViolations =ViolationResource::collection($violations);
 
-        return ViolationResource::collection($violations);
+        return response()->json([
+            'status' => 200,
+            'dataViolation' => $dataViolations
+        ]);
     }
 }

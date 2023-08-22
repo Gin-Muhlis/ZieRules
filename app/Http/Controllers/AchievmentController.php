@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AchievmentImport;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use App\Models\Achievment;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\AchievmentStoreRequest;
 use App\Http\Requests\AchievmentUpdateRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AchievmentController extends Controller
 {
@@ -106,5 +109,26 @@ class AchievmentController extends Controller
         return redirect()
             ->route('achievments.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function import(Request $request) {
+        $this->authorize('create', Achievment::class);
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,csv'
+        ], [
+            'file.mimes' => 'File harus ber ekstensi .xlsx atau .csv'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validate();
+
+        Excel::import(new AchievmentImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+
     }
 }

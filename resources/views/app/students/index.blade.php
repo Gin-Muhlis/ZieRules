@@ -55,6 +55,9 @@
                                 <th class="text-left">
                                     @lang('crud.siswa.inputs.class_id')
                                 </th>
+                                <th class="text-left">
+                                    @lang('crud.siswa.inputs.code')
+                                </th>
                                 <th class="text-center">
                                     @lang('crud.common.actions')
                                 </th>
@@ -74,6 +77,7 @@
                                     <td>
                                         {{ optional($student->class)->name ?? '-' }}
                                     </td>
+                                    <td>{{ $student->code ?? '-' }}</td>
                                     <td class="text-center" style="width: 134px;">
                                         <div role="group" aria-label="Row Actions" class="btn-group">
                                             @can('update', $student)

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ViolationImport;
 use App\Models\Violation;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\ViolationStoreRequest;
 use App\Http\Requests\ViolationUpdateRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ViolationController extends Controller
 {
@@ -106,5 +109,26 @@ class ViolationController extends Controller
         return redirect()
             ->route('violations.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function import(Request $request) {
+        $this->authorize('create', Violation::class);
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,csv'
+        ], [
+            'file.mimes' => 'File harus ber ekstensi .xlsx atau .csv'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validate();
+
+        Excel::import(new ViolationImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+
     }
 }

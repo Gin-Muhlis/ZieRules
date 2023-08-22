@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\TeacherImport;
 use App\Models\Teacher;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +14,7 @@ use App\Http\Requests\TeacherStoreRequest;
 use App\Http\Requests\TeacherUpdateRequest;
 use App\Models\ClassStudent;
 use App\Models\Homeroom;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
@@ -156,5 +159,26 @@ class TeacherController extends Controller
         return redirect()
             ->route('teachers.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function import(Request $request) {
+        $this->authorize('create', Teacher::class);
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,csv'
+        ], [
+            'file.mimes' => 'File harus ber ekstensi .xlsx atau .csv'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validate();
+
+        Excel::import(new TeacherImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+
     }
 }

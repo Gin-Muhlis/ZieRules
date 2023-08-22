@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Student;
+require_once app_path() . '/helpers/helpers.php';
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DataAchievmentResource;
 
 class StudentDataAchievmentsController extends Controller
 {
@@ -29,13 +29,15 @@ class StudentDataAchievmentsController extends Controller
                 'name' => $achievment->achievment->name,
                 'point' => $achievment->achievment->point,
                 'teacher' => $achievment->teacher->name,
+                'date' => generateDate($achievment->date->toDateString()),
                 'description' => $achievment->description
             ];
         }
 
         return response()->json([
-            'total_point' => $total_point,
-            'data_achievments' => $results
+            'status' => 200,
+            'totalPoint' => $total_point,
+            'dataAchievments' => $results
         ]);
     }
 }

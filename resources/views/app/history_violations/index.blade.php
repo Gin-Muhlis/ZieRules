@@ -1,3 +1,7 @@
+@php
+    require_once app_path() . '/helpers/helpers.php';
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -81,7 +85,7 @@
                                 {{ optional($historyViolation->violation)->name
                                 ?? '-' }}
                             </td>
-                            <td>{{ $historyViolation->date ?? '-' }}</td>
+                            <td>{{ $historyViolation->date ? generateDate($historyViolation->date->toDateString()) : '-' }}</td>
                             <td class="text-center" style="width: 134px;">
                                 <div
                                     role="group"

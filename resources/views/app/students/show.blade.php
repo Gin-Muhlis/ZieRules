@@ -35,6 +35,10 @@
                     <h5>@lang('crud.siswa.inputs.class_id')</h5>
                     <span>{{ optional($student->class)->name ?? '-' }}</span>
                 </div>
+                <div class="mb-4">
+                    <h5>@lang('crud.siswa.inputs.code')</h5>
+                    <span>{{ $student->code ?? '-' }}</span>
+                </div>
             </div>
 
             <div class="mt-4">

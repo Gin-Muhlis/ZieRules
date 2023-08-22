@@ -16,22 +16,11 @@ class DatabaseSeeder extends Seeder
         $user = \App\Models\User::factory()
             ->count(1)
             ->create([
-                'email' => 'admin@admin.com',
-                'password' => Hash::make('admin'),
+                'name' => 'Smakzie',
+                'email' => 'adminzie@admin.com',
+                'password' => Hash::make('zieadmin'),
             ]);
         $this->call(PermissionsSeeder::class);
 
-        // $this->call(AchievmentSeeder::class);
-        // $this->call(ClassStudentSeeder::class);
-        // $this->call(DataAchievmentSeeder::class);
-        // $this->call(DataTaskSeeder::class);
-        // $this->call(DataViolationSeeder::class);
-        // $this->call(HistoryScanSeeder::class);
-        // $this->call(HomeroomSeeder::class);
-        // $this->call(StudentSeeder::class);
-        // $this->call(TaskSeeder::class);
-        // $this->call(TeacherSeeder::class);
-        // $this->call(UserSeeder::class);
-        // $this->call(ViolationSeeder::class);
     }
 }

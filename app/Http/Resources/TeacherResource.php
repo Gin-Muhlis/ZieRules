@@ -16,7 +16,7 @@ class TeacherResource extends JsonResource
             'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
-            'image' => $this->image,
+            'image' => $this->image ?? 'public/default.jpg',
             'gender' => $this->gender,
             'role' => $this->getRoleNames()->first()
         ];

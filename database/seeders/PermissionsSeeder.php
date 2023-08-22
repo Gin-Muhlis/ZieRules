@@ -66,6 +66,18 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update classstudents']);
         Permission::create(['name' => 'delete classstudents']);
 
+        Permission::create(['name' => 'list presences']);
+        Permission::create(['name' => 'view presences']);
+        Permission::create(['name' => 'create presences']);
+        Permission::create(['name' => 'update presences']);
+        Permission::create(['name' => 'delete presences']);
+
+        Permission::create(['name' => 'list studentabsences']);
+        Permission::create(['name' => 'view studentabsences']);
+        Permission::create(['name' => 'create studentabsences']);
+        Permission::create(['name' => 'update studentabsences']);
+        Permission::create(['name' => 'delete studentabsences']);   
+
         Permission::create(['name' => 'update dataachievments']);
         Permission::create(['name' => 'delete dataachievments']);
 
@@ -132,7 +144,7 @@ class PermissionsSeeder extends Seeder
         $adminRole = Role::create(['name' => 'super-admin']);
         $adminRole->givePermissionTo($allPermissions);
 
-        $user = \App\Models\User::whereEmail('admin@admin.com')->first();
+        $user = \App\Models\User::whereEmail('adminzie@admin.com')->first();
 
         if ($user) {
             $user->assignRole($adminRole);

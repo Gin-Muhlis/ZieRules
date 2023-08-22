@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataAchievmentExport;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\View\View;
@@ -11,6 +12,7 @@ use App\Models\DataAchievment;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\DataAchievmentStoreRequest;
 use App\Http\Requests\DataAchievmentUpdateRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataAchievmentController extends Controller
 {
@@ -126,5 +128,39 @@ class DataAchievmentController extends Controller
         return redirect()
             ->route('data-achievments.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function report(Request $request)
+    {
+        $this->authorize('view-any', DataAchievment::class);
+
+        $date_start = $request->input('date-start') ?? null;
+        $date_end = $request->input('date-end') ?? null;
+
+        $dataAchievments = DataAchievment::with(['achievment', 'teacher', 'student'])->get();
+
+        if (!is_null($date_start) && !is_null($date_end)) {
+            // dd($date_end);
+            $dataAchievments = DataAchievment::with(['achievment', 'teacher', 'student'])->whereBetween('date', [$date_start, $date_end], 'and')->latest()->get();
+        }
+
+        return view(
+            'app.data_achievments.report',
+            compact('dataAchievments', 'date_start', 'date_end')
+        );
+
+    }
+
+    public function exportData(Request $request)
+    {
+        $date_start = $request->input('date-start') ?? null;
+        $date_end = $request->input('date-end') ?? null;
+
+        if (!is_null($date_start) && !is_null($date_end)) {
+          
+            return Excel::download(new DataAchievmentExport($date_start, $date_end), 'data_prestasi.xlsx');
+        }
+
+        return Excel::download(new DataAchievmentExport, 'data_prestasi.xlsx');
     }
 }

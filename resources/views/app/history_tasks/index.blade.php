@@ -1,3 +1,7 @@
+@php
+    require_once app_path() . '/helpers/helpers.php';
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -80,7 +84,7 @@
                             <td>
                                 {{ optional($historyTask->task)->name ?? '-' }}
                             </td>
-                            <td>{{ $historyTask->date ?? '-' }}</td>
+                            <td>{{ $historyTask->date ? generateDate($historyTask->date->toDateString()) : '-' }}</td>
                             <td class="text-center" style="width: 134px;">
                                 <div
                                     role="group"

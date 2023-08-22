@@ -2,11 +2,28 @@
 
 namespace App\Imports;
 
+use App\Models\ClassStudent;
 use App\Models\Student;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class StudentImport implements ToModel
+class StudentImport implements ToModel, WithHeadingRow, WithValidation
 {
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'max:255', 'string'],
+            'nis' => ['required', 'unique:students,nis', 'digits:9', 'numeric'],
+            'password' => ['required'],
+            'gender' => ['required', 'in:laki-laki,perempuan'],
+            'class' => ['required'],
+        ];
+    }
+
+
     /**
      * @param array $row
      *
@@ -14,15 +31,31 @@ class StudentImport implements ToModel
      */
     public function model(array $row)
     {
-        $class = ClassStudent::whereName($row[5])->firstOrFail();
+        $validator = Validator::make($row, [
+            'name' => ['required', 'max:255', 'string'],
+            'nis' => ['required', 'unique:students,nis', 'digits:9', 'numeric'],
+            'password' => ['required'],
+            'gender' => ['required', 'in:laki-laki,perempuan'],
+            'class' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return null;
+        }
+
+        $class = ClassStudent::whereName($row['class'])->first();
+
+        if (!isset($class)) {
+            return null;
+        }
+
         return new Student([
-            'nis' => $row[0],
-            'name' => $row[1],
-            'password' => Hash::make($row[2]),
-            'password_show' => $row[2],
-            'image' => $row[3],
-            'gender' => $row[4],
-            'class_id' => $class->id
+            'nis' => $row['nis'],
+            'name' => $row['name'],
+            'password' => Hash::make($row['password']),
+            'password_show' => $row['password'],
+            'gender' => $row['gender'],
+            'class_id' => $class->id,
         ]);
     }
 }

@@ -1,3 +1,8 @@
+@php
+    require_once app_path() . '/helpers/helpers.php';
+@endphp
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -84,7 +89,7 @@
                                 {{ optional($dataAchievment->teacher)->name ??
                                 '-' }}
                             </td>
-                            <td>{{ $dataAchievment->date ?? '-' }}</td>
+                            <td>{{ $dataAchievment->date ? generateDate($dataAchievment->date->toDateString()) : '-' }}</td>
                             <td>{{ $dataAchievment->description ?? '-' }}</td>
                             <td class="text-center" style="width: 134px;">
                                 <div

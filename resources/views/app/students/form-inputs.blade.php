@@ -69,6 +69,20 @@
         </div>
     </x-inputs.group>
 
+    <x-inputs.group class="col-sm-12">
+        <x-inputs.text
+            name="code"
+            label="Kode"
+            :value="old('code', ($editing ? $student->code : ''))"
+            maxlength="11"
+            placeholder="Kode"
+            required
+            style="pointer-events: none;"
+            id="code"
+        ></x-inputs.text>
+    </x-inputs.group>
+
+
 </div>
 
 @push('scripts')
@@ -95,6 +109,7 @@
             $("#nis").on("change", function() {
 
                 generatePassword()
+                generateCode($(this).val())
 
             })
 
@@ -115,7 +130,20 @@
 
                 $("#password").val(password);
 
+                return true;
+            }
 
+            function generateCode(nis) {
+                let splitNis = nis.split('');
+                for (let i = splitNis.length - 1; i > 0; i--) {
+                    let n = Math.floor(Math.random() * (i + 1));
+                    [splitNis[i], splitNis[n]] = [splitNis[n], splitNis[i]]
+                }
+                let randomNum = Math.floor(Math.random() * 99);
+
+                let code = splitNis.join('') + randomNum.toString();
+
+                $("#code").val(code);
             }
         })
     </script>

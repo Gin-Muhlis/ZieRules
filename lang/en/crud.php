@@ -213,6 +213,7 @@ return [
             'image' => 'Gambar Profil',
             'gender' => 'Gender',
             'class_id' => 'Kelas',
+            'code' => 'Kode',
         ],
     ],
 
@@ -227,6 +228,33 @@ return [
             'name' => 'Nama',
             'password' => 'Password',
             'email' => 'Email',
+        ],
+    ],
+
+    'jenis_kehadiran' => [
+        'name' => 'Jenis Kehadiran',
+        'index_title' => 'Daftar Jenis Kehadiran',
+        'new_title' => 'Jenis Kehadiran Baru',
+        'create_title' => 'Buat Jenis Kehadiran',
+        'edit_title' => 'Edit Jenis Kehadiran',
+        'show_title' => 'Tampilkan Jenis Kehadiran',
+        'inputs' => [
+            'name' => 'Nama Kehadiran',
+        ],
+    ],
+
+    'absensi_siswa' => [
+        'name' => 'Absensi Siswa',
+        'index_title' => 'Daftar Absensi Siswa',
+        'new_title' => 'Absensi Siswa Baru',
+        'create_title' => 'Buat Absensi Siswa',
+        'edit_title' => 'Edit Absensi Siswa',
+        'show_title' => 'Tampilkan Absensi Siswa',
+        'inputs' => [
+            'date' => 'Tanggal',
+            'student_id' => 'Siswa',
+            'presence_id' => 'Guru',
+            'time' => 'Time',
         ],
     ],
 
