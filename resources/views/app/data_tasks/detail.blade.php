@@ -10,7 +10,7 @@
             <div class="row">
                
                 <div class="col-md-12 text-left">
-                    <a href="{{ route('data.violation.export.detail', $student_id) }}" class="btn btn-primary export-btn">Export Data</a>
+                    <a href="{{ route('data.task.export.detail', $student_id) }}" class="btn btn-primary export-btn">Export Data</a>
                 </div>
             </div>
         </div>
@@ -35,10 +35,7 @@
                                 </th>
                                 
                                 <th class="text-left">
-                                    Pelanggaran
-                                </th>
-                                <th class="text-center">
-                                    Poin
+                                    Tugas
                                 </th>
                             </tr>
                         </thead>
@@ -51,12 +48,8 @@
                                     <td>
                                         {{ $data['date'] ? generateDate($data['date']) : '-' }}
                                     </td>
-                                  
                                     <td>
-                                        {{ $data['violation'] ?? '-' }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{ $data['point'] ?? '-' }}
+                                        {{ $data['task'] ?? '-' }}
                                     </td>
                                 </tr>
                             @empty

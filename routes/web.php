@@ -75,12 +75,16 @@ Route::prefix('/')
         Route::get('data-tasks-report', [DataTaskController::class, 'report'])->name('data.tasks.report');
 
         Route::get('show/data-violations-report/{student}', [DataViolationController::class, 'detailReport'])->name('data.violations.show.report');
+        Route::get('show/data-achievments-report/{student}', [DataAchievmentController::class, 'detailReport'])->name('data.achievments.show.report');
+        Route::get('show/data-tasks-report/{student}', [DataTaskController::class, 'detailReport'])->name('data.tasks.show.report');
 
         Route::get('violation/export', [DataViolationController::class, 'exportData'])->name('data.violation.export');
         Route::get('achievment/export', [DataAchievmentController::class, 'exportData'])->name('data.achievment.export');
-        Route::get('task/export', [DataTaskController::class, 'exportData'])->name('data.achievment.export');
+        Route::get('task/export', [DataTaskController::class, 'exportData'])->name('data.task.export');
 
-        Route::get('violation-detail/export/{student}', [DataViolationController::class, 'exportData'])->name('data.violation.export.detail');
+        Route::get('violation-detail/export/{student}', [DataViolationController::class, 'exportDetail'])->name('data.violation.export.detail');
+        Route::get('achievment-detail/export/{student}', [DataAchievmentController::class, 'exportDetail'])->name('data.achievment.export.detail');
+        Route::get('task-detail/export/{student}', [DataTaskController::class, 'exportDetail'])->name('data.task.export.detail');
 
         Route::post('violation/import', [ViolationController::class, 'import'])->name('violation.import');
         Route::post('achievment/import', [AchievmentController::class, 'import'])->name('achievment.import');

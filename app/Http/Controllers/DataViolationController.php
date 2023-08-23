@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DetailViolationExport;
 use App\Exports\ViolationDataImport;
 use App\Exports\ViolationExport;
 use App\Models\Student;
@@ -186,7 +187,7 @@ class DataViolationController extends Controller
     }
 
     public function exportDetail(Student $student) {
-        return Excel::download(new ViolationExport($student->id), 'data_pelangggaran.xlsx');
+        return Excel::download(new DetailViolationExport($student->id), 'data_pelangggaran.xlsx');
     }
 
     private function generatePoint($data)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\DataTaskExport;
+use App\Exports\TaskExport;
 use App\Models\Task;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -131,31 +132,51 @@ class DataTaskController extends Controller
     {
         $this->authorize('view-any', DataTask::class);
 
-        $date_start = $request->input('date-start') ?? null;
-        $date_end = $request->input('date-end') ?? null;
+        $search = $request->get('search', '');
 
-        $dataTasks = DataTask::with(['task', 'teacher', 'student'])->get();
+        $students = Student::with('dataTasks')->search($search)->get();
 
-        if (!is_null($date_start) && !is_null($date_end)) {
-            // dd($date_end);
-            $dataTasks = DataTask::with(['task', 'teacher', 'student'])->whereBetween('date', [$date_start, $date_end], 'and')->latest()->get();
+        $reports = [];
+
+        foreach ($students as $student) {
+            $reports[] = [
+                'student_id' => $student->id,
+                'name' => $student->name,
+                'tasksCount' => $student->dataTasks->count(),
+            ];
         }
 
         return view(
             'app.data_tasks.report',
-            compact('dataTasks', 'date_start', 'date_end')
+            compact('reports', 'search')
         );
 
     }
-    public function exportData(Request $request)
-    {
-        $date_start = $request->input('date-start') ?? null;
-        $date_end = $request->input('date-end') ?? null;
 
-        if (!is_null($date_start) && !is_null($date_end)) {
-            return Excel::download(new DataTaskExport($date_start, $date_end), 'data_tugas.xlsx');
+    public function detailReport(Student $student) {
+        $this->authorize('view-any', DataTask::class);
+
+        $dataTasks = DataTask::with('task')->whereStudentId($student->id)->latest()->get();
+
+        $reports = [];
+        $student_id = $student->id;
+
+        foreach ($dataTasks as $data) {
+            $reports[] = [
+                'student' => $student->name,
+                'date' => $data->date->toDateString(),
+                'task' => $data->task->name
+            ];
         }
 
-        return Excel::download(new DataTaskExport, 'data_tugas.xlsx');
+        return view(
+            'app.data_tasks.detail',
+            compact('reports', 'student_id')
+        );
     }
+
+    public function exportData() {
+        return Excel::download(new TaskExport, 'data_pelangggaran.xlsx');
+    }
+
 }

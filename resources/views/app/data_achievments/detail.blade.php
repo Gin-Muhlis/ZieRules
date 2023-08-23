@@ -10,7 +10,7 @@
             <div class="row">
                
                 <div class="col-md-12 text-left">
-                    <a href="{{ route('data.violation.export.detail', $student_id) }}" class="btn btn-primary export-btn">Export Data</a>
+                    <a href="{{ route('data.achievment.export.detail', $student_id) }}" class="btn btn-primary export-btn">Export Data</a>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                                 </th>
                                 
                                 <th class="text-left">
-                                    Pelanggaran
+                                    Prestasi
                                 </th>
                                 <th class="text-center">
                                     Poin
@@ -53,7 +53,7 @@
                                     </td>
                                   
                                     <td>
-                                        {{ $data['violation'] ?? '-' }}
+                                        {{ $data['achievment'] ?? '-' }}
                                     </td>
                                     <td class="text-center">
                                         {{ $data['point'] ?? '-' }}

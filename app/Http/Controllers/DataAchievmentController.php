@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AchievmentExport;
 use App\Exports\DataAchievmentExport;
+use App\Exports\DetailAchievmentExport;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\View\View;
@@ -134,33 +136,67 @@ class DataAchievmentController extends Controller
     {
         $this->authorize('view-any', DataAchievment::class);
 
-        $date_start = $request->input('date-start') ?? null;
-        $date_end = $request->input('date-end') ?? null;
+        $search = $request->get('search', '');
 
-        $dataAchievments = DataAchievment::with(['achievment', 'teacher', 'student'])->get();
+        $students = Student::with('dataAchievments')->search($search)->get();
 
-        if (!is_null($date_start) && !is_null($date_end)) {
-            // dd($date_end);
-            $dataAchievments = DataAchievment::with(['achievment', 'teacher', 'student'])->whereBetween('date', [$date_start, $date_end], 'and')->latest()->get();
+        $reports = [];
+
+        foreach ($students as $student) {
+            $reports[] = [
+                'student_id' => $student->id,
+                'name' => $student->name,
+                'achievmentsCount' => $student->dataAchievments->count(),
+                'totalPoint' => $this->generatePoint($student->dataAchievments)
+            ];
         }
 
         return view(
             'app.data_achievments.report',
-            compact('dataAchievments', 'date_start', 'date_end')
+            compact('reports', 'search')
         );
 
     }
 
-    public function exportData(Request $request)
-    {
-        $date_start = $request->input('date-start') ?? null;
-        $date_end = $request->input('date-end') ?? null;
+    public function detailReport(Student $student) {
+        $this->authorize('view-any', DataAchievment::class);
 
-        if (!is_null($date_start) && !is_null($date_end)) {
-          
-            return Excel::download(new DataAchievmentExport($date_start, $date_end), 'data_prestasi.xlsx');
+        $dataAchievments = DataAchievment::with('achievment')->whereStudentId($student->id)->latest()->get();
+
+        $reports = [];
+        $student_id = $student->id;
+
+        foreach ($dataAchievments as $data) {
+            $reports[] = [
+                'student' => $student->name,
+                'date' => $data->date->toDateString(),
+                'achievment' => $data->achievment->name,
+                'point' => $data->achievment->point
+            ];
         }
 
-        return Excel::download(new DataAchievmentExport, 'data_prestasi.xlsx');
+        return view(
+            'app.data_achievments.detail',
+            compact('reports', 'student_id')
+        );
+    }
+
+    public function exportData(Request $request)
+    {
+        return Excel::download(new AchievmentExport, 'data_prestasi.xlsx');
+    }
+
+    public function exportDetail(Student $student) {
+        return Excel::download(new DetailAchievmentExport($student->id), 'data_pelangggaran.xlsx');
+    }
+
+    private function generatePoint($data)
+    {
+        $point = 0;
+        foreach ($data as $dataAchievment) {
+            $point += $dataAchievment->achievment->point;
+        }
+
+        return $point;
     }
 }
