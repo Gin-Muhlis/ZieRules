@@ -6,6 +6,7 @@ use App\Models\Violation;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ViolationResource;
 use App\Http\Resources\ViolationCollection;
+use Exception;
 
 class ViolationController extends Controller
 {
@@ -19,28 +20,44 @@ class ViolationController extends Controller
 
     public function indexStudent()
     {
-        $this->authorize('student-view-any', Violation::class);
+        try {
+            $this->authorize('student-view-any', Violation::class);
 
-        $violations = Violation::latest()->get();
+            $violations = Violation::latest()->get();
 
-        $dataViolations =ViolationResource::collection($violations);
+            $dataViolations = ViolationResource::collection($violations);
 
-        return response()->json([
-            'status' => 200,
-            'dataViolation' => $dataViolations
-        ]);
+            return response()->json([
+                'status' => 200,
+                'dataViolation' => $dataViolations
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan dengan data yang dikirim',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function indexTeacher()
     {
-        $this->authorize('teacher-view-any', Violation::class);
+        try {
+            $this->authorize('teacher-view-any', Violation::class);
 
-        $violations = Violation::latest()->get();
-        $dataViolations =ViolationResource::collection($violations);
+            $violations = Violation::latest()->get();
+            $dataViolations = ViolationResource::collection($violations);
 
-        return response()->json([
-            'status' => 200,
-            'dataViolation' => $dataViolations
-        ]);
+            return response()->json([
+                'status' => 200,
+                'dataViolation' => $dataViolations
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan dengan data yang dikirim',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

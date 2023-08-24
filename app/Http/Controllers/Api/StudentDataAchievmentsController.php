@@ -6,6 +6,7 @@ require_once app_path() . '/helpers/helpers.php';
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class StudentDataAchievmentsController extends Controller
 {
@@ -15,6 +16,7 @@ class StudentDataAchievmentsController extends Controller
     }
     public function studentAchievments(Request $request)
     {
+       try {
         $student = $request->user();
 
         $this->authorize('student-view', $student);
@@ -39,5 +41,12 @@ class StudentDataAchievmentsController extends Controller
             'totalPoint' => $total_point,
             'dataAchievments' => $results
         ]);
+       } catch (Exception $e) {
+        return response()->json([
+          'status' => 500,
+          'message' => 'Terjadi kesalahan',
+          'error' => $e->getMessage()
+        ]);
+       }
     }
 }

@@ -7,6 +7,7 @@ require_once app_path() . '/helpers/helpers.php';
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class StudentDataTasksController extends Controller
@@ -18,6 +19,7 @@ class StudentDataTasksController extends Controller
 
     public function studentTasks(Request $request)
     {
+      try {
         $student = $request->user();
 
         $this->authorize('student-view', $student);
@@ -65,5 +67,12 @@ class StudentDataTasksController extends Controller
             'status' => 200,
             'dataTask' => $dataTask
         ]);
+      } catch (Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Terjadi kesalahan',
+            'error' => $e->getMessage()
+          ]);
+      }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class TaskController extends Controller
 {
@@ -15,15 +16,23 @@ class TaskController extends Controller
 
     public function indexStudent()
     {
-        $this->authorize('student-view-any', Task::class);
+        try {
+            $this->authorize('student-view-any', Task::class);
 
-        $tasks = Task::latest()->get();
+            $tasks = Task::latest()->get();
 
-        $dataTasks = TaskResource::collection($tasks);
-        return response()->json([
-            'status' => 200,
-            'dataTask' => $dataTasks
-        ]);
+            $dataTasks = TaskResource::collection($tasks);
+            return response()->json([
+                'status' => 200,
+                'dataTask' => $dataTasks
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function indexTeacher()

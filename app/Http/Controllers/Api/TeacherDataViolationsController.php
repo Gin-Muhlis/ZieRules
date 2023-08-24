@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HistoryViolation;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherDataViolationsController extends Controller
@@ -18,39 +20,52 @@ class TeacherDataViolationsController extends Controller
     public function addViolation(
         Request $request
     ) {
-        $this->authorize('teacher-create', DataViolation::class);
+        try {
+            $this->authorize('teacher-create', DataViolation::class);
 
-        $validator = Validator::make($request->all(), [
-            'violation_id' => ['required', 'exists:violations,id'],
-            'student_id' => ['required', 'exists:students,id'],
-            'date' => ['required', 'date'],
-            'description' => ['required', 'string'],
-        ]);
+            $validator = Validator::make($request->all(), [
+                'violation_id' => ['required', 'exists:violations,id'],
+                'student_id' => ['required', 'exists:students,id'],
+                'date' => ['required', 'date'],
+                'description' => ['required', 'string'],
+            ]);
 
-        if ($validator->fails()) {
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 422,
+                    'message' => 'Terjadi kesalahan dengan data yang dikirim',
+                    'error' => $validator->errors()
+                ]);
+            }
+
+            $validated = $validator->validate();
+            $teacher = $request->user();
+
+            DB::beginTransaction();
+
+            $teacher->dataViolations()->create($validated);
+
+            HistoryViolation::create([
+                'teacher_id' => $teacher->id,
+                'student_id' => $request->student_id,
+                'violation_id' => $request->violation_id,
+                'date' => $request->date
+            ]);
+
+            DB::commit();
+
             return response()->json([
-                'status' => 422,
+                'status' => 200,
+                'message' => 'Pelanggaran berhasil ditambahkan'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 500,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
-                'error' => $validator->errors()
+                'error' => $e->getMessage()
             ]);
         }
-
-        $validated = $validator->validate();
-        $teacher = $request->user();
-
-        $teacher->dataViolations()->create($validated);
-
-        HistoryViolation::create([
-            'teacher_id' => $teacher->id,
-            'student_id' => $request->student_id,
-            'violation_id' => $request->violation_id,
-            'date' => $request->date
-        ]);
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Pelanggaran berhasil ditambahkan'
-        ]);
     }
 
     public function addViolations(request $request)

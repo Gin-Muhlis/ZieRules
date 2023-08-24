@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
 use App\Models\Teacher;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -24,26 +25,34 @@ class AuthController extends Controller
      */
     public function loginStudent(Request $request)
     {
-        $credentials = $request->validate([
-            'nis' => 'required',
-            'password' => 'required'
-        ]);
-
-        if (!Auth::guard('student_api')->attempt($credentials)) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Nis atau Password Salah'
+        try {
+            $credentials = $request->validate([
+                'nis' => 'required',
+                'password' => 'required'
             ]);
+
+            if (!Auth::guard('student_api')->attempt($credentials)) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Nis atau Password Salah'
+                ]);
+            }
+
+            $student = Student::with('class')->whereNis($request->nis)->firstOrFail();
+            $token = $student->createToken('student-token');
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Login Berhasil',
+                'token' => $token->plainTextToken
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $student = Student::with('class')->whereNis($request->nis)->firstOrFail();
-        $token = $student->createToken('student-token');
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Login Berhasil',
-            'token' => $token->plainTextToken
-        ]);
     }
 
     /**
@@ -54,13 +63,21 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = $request->user();
-        $user->tokens()->delete();
+        try {
+            $user = $request->user();
+            $user->tokens()->delete();
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Logout Berhasil'
-        ]);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Logout Berhasil'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -71,26 +88,34 @@ class AuthController extends Controller
      */
     public function loginTeacher(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        if (!Auth::guard('teacher_api')->attempt($credentials)) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Email atau Password salah'
+        try {
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
             ]);
+
+            if (!Auth::guard('teacher_api')->attempt($credentials)) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Email atau Password salah'
+                ]);
+            }
+
+            $teacher = Teacher::whereEmail($request->email)->firstOrFail();
+            $token = $teacher->createTOken('teacher-token');
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Login Berhasil',
+                'role' => $teacher->getRoleNames()->first(),
+                'token' => $token->plainTextToken
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $teacher = Teacher::whereEmail($request->email)->firstOrFail();
-        $token = $teacher->createTOken('teacher-token');
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Login Berhasil',
-            'role' => $teacher->getRoleNames()->first(),
-            'token' => $token->plainTextToken
-        ]);
     }
 }

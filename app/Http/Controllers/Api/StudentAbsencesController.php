@@ -8,6 +8,7 @@ use App\Models\StudentAbsence;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class StudentAbsencesController extends Controller
@@ -41,18 +42,23 @@ class StudentAbsencesController extends Controller
             $validated['time'] = $time;
             $validated['presence_id'] = 1;
 
+            DB::beginTransaction();
+
             $student->studentAbsences()->create($validated);
+
+            DB::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Absen berhasil ditambahkan'
             ]);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -90,18 +96,23 @@ class StudentAbsencesController extends Controller
             $validated['date'] = $now;
             $validated['time'] = $time;
 
+            DB::beginTransaction();
+
             $student->studentAbsences()->create($validated);
+
+            DB::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Absen berhasil ditambahkan'
             ]);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 

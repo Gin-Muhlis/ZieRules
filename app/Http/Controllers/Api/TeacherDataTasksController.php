@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HistoryTask;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherDataTasksController extends Controller
@@ -16,7 +18,8 @@ class TeacherDataTasksController extends Controller
 
     public function addTask(Request $request,)
     {
-        $this->authorize('teacher-create', DataTask::class);
+        try {
+            $this->authorize('teacher-create', DataTask::class);
 
         $teacher = $request->user();
 
@@ -37,6 +40,8 @@ class TeacherDataTasksController extends Controller
 
         $validated = $validate->validate();
 
+        DB::beginTransaction();
+
         $teacher->dataTasks()->create($validated);
 
         HistoryTask::create([
@@ -46,10 +51,20 @@ class TeacherDataTasksController extends Controller
             'date' => $validated['date']
         ]);
 
+        DB::commit();
+
         return response()->json([
             'status' => 200,
             'message' => 'Pencapaian tugas berhasil ditambahkan'
         ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+              'status' => 500,
+              'message' => 'Terjadi kesalahan dengan data yang dikirim',
+                'errors' => $e
+            ]);
+        }
     }
 
     public function addTasks(Request $request)

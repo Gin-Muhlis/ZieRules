@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TeacherResource;
 use App\Models\Student;
+use Exception;
 
 class TeacherController extends Controller
 {
@@ -20,100 +21,141 @@ class TeacherController extends Controller
 
     public function profile(Request $request)
     {
-        $this->authorize('teacher-view', Teacher::class);
+        try {
+            $this->authorize('teacher-view', Teacher::class);
 
-        $teacher = $request->user();
+            $teacher = $request->user();
 
-        $dataTeacher = new TeacherResource($teacher);
-        return response()->json([
-            'status' => 200,
-            'dataTeacher' => $dataTeacher
-        ]);
+            $dataTeacher = new TeacherResource($teacher);
+            return response()->json([
+                'status' => 200,
+                'dataTeacher' => $dataTeacher
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
-    public function allStudent() {
-        $this->authorize('student-view-any', Student::class);
-        $students = Student::all();
+    public function allStudent()
+    {
+        try {
+            $this->authorize('student-view-any', Student::class);
+            $students = Student::all();
 
-        return response()->json([
-          'status' => 200,
-          'students' => $students
-        ]);
+            return response()->json([
+                'status' => 200,
+                'students' => $students
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function listStudent(Request $request)
     {
-        $this->authorize('student-view-any', Student::class);
+        try {
+            $this->authorize('student-view-any', Student::class);
 
-        $teacher = $request->user();
+            $teacher = $request->user();
 
 
-        $listStudent = Student::where('class_id', $teacher->homerooms[0]->class_id)->get();
+            $listStudent = Student::where('class_id', $teacher->homerooms[0]->class_id)->get();
 
-        $dataListStudent = StudentResource::collection($listStudent);
-        return response()->json([
-            'status' => 200,
-            'dataListStudent' => $dataListStudent
-        ]);
+            $dataListStudent = StudentResource::collection($listStudent);
+            return response()->json([
+                'status' => 200,
+                'dataListStudent' => $dataListStudent
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function historyScans(Request $request)
     {
-        $teacher = $request->user();
+        try {
+            $teacher = $request->user();
 
-        $this->authorize('teacher-view', $teacher);
+            $this->authorize('teacher-view', $teacher);
 
-        $historyScansViolation = $teacher->historyViolations;
-        $historyScansAchievment = $teacher->historyAchievments;
-        $historyScansTasks = $teacher->historytasks;
+            $historyScansViolation = $teacher->historyViolations;
+            $historyScansAchievment = $teacher->historyAchievments;
+            $historyScansTasks = $teacher->historytasks;
 
 
-        $historyScans = $this->generateHistory($historyScansViolation, $historyScansAchievment, $historyScansTasks);
+            $historyScans = $this->generateHistory($historyScansViolation, $historyScansAchievment, $historyScansTasks);
 
-        return response()->json([
-            'status' => 200,
-            'dataHistoryScan' => $historyScans
-        ]);
+            return response()->json([
+                'status' => 200,
+                'dataHistoryScan' => $historyScans
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     private function generateHistory($violations, $achievments, $tasks)
     {
-        $dataViolations = [];
-        foreach ($violations as  $violation) {
-            $dataViolations[] = [
-                'teacher' => $violation->teacher->name,
-                'student' => $violation->student->name,
-                'violation' => $violation->violation->name,
-                'date' => generateDate($violation->date->toDateString())
-            ];
+        try {
+            $dataViolations = [];
+            foreach ($violations as  $violation) {
+                $dataViolations[] = [
+                    'teacher' => $violation->teacher->name,
+                    'student' => $violation->student->name,
+                    'violation' => $violation->violation->name,
+                    'date' => generateDate($violation->date->toDateString())
+                ];
+            }
+
+            $dataAchievments = [];
+            foreach ($achievments as  $achievment) {
+                $dataAchievments[] = [
+                    'teacher' => $achievment->teacher->name,
+                    'student' => $achievment->student->name,
+                    'aachievment' => $achievment->achievment->name,
+                    'date' => generateDate($achievment->date->toDateString())
+                ];
+            }
+
+            $dataTasks = [];
+            foreach ($tasks as  $task) {
+                $dataTasks[] = [
+                    'teacher' => $task->teacher->name,
+                    'student' => $task->student->name,
+                    'task' => $task->task->name,
+                    'date' => generateDate($task->date->toDateString())
+                ];
+            }
+
+            $result = array_merge($dataViolations, $dataAchievments, $dataTasks);
+
+            usort($result, function ($a, $b) {
+                return strtotime($b['date']) - strtotime($a['date']);
+            });
+
+            return $result;
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
         }
-
-        $dataAchievments = [];
-        foreach ($achievments as  $achievment) {
-            $dataAchievments[] = [
-                'teacher' => $achievment->teacher->name,
-                'student' => $achievment->student->name,
-                'aachievment' => $achievment->achievment->name,
-                'date' => generateDate($achievment->date->toDateString())
-            ];
-        }
-
-        $dataTasks = [];
-        foreach ($tasks as  $task) {
-            $dataTasks[] = [
-                'teacher' => $task->teacher->name,
-                'student' => $task->student->name,
-                'task' => $task->task->name,
-                'date' => generateDate($task->date->toDateString())
-            ];
-        }
-
-        $result = array_merge($dataViolations, $dataAchievments, $dataTasks);
-
-        usort($result, function ($a, $b) {
-            return strtotime($b['date']) - strtotime($a['date']);
-        });
-
-        return $result;
     }
 }
