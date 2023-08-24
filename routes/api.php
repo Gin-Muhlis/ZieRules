@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Api\AchievmentController;
+use App\Http\Controllers\Api\StudentAbsencesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -25,7 +26,7 @@ Route::prefix('student')->group(function () {
 
     // Data siswa
     Route::get('/profile', [StudentController::class, 'profile']);
-    Route::get('/{nis}', [StudentController::class, 'detailSiswa']);
+    Route::get('/{code}', [StudentController::class, 'detailSiswa']);
 
     // Data pelanggaran
     Route::get('/list/violation', [ViolationController::class, 'indexStudent']);
@@ -34,6 +35,9 @@ Route::prefix('student')->group(function () {
     // Data prestasi
     Route::get('/list/achievment', [AchievmentController::class, 'indexStudent']);
     Route::get('/data/achievment', [StudentDataAchievmentsController::class, 'studentAchievments']);
+
+    // Data Absensi
+    Route::post('/absence/create', [StudentAbsencesController::class, 'absenceStudent']);
 
     // Data tugas
     Route::get('/data/task', [StudentDataTasksController::class, 'studentTasks']);

@@ -28,6 +28,7 @@ class StudentController extends Controller
 
         $result = [
             'id' => $student->id,
+            'code' => $student->code,
             'name' => $student->name,
             'nis' => $student->nis,
             'gender' => $student->gender,
@@ -45,10 +46,10 @@ class StudentController extends Controller
         ]);
     }
 
-    public function detailSiswa($nis)
+    public function detailSiswa($code)
     {
         $this->authorize('teacher-student-view', Student::class);
-        $student = Student::whereNis($nis)->first();
+        $student = Student::whereCode($code)->first();
 
         return response()->json([
             'status' => 200,
