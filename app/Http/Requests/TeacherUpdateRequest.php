@@ -30,7 +30,6 @@ class TeacherUpdateRequest extends FormRequest
             'password' => ['nullable'],
             'image' => ['nullable', 'image', 'max:1024'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
-            'role' => ['required', 'in:guru-mapel,wali-kelas'],
             'class_id' => ['exists:class_students,id'],
         ];
     }

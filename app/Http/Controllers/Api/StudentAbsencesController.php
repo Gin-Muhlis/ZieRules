@@ -14,17 +14,31 @@ use Illuminate\Support\Facades\Validator;
 class StudentAbsencesController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
     public function absenceStudent(Request $request)
     {
         try {
-            $this->authorize('student-create', StudentAbsence::class);
+            $validate = Validator::make($request->all(), [
+                'code' => ['required']
+            ]);
 
-            $student = $request->user();
+            if ($validate->fails()) {
+                return response()->json([
+                    'status' => 422,
+                    'message' => 'Terjadi kesalahan dengan data yang dikirim'
+                ], 422);
+            }
+
+            $validated = $validate->validate();
+
+            $student = Student::where('code', $validated['code'])->first();
+
+            if (is_null($student)) {
+                return response()->json([
+                    'status' => 422,
+                    'message' => 'Siswa tidak valid/tidak ditemukan'
+                ], 422);
+            }
+
             $now = Carbon::now()->format('Y-m-d');
             $time = Carbon::now()->format('H:i:s');
 
@@ -50,7 +64,10 @@ class StudentAbsencesController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Absen berhasil ditambahkan'
+                'student' => $student,
+                'date' => $validated['date'],
+                'time' => $validated['time'],
+                'message' => 'Absen berhasil'
             ]);
         } catch (Exception $e) {
             DB::rollBack();

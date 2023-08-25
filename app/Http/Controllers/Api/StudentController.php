@@ -57,13 +57,14 @@ class StudentController extends Controller
 
     public function detailSiswa($code)
     {
+        dd($code);
         try {
             $this->authorize('teacher-student-view', Student::class);
             $student = Student::whereCode($code)->first();
-
             return response()->json([
                 'status' => 200,
                 'id' => $student->id,
+                'code' => $student->code,
                 'nis' => $student->nis,
                 'name' => $student->name,
                 'image' => $student->image ?? 'public/default.jpg',
