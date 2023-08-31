@@ -73,6 +73,7 @@ Route::prefix('/')
         Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
         Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');
         Route::get('data-tasks-report', [DataTaskController::class, 'report'])->name('data.tasks.report');
+        Route::get('data-presents-report', [StudentAbsenceController::class, 'report'])->name('data.present.report');
 
         Route::get('show/data-violations-report/{student}', [DataViolationController::class, 'detailReport'])->name('data.violations.show.report');
         Route::get('show/data-achievments-report/{student}', [DataAchievmentController::class, 'detailReport'])->name('data.achievments.show.report');

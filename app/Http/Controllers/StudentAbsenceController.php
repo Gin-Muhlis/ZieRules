@@ -124,4 +124,24 @@ class StudentAbsenceController extends Controller
             ->route('student-absences.index')
             ->withSuccess(__('crud.common.removed'));
     }
+
+    public function report() {
+        $students = Student::with(['studentAbsences', 'class'])->get();
+
+        $reports = [];
+
+        foreach($students as $student) {
+            $reports[] = [
+                'student' => $student->name,
+                'class' => $student->class->name,
+                'hadir' => $student->studentAbsences()->where('presence_id', 1)->get()->count(),
+                'izin' => $student->studentAbsences()->where('presence_id', 2)->get()->count(),
+                'sakit' => $student->studentAbsences()->where('presence_id', 3)->get()->count(),
+                'tanpa_keterangan' => $student->studentAbsences()->where('presence_id', 4)->get()->count(),
+            ];
+        }
+
+        return view('app.student_absences.report', compact('reports'));
+
+    }
 }

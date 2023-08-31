@@ -196,6 +196,14 @@
                                     </a>
                                 </li>
                             @endcan
+                            @can('view-any', App\Models\StudentAbsence::class)
+                                <li class="nav-item">
+                                    <a href="{{ route('data.present.report') }}" class="nav-link">
+                                        <i class="nav-icon icon fa-solid fa-file"></i>
+                                        <p>Laporan Kehadiran</p>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
 
