@@ -62,9 +62,14 @@ class StudentAbsencesController extends Controller
 
             DB::commit();
 
+            $dataStudent = [
+                'name' => $student->name,
+                'class' => $student->class->code
+            ];
+
             return response()->json([
                 'status' => 200,
-                'student' => $student,
+                'student' => $dataStudent,
                 'date' => $validated['date'],
                 'time' => $validated['time'],
                 'message' => 'Absen berhasil'

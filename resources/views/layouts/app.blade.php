@@ -81,6 +81,14 @@
             notyf.success('{{ session('success') }}')
         </script>
     @endif
+    @if ($errors->any())
+        <script>
+            var notyf = new Notyf({
+                dismissible: true
+            })
+            notyf.error('{{ $errors->first() }}')
+        </script>
+    @endif
 
     <script>
         /* Simple Alpine Image Viewer */

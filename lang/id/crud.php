@@ -254,7 +254,7 @@ return [
             'date' => 'Tanggal',
             'student_id' => 'Siswa',
             'presence_id' => 'Guru',
-            'time' => 'Time',
+            'time' => 'Jam',
         ],
     ],
 

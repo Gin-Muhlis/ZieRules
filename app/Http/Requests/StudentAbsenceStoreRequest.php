@@ -23,7 +23,7 @@ class StudentAbsenceStoreRequest extends FormRequest
             'date' => ['required', 'date'],
             'student_id' => ['required', 'exists:students,id'],
             'presence_id' => ['required', 'exists:presences,id'],
-            'time' => ['required', 'date_format:H:i:s'],
+            'time' => ['required'],
         ];
     }
 }

@@ -73,6 +73,7 @@ Route::prefix('/')
         Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
         Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');
         Route::get('data-tasks-report', [DataTaskController::class, 'report'])->name('data.tasks.report');
+        Route::get('data-absence-report', [StudentAbsenceController::class, 'report'])->name('data.absence.report');
 
         Route::get('show/data-violations-report/{student}', [DataViolationController::class, 'detailReport'])->name('data.violations.show.report');
         Route::get('show/data-achievments-report/{student}', [DataAchievmentController::class, 'detailReport'])->name('data.achievments.show.report');
@@ -81,6 +82,7 @@ Route::prefix('/')
         Route::get('violation/export', [DataViolationController::class, 'exportData'])->name('data.violation.export');
         Route::get('achievment/export', [DataAchievmentController::class, 'exportData'])->name('data.achievment.export');
         Route::get('task/export', [DataTaskController::class, 'exportData'])->name('data.task.export');
+        Route::get('absence/export', [StudentAbsenceController::class, 'exportData'])->name('data.absence.export');
 
         Route::get('violation-detail/export/{student}', [DataViolationController::class, 'exportDetail'])->name('data.violation.export.detail');
         Route::get('achievment-detail/export/{student}', [DataAchievmentController::class, 'exportDetail'])->name('data.achievment.export.detail');

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentAbsenceExport;
 use App\Models\Student;
 use App\Models\Presence;
 use Illuminate\View\View;
+use App\Models\ClassStudent;
 use Illuminate\Http\Request;
 use App\Models\StudentAbsence;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StudentAbsenceStoreRequest;
 use App\Http\Requests\StudentAbsenceUpdateRequest;
@@ -123,5 +126,46 @@ class StudentAbsenceController extends Controller
         return redirect()
             ->route('student-absences.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    public function report(Request $request)
+    {
+        $this->authorize('view-any', StudentAbsence::class);
+
+        $students = Student::with('studentAbsences')->get();
+        $classes = ClassStudent::pluck('name', 'id');
+        $reports = [];
+
+        foreach ($students as $student) {
+            $reports[] = [
+                'student_id' => $student->id,
+                'name' => $student->name,
+                'class' => $student->class->id,
+                'className' => $student->class->name,
+                'presences' => $student->studentAbsences()->where('presence_id', 1)->get()->count(),
+                'permissions' => $student->studentAbsences()->where('presence_id', 2)->get()->count(),
+                'sicks' => $student->studentAbsences()->where('presence_id', 3)->get()->count(),
+                'withoutExplanations' => $student->studentAbsences()->where('presence_id', 4)->get()->count(),
+            ];
+        }
+
+
+        return view(
+            'app.student_absences.report',
+            compact('reports', 'classes')
+        );
+    }
+
+    public function exportData(Request $request)
+    {
+        $this->authorize('view-any', StudentAbsence::class);
+
+        $class = $request->input("class_student") ?? null;
+
+        if (!is_null($class)) {
+            return Excel::download(new StudentAbsenceExport($class), 'data_kehadiran.xlsx');
+        }
+
+        return Excel::download(new StudentAbsenceExport(null), 'data_kehadiran.xlsx');
     }
 }
