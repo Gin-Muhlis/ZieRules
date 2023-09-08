@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+require_once app_path() . '/helpers/helpers.php';
+
 use App\Http\Controllers\Controller;
 use App\Models\Student;
 use App\Models\StudentAbsence;
@@ -70,9 +72,9 @@ class StudentAbsencesController extends Controller
             return response()->json([
                 'status' => 200,
                 'student' => $dataStudent,
-                'date' => $validated['date'],
+                'date' => generateDate($validated['date']),
                 'time' => $validated['time'],
-                'message' => 'Absen berhasil'
+                'message' => 'Absen berhasil ditambahkan'
             ]);
         } catch (Exception $e) {
             DB::rollBack();
