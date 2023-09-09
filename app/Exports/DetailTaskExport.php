@@ -2,14 +2,12 @@
 
 namespace App\Exports;
 
-require_once app_path() . '/helpers/helpers.php';
-
-use App\Models\DataViolation;
 use App\Models\Student;
+use App\Models\DataTask;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class DetailViolationExport implements FromView
+class DetailTaskExport implements FromView
 {
     private $student_id;
 
@@ -17,26 +15,25 @@ class DetailViolationExport implements FromView
     {
         $this->student_id = $id;
     }
+
     public function view(): View
     {
 
         $student = Student::findOrFail($this->student_id);
-
-        $dataViolations = DataViolation::with('violation')->whereStudentId($student->id)->latest()->get();
+        $dataTasks = DataTask::with('task')->whereStudentId($student->id)->latest()->get();
 
         $reports = [];
 
-        foreach ($dataViolations as $data) {
+        foreach ($dataTasks as $data) {
             $reports[] = [
                 'student' => $student->name,
                 'date' => $data->date->toDateString(),
-                'violation' => $data->violation->name,
-                'point' => $data->violation->point
+                'task' => $data->task->name
             ];
         }
 
         return view(
-            'app.data_violations.export-detail',
+            'app.data_tasks.export-detail',
             compact('reports')
         );
 

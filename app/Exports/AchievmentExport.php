@@ -3,24 +3,41 @@
 namespace App\Exports;
 
 use App\Models\Student;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class AchievmentExport implements FromCollection
+
+class AchievmentExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    private $class;
+
+    public function __construct($classFilter) {
+        $this->class = $classFilter;
+    }
+    public function view(): View
     {
-        return Student::with(['dataAchievments'])->get()->map(
-            function ($student) {
-                return [
-                    'Nama Siswa' => $student->name,
-                    'Jumlah Pelanggaran' => $student->dataAchievments->count(),
-                    'Total Poin' => $this->generatePoint($student->dataAchievments),
-                ];
-            }
+       
+        $students = Student::with('dataAchievments')->get();
+        
+        if (!is_null($this->class)) {
+            $students = Student::with('dataAchievments')->whereClassId($this->class)->get();
+        }
+        $reports = [];
+
+        foreach ($students as $student) {
+            $reports[] = [
+                'name' => $student->name,
+                'class' => $student->class->code,
+                'achievmentsCount' => $student->dataAchievments->count(),
+                'totalPoint' => $this->generatePoint($student->dataAchievments)
+            ];
+        }
+
+        return view(
+            'app.data_achievments.export',
+            compact('reports')
         );
+        
     }
 
     private function generatePoint($data)

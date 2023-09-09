@@ -145,13 +145,6 @@
                                     <td class="text-center">
                                         ${item.withoutExplanations}
                                     </td>
-                                    <td class="text-center">
-                                        <a href="${item . student_id}">
-                                            <button type="button" class="btn btn-light">
-                                                <i class="icon ion-md-eye"></i>
-                                            </button>
-                                        </a>
-                                    </td>
                                 </tr>`
                 })
                 $(".body-table").html(markup)

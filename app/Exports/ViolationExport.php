@@ -2,38 +2,45 @@
 
 namespace App\Exports;
 
-use App\Models\DataViolation;
 use App\Models\Student;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class ViolationExport implements FromCollection
+class ViolationExport implements FromView
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-    private $start_date;
-    private $end_date;
+    private $class;
 
-    public function __construct($startDate = null, $endDate = null)
-    {
-        $this->start_date = $startDate;
-        $this->end_date = $endDate;
+    public function __construct($classFilter) {
+        $this->class = $classFilter;
     }
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    
+    public function view(): View
     {
        
-        return Student::with(['dataViolations'])->get()->map(
-            function ($student) {
-                return [
-                    'Nama Siswa' => $student->name,
-                    'Jumlah Pelanggaran' => $student->dataViolations->count(),
-                    'Total Poin' => $this->generatePoint($student->dataViolations),
-                ];
-            }
+        $students = Student::with('studentAbsences')->get();
+        
+        if (!is_null($this->class)) {
+            $students = Student::with('studentAbsences')->whereClassId($this->class)->get();
+        }
+        $reports = [];
+
+        foreach ($students as $student) {
+            $reports[] = [
+                'class' => $student->class_id,
+                'name' => $student->name,
+                'violationsCount' => $student->dataViolations->count(),
+                'totalPoint' => $this->generatePoint($student->dataVIolations)
+            ];
+        }
+
+        return view(
+            'app.data_violations.export',
+            compact('reports')
         );
+        
     }
 
     public function headings(): array

@@ -7,25 +7,25 @@
 @section('content')
     <div class="container">
         <div class="searchbar mt-0 mb-4">
-            <div class="row">
+              <div class="row">
                 <div class="col-md-6">
                     <form>
                         <div class="input-group">
-                            <input id="indexSearch" type="text" name="search" placeholder="{{ __('crud.common.search') }}"
-                                value="{{ $search ?? '' }}" class="form-control" autocomplete="off" />
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="icon ion-md-search"></i>
-                                </button>
-                            </div>
+                            <select class="form-control" name="class" id="class">
+                                <option value="empty" disabled selected>Filter Laporan</option>
+                                <option value="all">Semua Kelas</option>
+                                @foreach ($classes as $value => $item)
+                                    <option value="{{ $value }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </form>
                 </div>
                 <div class="col-md-6 text-right">
-                        <a href="{{ route('data.violation.export') }}" class="btn btn-primary export-btn">Export Data</a>
-    
+                    <button class="btn btn-success btn-export">
+                        <i class="fas fa-download d-inline-block mr-1"></i>Download Laporan</button>
                 </div>
-                
+
             </div>
         </div>
 
@@ -44,10 +44,10 @@
                                 <th class="text-left">
                                     Nama Siswa
                                 </th>
-                                <th class="text-left">
+                                <th class="text-center">
                                    Jumlah pelanggaran
                                 </th>
-                                <th class="text-left">
+                                <th class="text-center">
                                     Total Poin Pelanggaran
                                 </th>
                                 <th class="text-center">
@@ -55,16 +55,16 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="body-table">
                             @forelse($reports as $data)
                                 <tr>
                                     <td>
                                         {{ $data['name'] ?? '-' }}
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $data['violationsCount'] ?? '-' }}
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $data['totalPoint'] ?? '-' }}
                                     </td>
                                     <td class="text-center">
@@ -88,4 +88,51 @@
             </div>
         </div>
     </div>
+     <form action="{{ route('data.violation.export') }}" method="get" class="form-export">
+        <input type="hidden" name="class_student" id="input_class_student">
+    </form>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            const objectString = JSON.stringify(@json($reports))
+            const dataReport = JSON.parse(objectString)
+         
+            $("#class").on("input", (event) => {
+                let value = $("#class").val()
+
+                $("#input_class_student").val(value)
+
+                let students = value !== 'all' ? dataReport.filter(item => item.class == value) : dataReport
+                let markup = ``
+        
+                students.forEach(item => {
+                    markup += `<tr>
+                                    <td>
+                                        ${item.name}
+                                    </td>
+                                    <td class="text-center">
+                                       ${item.violationsCount}
+                                    </td>
+                                    <td class="text-center">
+                                        ${item.totalPoint}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ url('show/data-violations-report') }}/${item.student_id}">
+                                            <button type="button" class="btn btn-light">
+                                                <i class="icon ion-md-eye"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>`
+                })
+                $(".body-table").html(markup)
+            })
+
+            $(".btn-export").on("click", () => {
+                $(`.form-export`).submit()
+            })
+        })
+    </script>
+@endpush

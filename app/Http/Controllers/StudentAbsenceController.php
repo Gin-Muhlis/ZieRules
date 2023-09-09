@@ -163,9 +163,10 @@ class StudentAbsenceController extends Controller
         $class = $request->input("class_student") ?? null;
 
         if (!is_null($class)) {
-            return Excel::download(new StudentAbsenceExport($class), 'data_kehadiran.xlsx');
+            $dataClass = ClassStudent::findOrFail($class);
+            return Excel::download(new StudentAbsenceExport($class), "laporan_kehadiran_$dataClass->code.xlsx");
         }
 
-        return Excel::download(new StudentAbsenceExport(null), 'data_kehadiran.xlsx');
+        return Excel::download(new StudentAbsenceExport(null), 'laporan_kehadiran.xlsx');
     }
 }

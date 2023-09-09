@@ -3,24 +3,39 @@
 namespace App\Exports;
 
 use App\Models\Student;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Models\ClassStudent;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class TaskExport implements FromCollection
+class TaskExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    private $class;
+
+    public function __construct($classFilter) {
+        $this->class = $classFilter;
+    }
+    public function view(): View
     {
        
-        return Student::with(['dataTaks'])->get()->map(
-            function ($student) {
-                return [
-                    'Nama Siswa' => $student->name,
-                    'Jumlah Pelanggaran' => $student->dataTask->count(),
-                    'Total Poin' => $this->generatePoint($student->dataTask),
-                ];
-            }
+       
+        $students = Student::with('studentAbsences')->get();
+        
+        if (!is_null($this->class)) {
+            $students = Student::with('studentAbsences')->whereClassId($this->class)->get();
+        }
+        $reports = [];
+
+        foreach ($students as $student) {
+            $reports[] = [
+                'className' => $student->class->name,
+                'name' => $student->name,
+                'tasksCount' => $student->dataTasks->count(),
+            ];
+        }
+
+        return view(
+            'app.data_tasks.export',
+            compact('reports')
         );
     }
 

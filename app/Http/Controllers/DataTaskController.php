@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\DataTaskExport;
-use App\Exports\TaskExport;
+use App\Exports\DetailTaskExport;
 use App\Models\Task;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\DataTask;
 use Illuminate\View\View;
+use App\Exports\TaskExport;
+use App\Models\ClassStudent;
 use Illuminate\Http\Request;
+use App\Exports\DataTaskExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\DataTaskStoreRequest;
 use App\Http\Requests\DataTaskUpdateRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class DataTaskController extends Controller
 {
@@ -132,15 +134,16 @@ class DataTaskController extends Controller
     {
         $this->authorize('view-any', DataTask::class);
 
-        $search = $request->get('search', '');
-
-        $students = Student::with('dataTasks')->search($search)->get();
+        $students = Student::with('dataTasks')->get();
+        $classes = ClassStudent::pluck('name', 'id');
 
         $reports = [];
 
         foreach ($students as $student) {
             $reports[] = [
                 'student_id' => $student->id,
+                'class' => $student->class_id,
+                'className' => $student->class->name,
                 'name' => $student->name,
                 'tasksCount' => $student->dataTasks->count(),
             ];
@@ -148,7 +151,7 @@ class DataTaskController extends Controller
 
         return view(
             'app.data_tasks.report',
-            compact('reports', 'search')
+            compact('reports', 'classes')
         );
 
     }
@@ -160,6 +163,7 @@ class DataTaskController extends Controller
 
         $reports = [];
         $student_id = $student->id;
+        $student_name = $student->name;
 
         foreach ($dataTasks as $data) {
             $reports[] = [
@@ -171,12 +175,25 @@ class DataTaskController extends Controller
 
         return view(
             'app.data_tasks.detail',
-            compact('reports', 'student_id')
+            compact('reports', 'student_id', 'student_name')
         );
     }
 
-    public function exportData() {
-        return Excel::download(new TaskExport, 'data_pelangggaran.xlsx');
+    public function exportData(Request $request) {
+        $this->authorize('view-any', StudentAbsence::class);
+
+        $class = $request->input("class_student") != 'all' || !is_null($request->input("class_student")) ? $request->input("class_student") : null;
+
+        if (!is_null($class) && $request->input("class_student") != 'all') {
+            $dataClass = ClassStudent::findOrFail($class);
+
+            return Excel::download(new TaskExport($class), "laporan_tugas_$dataClass->code.xlsx");
+        }
+        return Excel::download(new TaskExport(null), 'laporan_tugas.xlsx');
+    }
+
+    public function exportDetail(Student $student) {
+        return Excel::download(new DetailTaskExport($student->id), "laporan_tugas_$student->name.xlsx");
     }
 
 }

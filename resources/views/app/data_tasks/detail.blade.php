@@ -8,9 +8,12 @@
     <div class="container">
         <div class="searchbar mt-0 mb-4">
             <div class="row">
-               
-                <div class="col-md-12 text-left">
-                    <a href="{{ route('data.task.export.detail', $student_id) }}" class="btn btn-primary export-btn">Export Data</a>
+                <div class="col-md-6">
+                   <h2>Laporan Tugas {{ $student_name }}</h2>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="{{ route('data.task.export.detail', $student_id) }}" class="btn btn-success btn-export">
+                        <i class="fas fa-download d-inline-block mr-1"></i>Download Laporan</a>
                 </div>
             </div>
         </div>
@@ -19,7 +22,7 @@
             <div class="card-body">
                 <div style="display: flex; justify-content: space-between;">
                     <h4 class="card-title">
-                        @lang('crud.data_pelanggaran.index_title')
+                        @lang('crud.data_tugas.index_title')
                     </h4>
                 </div>
 
@@ -29,13 +32,13 @@
                             <tr>
                                 <th class="text-left">
                                     Nama Siswa
-                                 </th>
+                                </th>
                                 <th class="text-left">
                                     Tanggal
                                 </th>
-                                
+
                                 <th class="text-left">
-                                    Tugas
+                                    Tugas Selesai
                                 </th>
                             </tr>
                         </thead>

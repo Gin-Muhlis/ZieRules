@@ -86,7 +86,7 @@ Route::prefix('/')
 
         Route::get('violation-detail/export/{student}', [DataViolationController::class, 'exportDetail'])->name('data.violation.export.detail');
         Route::get('achievment-detail/export/{student}', [DataAchievmentController::class, 'exportDetail'])->name('data.achievment.export.detail');
-        Route::get('task-detail/export/{student}', [DataTaskController::class, 'exportDetail'])->name('data.task.export.detail');
+        Route::get('task-detail/export/{student}', [DataTaskController::class, 'exportDetail'])->name('data.task.export.detail'); 
 
         Route::post('violation/import', [ViolationController::class, 'import'])->name('violation.import');
         Route::post('achievment/import', [AchievmentController::class, 'import'])->name('achievment.import');

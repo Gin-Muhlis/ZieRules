@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AchievmentExport;
-use App\Exports\DataAchievmentExport;
-use App\Exports\DetailAchievmentExport;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\View\View;
 use App\Models\Achievment;
+use App\Models\ClassStudent;
 use Illuminate\Http\Request;
 use App\Models\DataAchievment;
+use App\Exports\AchievmentExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DataAchievmentExport;
 use Illuminate\Http\RedirectResponse;
+use App\Exports\DetailAchievmentExport;
 use App\Http\Requests\DataAchievmentStoreRequest;
 use App\Http\Requests\DataAchievmentUpdateRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class DataAchievmentController extends Controller
 {
@@ -136,15 +137,14 @@ class DataAchievmentController extends Controller
     {
         $this->authorize('view-any', DataAchievment::class);
 
-        $search = $request->get('search', '');
-
-        $students = Student::with('dataAchievments')->search($search)->get();
-
+        $students = Student::with('dataAchievments')->get();
+        $classes = ClassStudent::pluck('name', 'id');
         $reports = [];
 
         foreach ($students as $student) {
             $reports[] = [
                 'student_id' => $student->id,
+                'class' => $student->class_id,
                 'name' => $student->name,
                 'achievmentsCount' => $student->dataAchievments->count(),
                 'totalPoint' => $this->generatePoint($student->dataAchievments)
@@ -153,7 +153,7 @@ class DataAchievmentController extends Controller
 
         return view(
             'app.data_achievments.report',
-            compact('reports', 'search')
+            compact('reports', 'classes')
         );
 
     }
@@ -165,6 +165,7 @@ class DataAchievmentController extends Controller
 
         $reports = [];
         $student_id = $student->id;
+        $student_name = $student->name;
 
         foreach ($dataAchievments as $data) {
             $reports[] = [
@@ -177,17 +178,26 @@ class DataAchievmentController extends Controller
 
         return view(
             'app.data_achievments.detail',
-            compact('reports', 'student_id')
+            compact('reports', 'student_id', 'student_name')
         );
     }
 
     public function exportData(Request $request)
     {
-        return Excel::download(new AchievmentExport, 'data_prestasi.xlsx');
+        $this->authorize('view-any', StudentAbsence::class);
+
+        $class = $request->input("class_student") != 'all' || !is_null($request->input("class_student")) ? $request->input("class_student") : null;
+
+        if (!is_null($class) && $request->input("class_student") != 'all') {
+            $dataClass = ClassStudent::findOrFail($class);
+
+            return Excel::download(new AchievmentExport($class), "laporan_prestasi_$dataClass->code.xlsx");
+        }
+        return Excel::download(new AchievmentExport(null), 'laporan_prestasi.xlsx');
     }
 
     public function exportDetail(Student $student) {
-        return Excel::download(new DetailAchievmentExport($student->id), 'data_pelangggaran.xlsx');
+        return Excel::download(new DetailAchievmentExport($student->id), "laporan_prestasi_$student->name.xlsx");
     }
 
     private function generatePoint($data)

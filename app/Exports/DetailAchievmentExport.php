@@ -29,14 +29,15 @@ class DetailAchievmentExport implements FromView
         foreach ($dataAchievments as $data) {
             $reports[] = [
                 'student' => $student->name,
-                'date' => generateDate($data->date->toDateString()),
+                'date' => $data->date->toDateString(),
                 'achievment' => $data->achievment->name,
                 'point' => $data->achievment->point
             ];
         }
 
+
         return view(
-            'app.data_achievments.detail',
+            'app.data_achievments.export-detail',
             compact('reports')
         );
 

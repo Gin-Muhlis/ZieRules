@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ url('/') }}" class="brand-link">
-        <img src="https://vemto.app/favicon.png" alt="Vemto Logo" class="brand-image bg-white img-circle">
+        <img src="{{ asset('image') }}/logo.png" alt="Zie Rules Logo" class="brand-image bg-white img-circle">
         <span class="brand-text font-weight-light">Zie Rules</span>
     </a>
 
@@ -83,7 +83,7 @@
                             @can('view-any', App\Models\Presence::class)
                             <li class="nav-item">
                                 <a href="{{ route('presences.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <i class="nav-icon icon fas fa-cubes"></i>
                                     <p>Jenis Kehadiran</p>
                                 </a>
                             </li>
@@ -91,7 +91,7 @@
                             @can('view-any', App\Models\StudentAbsence::class)
                             <li class="nav-item">
                                 <a href="{{ route('student-absences.index') }}" class="nav-link">
-                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <i class="nav-icon icon fas fa-book"></i>
                                     <p>Absensi Siswa</p>
                                 </a>
                             </li>

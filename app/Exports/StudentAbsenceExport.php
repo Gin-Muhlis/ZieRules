@@ -17,8 +17,6 @@ class StudentAbsenceExport implements FromView
     public function view(): View
     {
 
-        $students = null;
-
         $students = Student::with('studentAbsences')->get();
         
         if (!is_null($this->class)) {

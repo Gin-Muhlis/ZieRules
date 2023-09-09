@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\DetailViolationExport;
-use App\Exports\ViolationDataImport;
-use App\Exports\ViolationExport;
 use App\Models\Student;
 use App\Models\Teacher;
-use Illuminate\View\View;
 use App\Models\Violation;
+use Illuminate\View\View;
+use App\Models\ClassStudent;
 use Illuminate\Http\Request;
 use App\Models\DataViolation;
+use App\Exports\ViolationExport;
+use App\Exports\ViolationDataImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
+use App\Exports\DetailViolationExport;
 use App\Http\Requests\DataViolationStoreRequest;
 use App\Http\Requests\DataViolationUpdateRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class DataViolationController extends Controller
 {
@@ -136,15 +137,15 @@ class DataViolationController extends Controller
     {
         $this->authorize('view-any', DataViolation::class);
 
-        $search = $request->get('search', '');
-
-        $students = Student::with('dataViolations')->search($search)->get();
+        $students = Student::with('dataViolations')->get();
+        $classes = ClassStudent::pluck('name', 'id');
 
         $reports = [];
 
         foreach ($students as $student) {
             $reports[] = [
                 'student_id' => $student->id,
+                'class' => $student->class_id,
                 'name' => $student->name,
                 'violationsCount' => $student->dataViolations->count(),
                 'totalPoint' => $this->generatePoint($student->dataVIolations)
@@ -153,7 +154,7 @@ class DataViolationController extends Controller
 
         return view(
             'app.data_violations.report',
-            compact('reports', 'search')
+            compact('reports', 'classes')
         );
     }
 
@@ -163,11 +164,15 @@ class DataViolationController extends Controller
         $dataViolations = DataViolation::with('violation')->whereStudentId($student->id)->latest()->get();
 
         $reports = [];
+        $classes = ClassStudent::pluck('name', 'id');
         $student_id = $student->id;
+        $student_name = $student->name;
 
         foreach ($dataViolations as $data) {
             $reports[] = [
+                'student_id' => $student->id,
                 'student' => $student->name,
+                'class' => $student->class_id,
                 'date' => $data->date->toDateString(),
                 'violation' => $data->violation->name,
                 'point' => $data->violation->point
@@ -176,18 +181,27 @@ class DataViolationController extends Controller
 
         return view(
             'app.data_violations.detail',
-            compact('reports', 'student_id')
+            compact('reports', 'student_id', 'classes', 'student_name')
         );
     }
 
     public function exportData(Request $request)
     {
-        
-        return Excel::download(new ViolationExport, 'data_pelangggaran.xlsx');
+        $this->authorize('view-any', StudentAbsence::class);
+
+        $class = $request->input("class_student") != 'all' || !is_null($request->input("class_student")) ? $request->input("class_student") : null;
+
+        if (!is_null($class) && $request->input("class_student") != 'all') {
+            $dataClass = ClassStudent::findOrFail($class);
+
+            return Excel::download(new ViolationExport($class), "laporan_pelanggaran_$dataClass->code.xlsx");
+        }
+
+        return Excel::download(new ViolationExport(null), 'laporan_pelanggaran.xlsx');
     }
 
     public function exportDetail(Student $student) {
-        return Excel::download(new DetailViolationExport($student->id), 'data_pelangggaran.xlsx');
+        return Excel::download(new DetailViolationExport($student->id), "laporan_pelanggaran_$student->name.xlsx");
     }
 
     private function generatePoint($data)
