@@ -16,7 +16,13 @@
             body {
                 min-height: 100vh;
                 background-image: linear-gradient(135deg, #4C53F8, #4C53F830);
+                padding: 20px;
             }
+
+            .parent {
+                min-height: calc(100vh - 20px);
+            }
+
 
             .image-logo {
                 width: 100px;
@@ -33,7 +39,7 @@
             }
 
             .btn.btn-login {
-                background: linear-gradient(135deg, #4C53F8, #4C53F830);
+                background: #4C53F8;
                 transition: .7s;
                 border: none;
             }
@@ -63,8 +69,9 @@
         </style>
        
     </head>
-    <body class="antialised d-flex align-items-center justify-content-center position-relative overflow-hidden">
-    <div class="shape-2 rounded"></div>
+    <body class="antialised">
+    <div class="d-flex align-items-center justify-content-center position-relative overflow-hidden w-100 parent">
+        <div class="shape-2 rounded"></div>
     <div class="shape-1 rounded"></div>
         <div class="wrapper rounded shadow bg-white position-relative">
             <img src="{{ asset('image') }}/logo.png" class="position-absolute bg-white shadow image-logo">
@@ -73,7 +80,7 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-12 col-form-label">{{ __('Email Address') }}</label>
+                            <label for="email" class="col-md-12 col-form-label">{{ __('Email') }}</label>
 
                             <div class="col-md-12">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -115,12 +122,14 @@
                         <div class="row mb-0">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-login d-inline-block w-100 text-white fw-bold">
-                                    {{ __('Login') }}
+                                    {{ __('Masuk') }}
                                 </button>
                             </div>
                         </div>
                     </form>
         </div>
+    </div>
+    
 
         {{--  scripts  --}}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

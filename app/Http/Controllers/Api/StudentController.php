@@ -57,7 +57,6 @@ class StudentController extends Controller
 
     public function detailSiswa($code)
     {
-        dd($code);
         try {
             $this->authorize('teacher-student-view', Student::class);
             $student = Student::whereCode($code)->first();
