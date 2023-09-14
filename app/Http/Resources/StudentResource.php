@@ -17,7 +17,6 @@ class StudentResource extends JsonResource
             'nis' => $this->nis,
             'name' => $this->name,
             'image' => $this->image,
-            'gender' => $this->gender,
             'password' => $this->password_show
         ];
     }

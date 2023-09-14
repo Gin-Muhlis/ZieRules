@@ -161,6 +161,22 @@
                                     </a>
                                 </li>
                             @endcan
+                            @can('view-any', App\Models\Article::class)
+                            <li class="nav-item">
+                                <a href="{{ route('articles.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Artikel</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('view-any', App\Models\Quote::class)
+                            <li class="nav-item">
+                                <a href="{{ route('quotes.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Quote</p>
+                                </a>
+                            </li>
+                            @endcan
                         </ul>
                     </li>
                     <li class="nav-item">

@@ -70,4 +70,9 @@ class Teacher extends Authenticatable
     {
         return $this->hasRole('super-admin');
     }
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class);
+    }
 }

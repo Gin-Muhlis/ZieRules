@@ -1,14 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DataTaskController;
 use App\Http\Controllers\HomeroomController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\ViolationController;
 use App\Http\Controllers\AchievmentController;
 use App\Http\Controllers\PermissionController;
@@ -16,11 +20,9 @@ use App\Http\Controllers\HistoryTaskController;
 use App\Http\Controllers\ClassStudentController;
 use App\Http\Controllers\DataViolationController;
 use App\Http\Controllers\DataAchievmentController;
+use App\Http\Controllers\StudentAbsenceController;
 use App\Http\Controllers\HistoryViolationController;
 use App\Http\Controllers\HistoryAchievmentController;
-use App\Http\Controllers\PresenceController;
-use App\Http\Controllers\StudentAbsenceController;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,8 @@ Route::prefix('/')
         Route::resource('users', UserController::class);
         Route::resource('presences', PresenceController::class);
         Route::resource('student-absences', StudentAbsenceController::class);
+        Route::resource('articles', ArticleController::class);
+        Route::resource('quotes', QuoteController::class);
 
         Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
         Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');

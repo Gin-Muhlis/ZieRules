@@ -22,6 +22,36 @@ return [
         'removed' => 'Successfully removed',
     ],
 
+    'artikel' => [
+        'name' => 'Artikel',
+        'index_title' => 'Daftar Artikel',
+        'new_title' => 'Artikel Baru',
+        'create_title' => 'Tambah Artikel',
+        'edit_title' => 'Edit Artikel',
+        'show_title' => 'Tampilkan Artikel',
+        'inputs' => [
+            'title' => 'Judul',
+            'banner' => 'Gambar Banner',
+            'user_id' => 'User',
+            'date' => 'Tanggal',
+            'content' => 'Konten Artikel',
+        ],
+    ],
+
+    'quote' => [
+        'name' => 'Quote',
+        'index_title' => 'Daftar Quote',
+        'new_title' => 'Quote Baru',
+        'create_title' => 'Tambah Quote',
+        'edit_title' => 'Edit Quote',
+        'show_title' => 'Tampilkan Quote',
+        'inputs' => [
+            'quote' => 'Quote',
+            'date' => 'Tanggal',
+            'teacher_id' => 'Guru',
+        ],
+    ],
+    
     'prestasi' => [
         'name' => 'Prestasi',
         'index_title' => 'Daftar Prestasi',

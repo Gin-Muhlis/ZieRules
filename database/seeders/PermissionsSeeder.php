@@ -28,6 +28,10 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'view tasks']);
         Permission::create(['name' => 'list violations']);
         Permission::create(['name' => 'view violations']);
+        Permission::create(['name' => 'list articles']);
+        Permission::create(['name' => 'view articles']);
+        Permission::create(['name' => 'list quotes']);
+        Permission::create(['name' => 'view quotes']);
         // membuat role siswa dan asign permission
         $studentPermissions = Permission::all();
         $siswaRole = Role::create(['name' => 'siswa']);
@@ -45,9 +49,10 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'list historyviolations']);
         Permission::create(['name' => 'view historyviolations']);
         Permission::create(['name' => 'create historyviolations']);
+        Permission::create(['name' => 'view teachers']);
         // membuat role guru dan asign permission
         $teacherPermission = Permission::all();
-        $teacherRole = Role::create(['name' => 'guru']);
+        $teacherRole = Role::create(['name' => 'guru-mapel']);
         $teacherRole->givePermissionTo($teacherPermission);
 
         Permission::create(['name' => 'list students']);
@@ -55,6 +60,14 @@ class PermissionsSeeder extends Seeder
         $homeroomPermission = Permission::all();
         $homeroomRole = Role::create(['name' => 'wali-kelas']);
         $homeroomRole->givePermissionTo($homeroomPermission);
+        
+        Permission::create(['name' => 'create articles']);
+        Permission::create(['name' => 'update articles']);
+        Permission::create(['name' => 'delete articles']);
+
+        Permission::create(['name' => 'create quotes']);
+        Permission::create(['name' => 'update quotes']);
+        Permission::create(['name' => 'delete quotes']);
 
         Permission::create(['name' => 'create achievments']);
         Permission::create(['name' => 'update achievments']);
@@ -111,7 +124,6 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'delete tasks']);
 
         Permission::create(['name' => 'list teachers']);
-        Permission::create(['name' => 'view teachers']);
         Permission::create(['name' => 'create teachers']);
         Permission::create(['name' => 'update teachers']);
         Permission::create(['name' => 'delete teachers']);

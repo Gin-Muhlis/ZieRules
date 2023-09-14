@@ -75,6 +75,7 @@ class StudentTest extends TestCase
             'nis' => $this->faker->unique->text(9),
             'name' => $this->faker->text(255),
             'gender' => 'laki-laki',
+            'code' => $this->faker->text(11),
             'class_id' => $classStudent->id,
         ];
 
