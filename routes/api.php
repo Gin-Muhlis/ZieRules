@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\StudentAbsencesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\StudentDataAchievmentsController;
 use App\Http\Controllers\Api\StudentDataTasksController;
@@ -42,6 +43,9 @@ Route::prefix('student')->group(function () {
     // Data tugas
     Route::get('/data/task', [StudentDataTasksController::class, 'studentTasks']);
     Route::get('/list/task', [TaskController::class, 'indexStudent']);
+
+    // Quote
+    Route::get('/quote', [QuoteController::class, 'generateQuote']);
 });
 
 // route guru
