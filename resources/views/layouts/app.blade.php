@@ -37,6 +37,11 @@
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+
+    <!--  summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
     <!-- Small Ionicons Fixes for AdminLTE -->
     <style>
         html {
@@ -68,6 +73,8 @@
     @stack('modals')
 
     @livewireScripts
+
+   
 
     @stack('scripts')
 

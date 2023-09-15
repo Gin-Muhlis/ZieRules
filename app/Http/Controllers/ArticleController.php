@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Article;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
+use Intervention\Image\ImageManagerStatic as IMGManager;
 
 class ArticleController extends Controller
 {
@@ -53,6 +56,12 @@ class ArticleController extends Controller
         if ($request->hasFile('banner')) {
             $validated['banner'] = $request->file('banner')->store('public');
         }
+
+        $user = Auth::user();
+        $now = Carbon::now()->format('Y-m-d');
+
+        $validated['user_id'] = $user->id;
+        $validated['date'] = $now;
 
         $article = Article::create($validated);
 
@@ -100,6 +109,12 @@ class ArticleController extends Controller
 
             $validated['banner'] = $request->file('banner')->store('public');
         }
+
+        $user = Auth::user();
+        $now = Carbon::now()->format('Y-m-d');
+        
+        $validated['user_id'] = $user->id;
+        $validated['date'] = $now;
 
         $article->update($validated);
 

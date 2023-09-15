@@ -1,3 +1,6 @@
+@php
+    require_once app_path() . "/Helpers/helpers.php"
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -72,13 +75,13 @@
                         <tr>
                             <td>{{ $article->title ?? '-' }}</td>
                             <td>{{ optional($article->user)->name ?? '-' }}</td>
-                            <td>{{ $article->date ?? '-' }}</td>
+                            <td>{{ $article->date ? generateDate($article->date->toDateString()) : '-' }}</td>
                             <td>
                                 <x-partials.thumbnail
                                     src="{{ $article->banner ? \Storage::url($article->banner) : '' }}"
                                 />
                             </td>
-                            <td>{{ $article->content ?? '-' }}</td>
+                            <td>{!! $article->content ?? '-' !!}</td>
                             <td class="text-center" style="width: 134px;">
                                 <div
                                     role="group"

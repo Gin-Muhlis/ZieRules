@@ -21,10 +21,8 @@ class ArticleStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'max:255', 'string'],
-            'user_id' => ['required', 'exists:users,id'],
-            'date' => ['required', 'date'],
             'banner' => ['image', 'max:1024', 'required'],
-            'content' => ['required', 'max:255', 'string'],
+            'content' => ['required'],
         ];
     }
 }
