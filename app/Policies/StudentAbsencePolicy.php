@@ -18,6 +18,10 @@ class StudentAbsencePolicy
     {
         return $user->hasPermissionTo('list studentabsences');
     }
+    public function studentViewAny(Student $user): bool
+    {
+        return $user->hasPermissionTo('list studentabsences');
+    }
 
     /**
      * Determine whether the studentAbsence can view the model.

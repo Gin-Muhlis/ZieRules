@@ -273,6 +273,18 @@ return [
         ],
     ],
 
+    'tanggal_libur' => [
+        'name' => 'Tanggal Libur',
+        'index_title' => 'Daftar Tanggal Libur',
+        'new_title' => 'Tanggal Libur Baru',
+        'create_title' => 'Tambah Tanggal Libur',
+        'edit_title' => 'Edit Tanggal Libur',
+        'show_title' => 'Tampilkan Tanggal Libur',
+        'inputs' => [
+            'date' => 'Tanggal',
+        ],
+    ],
+
     'absensi_siswa' => [
         'name' => 'Absensi Siswa',
         'index_title' => 'Daftar Absensi Siswa',
@@ -283,7 +295,7 @@ return [
         'inputs' => [
             'date' => 'Tanggal',
             'student_id' => 'Siswa',
-            'presence_id' => 'Guru',
+            'presence_id' => 'Kehadiran',
             'time' => 'Jam',
         ],
     ],

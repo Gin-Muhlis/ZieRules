@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Quote;
+use App\Models\Student;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class QuotePolicy
@@ -14,6 +15,10 @@ class QuotePolicy
      * Determine whether the quote can view any models.
      */
     public function viewAny(User $user): bool
+    {
+        return $user->hasPermissionTo('list quotes');
+    }
+    public function studentViewAny(Student $user): bool
     {
         return $user->hasPermissionTo('list quotes');
     }

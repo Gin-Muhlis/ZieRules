@@ -151,5 +151,7 @@ class StudentAbsencesController extends Controller
             'presence_id.exists' => 'Kehadiran tidak valid'
         ]);
     }
+
+
     
 }

@@ -94,7 +94,7 @@ class TeacherController extends Controller
             $historyScansAchievment = $teacher->historyAchievments;
             $historyScansTasks = $teacher->historytasks;
 
-
+            
             $historyScans = $this->generateHistory($historyScansViolation, $historyScansAchievment, $historyScansTasks);
 
             return response()->json([
@@ -119,7 +119,8 @@ class TeacherController extends Controller
                     'teacher' => $violation->teacher->name,
                     'student' => $violation->student->name,
                     'violation' => $violation->violation->name,
-                    'date' => generateDate($violation->date->toDateString())
+                    'date' => generateDate($violation->date->toDateString()),
+                    'order' => $violation->date->toDateString()
                 ];
             }
 
@@ -129,7 +130,8 @@ class TeacherController extends Controller
                     'teacher' => $achievment->teacher->name,
                     'student' => $achievment->student->name,
                     'aachievment' => $achievment->achievment->name,
-                    'date' => generateDate($achievment->date->toDateString())
+                    'date' => generateDate($achievment->date->toDateString()),
+                    'order' => $achievment->date->toDateString()
                 ];
             }
 
@@ -139,17 +141,19 @@ class TeacherController extends Controller
                     'teacher' => $task->teacher->name,
                     'student' => $task->student->name,
                     'task' => $task->task->name,
-                    'date' => generateDate($task->date->toDateString())
+                    'date' => generateDate($task->date->toDateString()),
+                    'order' => $task->date->toDateString()
                 ];
             }
 
-            $result = array_merge($dataViolations, $dataAchievments, $dataTasks);
+            $result = array_merge($dataAchievments, $dataViolations, $dataTasks);
 
             usort($result, function ($a, $b) {
-                return strtotime($b['date']) - strtotime($a['date']);
+                return strtotime($b['order']) - strtotime($a['order']);
             });
-
+            
             return $result;
+
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,

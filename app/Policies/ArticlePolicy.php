@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Article;
+use App\Models\Student;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ArticlePolicy
@@ -14,6 +15,10 @@ class ArticlePolicy
      * Determine whether the article can view any models.
      */
     public function viewAny(User $user): bool
+    {
+        return $user->hasPermissionTo('list articles');
+    }
+    public function studentViewAny(Student $user): bool
     {
         return $user->hasPermissionTo('list articles');
     }

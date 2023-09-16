@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DataTaskController;
@@ -73,6 +75,7 @@ Route::prefix('/')
         Route::resource('student-absences', StudentAbsenceController::class);
         Route::resource('articles', ArticleController::class);
         Route::resource('quotes', QuoteController::class);
+        Route::resource('holidays', HolidayController::class);
 
         Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
         Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');
@@ -98,3 +101,5 @@ Route::prefix('/')
         Route::post('student/import', [StudentController::class, 'import'])->name('student.import');
         Route::post('teacher/import', [TeacherController::class, 'import'])->name('teacher.import');
     });
+
+    Route::get('send-mail', [MailController ::class, 'index']);

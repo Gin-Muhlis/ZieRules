@@ -177,6 +177,14 @@
                                 </a>
                             </li>
                             @endcan
+                            @can('view-any', App\Models\Holiday::class)
+                            <li class="nav-item">
+                                <a href="{{ route('holidays.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p>Tanggal Libur</p>
+                                </a>
+                            </li>
+                            @endcan
                         </ul>
                     </li>
                     <li class="nav-item">

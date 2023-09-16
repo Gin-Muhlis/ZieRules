@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Api\AchievmentController;
+use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\StudentAbsencesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,13 +40,19 @@ Route::prefix('student')->group(function () {
 
     // Data Absensi
     Route::post('/absence/create', [StudentAbsencesController::class, 'absenceStudent']);
+    Route::get('/absence/data', [StudentController::class, 'getAbsence']);
 
     // Data tugas
     Route::get('/data/task', [StudentDataTasksController::class, 'studentTasks']);
     Route::get('/list/task', [TaskController::class, 'indexStudent']);
 
     // Quote
-    Route::get('/quote', [QuoteController::class, 'generateQuote']);
+    Route::get('/generate/quote', [QuoteController::class, 'generateQuote']);
+
+    // Artikel
+    Route::get('/list/article', [ArticleController::class, 'listArticle']);
+    Route::get('/article/{article}', [ArticleController::class, 'detailArticle']);
+
 });
 
 // route guru

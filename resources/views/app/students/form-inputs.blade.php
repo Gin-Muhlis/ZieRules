@@ -139,7 +139,7 @@
                     let n = Math.floor(Math.random() * (i + 1));
                     [splitNis[i], splitNis[n]] = [splitNis[n], splitNis[i]]
                 }
-                let randomNum = Math.floor(Math.random() * 99);
+                let randomNum = Math.floor(Math.random() * 99) + 10;
 
                 let code = splitNis.join('') + randomNum.toString();
 
