@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 require_once app_path() . '/helpers/helpers.php';
 
+use Exception;
+use Carbon\Carbon;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TeacherResource;
-use App\Models\Student;
-use Exception;
 
 class TeacherController extends Controller
 {
@@ -115,18 +116,18 @@ class TeacherController extends Controller
             $this->authorize('teacher-view-any', StudentAbsence::class);
 
             $teacher = $request->user();
-
-            $students = Student::with('studentAbsences')->whereClassId($teacher->homerooms->class_id)->get();
+            // dd($teacher->homerooms);
+            $students = Student::with('studentAbsences')->whereClassId($teacher->homerooms[0]->class_id)->get();
 
             $result = [];
-
+            $date = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
+            dd($date);
             foreach ($students as $student) {
                 $result[] =[
                     'student' => $student->name,
                     'student_id' => $student->id,
-                    'kehadiran' => $student->studentAbsences ? 'masuk' : 'tidak masuk',
-                    'jam' => $student->studentAbsences ? $student->studentAbsences->time : null,
-
+                    'presence' => $student->studentAbsences()->whereDate('date',$date)->first() ? 'masuk' : 'tidak masuk',
+                    'time' => $student->studentAbsences()->whereDate('date',$date)->first() ? $student->studentAbsences->whereDate('date',$date)->first()->time : null,
                 ];
             }
 
