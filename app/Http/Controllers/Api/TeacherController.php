@@ -95,7 +95,7 @@ class TeacherController extends Controller
             $historyScansAchievment = $teacher->historyAchievments;
             $historyScansTasks = $teacher->historytasks;
 
-            
+
             $historyScans = $this->generateHistory($historyScansViolation, $historyScansAchievment, $historyScansTasks);
 
             return response()->json([
@@ -111,23 +111,29 @@ class TeacherController extends Controller
         }
     }
 
-    public function studentsPresence(Request $request) {
+    /**
+     * Summary of studentsPresence
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function presences(Request $request)
+    {
         try {
             $this->authorize('teacher-view-any', StudentAbsence::class);
-
+     
             $teacher = $request->user();
-            // dd($teacher->homerooms);
+
             $students = Student::with('studentAbsences')->whereClassId($teacher->homerooms[0]->class_id)->get();
 
             $result = [];
-            $date = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
-            dd($date);
+            $date = Carbon::now()->format('Y-m-d');
+
             foreach ($students as $student) {
-                $result[] =[
+                $result[] = [
                     'student' => $student->name,
                     'student_id' => $student->id,
-                    'presence' => $student->studentAbsences()->whereDate('date',$date)->first() ? 'masuk' : 'tidak masuk',
-                    'time' => $student->studentAbsences()->whereDate('date',$date)->first() ? $student->studentAbsences->whereDate('date',$date)->first()->time : null,
+                    'presence' => $student->studentAbsences()->whereDate('date', $date)->first() ? 'masuk' : 'tidak masuk',
+                    'time' => $student->studentAbsences()->whereDate('date', $date)->first() ? $student->studentAbsences->whereDate('date', $date)->first()->time : null,
                 ];
             }
 
@@ -185,9 +191,8 @@ class TeacherController extends Controller
             usort($result, function ($a, $b) {
                 return strtotime($b['order']) - strtotime($a['order']);
             });
-            
-            return $result;
 
+            return $result;
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,
