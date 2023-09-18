@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\StudentAbsence;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentAbsencePolicy
@@ -19,6 +20,10 @@ class StudentAbsencePolicy
         return $user->hasPermissionTo('list studentabsences');
     }
     public function studentViewAny(Student $user): bool
+    {
+        return $user->hasPermissionTo('list studentabsences');
+    }
+    public function teacherViewAny(Teacher $user): bool
     {
         return $user->hasPermissionTo('list studentabsences');
     }

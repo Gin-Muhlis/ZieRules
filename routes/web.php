@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MailController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -101,5 +100,3 @@ Route::prefix('/')
         Route::post('student/import', [StudentController::class, 'import'])->name('student.import');
         Route::post('teacher/import', [TeacherController::class, 'import'])->name('teacher.import');
     });
-
-    Route::get('send-mail', [MailController ::class, 'index']);

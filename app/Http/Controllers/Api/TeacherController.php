@@ -110,6 +110,39 @@ class TeacherController extends Controller
         }
     }
 
+    public function studentsPresence(Request $request) {
+        try {
+            $this->authorize('teacher-view-any', StudentAbsence::class);
+
+            $teacher = $request->user();
+
+            $students = Student::with('studentAbsences')->whereClassId($teacher->homerooms->class_id)->get();
+
+            $result = [];
+
+            foreach ($students as $student) {
+                $result[] =[
+                    'student' => $student->name,
+                    'student_id' => $student->id,
+                    'kehadiran' => $student->studentAbsences ? 'masuk' : 'tidak masuk',
+                    'jam' => $student->studentAbsences ? $student->studentAbsences->time : null,
+
+                ];
+            }
+
+            return response()->json([
+                'status' => 200,
+                'dataPresence' => $result
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     private function generateHistory($violations, $achievments, $tasks)
     {
         try {

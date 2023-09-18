@@ -85,4 +85,7 @@ Route::prefix('teacher')->group(function () {
 
     // Data scan
     Route::get('/history/scan', [TeacherController::class, 'historyScans']);
+
+    // Data Absensi siswa
+    Route::get('/presence', [TeacherController::class, 'studentsPresence']);
 });
