@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentAbsencesController extends Controller
 {
-
+    public function __construct() {
+        $this->middleware('auth:sanctum')->except('absenceStudent');
+    }
     public function absenceStudent(Request $request)
     {
         try {
@@ -113,7 +115,7 @@ class StudentAbsencesController extends Controller
             if (!is_null($isAbsence)) {
                 return response()->json([
                     'status' => 422,
-                    'message' => 'Kamu telah melakukan absensi'
+                    'message' => 'Siswa telah melakukan absensi'
                 ], 422);
             }
 

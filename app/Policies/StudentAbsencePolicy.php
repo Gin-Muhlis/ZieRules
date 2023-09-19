@@ -44,7 +44,7 @@ class StudentAbsencePolicy
         return $user->hasPermissionTo('create studentabsences');
     }
 
-    public function studentCreate(Student $user): bool
+    public function teacherCreate(Teacher $user): bool
     {
         return $user->hasPermissionTo('create studentabsences');
     }

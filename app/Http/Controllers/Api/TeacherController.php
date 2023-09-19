@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use App\Models\StudentAbsence;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TeacherResource;
@@ -129,11 +130,15 @@ class TeacherController extends Controller
             $date = Carbon::now()->format('Y-m-d');
 
             foreach ($students as $student) {
+                $absence = StudentAbsence::with('presence')->where([
+                    ['date', $date],
+                    ['student_id', $student->id]
+                ])->first();
                 $result[] = [
                     'student' => $student->name,
                     'student_id' => $student->id,
-                    'presence' => $student->studentAbsences()->whereDate('date', $date)->first() ? 'masuk' : 'tidak masuk',
-                    'time' => $student->studentAbsences()->whereDate('date', $date)->first() ? $student->studentAbsences->whereDate('date', $date)->first()->time : null,
+                    'presence' => !is_null($absence) ? $absence->presence->name : 'tidak masuk',
+                    'time' => !is_null($absence) ? $absence->time : null,
                 ];
             }
 
