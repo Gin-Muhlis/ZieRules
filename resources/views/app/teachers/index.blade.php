@@ -58,6 +58,9 @@
                                 <th class="text-left">
                                     @lang('crud.guru.inputs.gender')
                                 </th>
+                                <th class="text-left">
+                                   Role
+                                </th>
                                 <th class="text-center">
                                     @lang('crud.common.actions')
                                 </th>
@@ -73,6 +76,7 @@
                                         <x-partials.thumbnail
                                             src="{{ $teacher->image ? \Storage::url($teacher->image) : \Storage::url('public/default.jpg') }}" />
                                     </td>
+                                    <td>{{ $teacher->gender ?? '-' }}</td>
                                     <td>{{ $teacher->gender ?? '-' }}</td>
                                     <td class="text-center" style="width: 134px;">
                                         <div role="group" aria-label="Row Actions" class="btn-group">

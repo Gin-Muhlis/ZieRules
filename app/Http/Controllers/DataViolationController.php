@@ -137,9 +137,9 @@ class DataViolationController extends Controller
     {
         $this->authorize('view-any', DataViolation::class);
 
-        $students = Student::with('dataViolations')->get();
+        $students = Student::with('dataViolations')->whereClassId(1)->get();
         $classes = ClassStudent::pluck('name', 'id');
-
+        $dataStudent = Student::with('dataViolations')->get();
         $reports = [];
 
         foreach ($students as $student) {
@@ -152,9 +152,20 @@ class DataViolationController extends Controller
             ];
         }
 
+        $dataReport = [];
+        foreach ($dataStudent as $student) {
+            $dataReport[] = [
+                'student_id' => $student->id,
+                'class' => $student->class_id,
+                'name' => $student->name,
+                'violationsCount' => $student->dataViolations->count(),
+                'totalPoint' => $this->generatePoint($student->dataVIolations)
+            ];
+        }
+
         return view(
             'app.data_violations.report',
-            compact('reports', 'classes')
+            compact('reports', 'classes', 'dataReport')
         );
     }
 
@@ -164,11 +175,12 @@ class DataViolationController extends Controller
         $dataViolations = DataViolation::with('violation')->whereStudentId($student->id)->latest()->get();
 
         $reports = [];
-        $classes = ClassStudent::pluck('name', 'id');
         $student_id = $student->id;
         $student_name = $student->name;
+        $total_point = 0;
 
         foreach ($dataViolations as $data) {
+            $total_point += $data->violation->point; 
             $reports[] = [
                 'student_id' => $student->id,
                 'student' => $student->name,
@@ -181,7 +193,7 @@ class DataViolationController extends Controller
 
         return view(
             'app.data_violations.detail',
-            compact('reports', 'student_id', 'classes', 'student_name')
+            compact('reports', 'student_id', 'student_name', 'total_point')
         );
     }
 
@@ -191,13 +203,9 @@ class DataViolationController extends Controller
 
         $class = $request->input("class_student") != 'all' || !is_null($request->input("class_student")) ? $request->input("class_student") : null;
 
-        if (!is_null($class) && $request->input("class_student") != 'all') {
-            $dataClass = ClassStudent::findOrFail($class);
+        $dataClass = ClassStudent::findOrFail($class);
 
-            return Excel::download(new ViolationExport($class), "laporan_pelanggaran_$dataClass->code.xlsx");
-        }
-
-        return Excel::download(new ViolationExport(null), 'laporan_pelanggaran.xlsx');
+        return Excel::download(new ViolationExport($dataClass), "laporan_pelanggaran_$dataClass->code.xlsx");
     }
 
     public function exportDetail(Student $student) {

@@ -5,6 +5,9 @@
  <table class="table table-borderless table-hover">
      <thead>
          <tr>
+             <th class="text-center">
+                 No
+             </th>
              <th class="text-left">
                  Nama Siswa
              </th>
@@ -23,6 +26,9 @@
      <tbody>
          @forelse($reports as $data)
              <tr>
+                 <td class="text-center">
+                     {{ $loop->index + 1 }}
+                 </td>
                  <td>
                      {{ $data['student'] ?? '-' }}
                  </td>
@@ -39,10 +45,19 @@
              </tr>
          @empty
              <tr>
-                 <td colspan="6">
+                 <td colspan="5">
                      @lang('crud.common.no_items_found')
                  </td>
              </tr>
          @endforelse
+         <tr>
+            <td colspan="4">
+                Total                
+            </td>
+            <td>
+                {{ $total_point }}
+            </td>
+
+        </tr>
      </tbody>
  </table>

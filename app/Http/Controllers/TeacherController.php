@@ -72,7 +72,6 @@ class TeacherController extends Controller
         }
 
         $teacher = Teacher::create($validated);
-
         $teacher->assignRole($validated['role']);
 
         if ($class_id) {

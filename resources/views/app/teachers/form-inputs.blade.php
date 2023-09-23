@@ -66,7 +66,7 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-12 class-homerooms d-none">
-        <x-inputs.select name="class_id" label="Kelas" required>
+        <x-inputs.select name="class_id" label="Kelas" class="select-class" disabled>
             <option disabled>Silahkan Pilih Kelas</option>
             @foreach ($classes as $value => $label)
                 <option value="{{ $value }}">{{ $label }}
@@ -85,6 +85,7 @@
 
                 if (value === 'wali-kelas') {
                     $(".class-homerooms").removeClass("d-none");
+                    $(".select-class").removeAttr('disabled')
                 } else {
                     $(".class-homerooms").addClass("d-none");
                 }
