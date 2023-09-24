@@ -26,16 +26,11 @@ class DataAchievmentController extends Controller
     {
         $this->authorize('view-any', DataAchievment::class);
 
-        $search = $request->get('search', '');
-
-        $dataAchievments = DataAchievment::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $dataAchievments = DataAchievment::all();
 
         return view(
             'app.data_achievments.index',
-            compact('dataAchievments', 'search')
+            compact('dataAchievments')
         );
     }
 
@@ -137,23 +132,17 @@ class DataAchievmentController extends Controller
     {
         $this->authorize('view-any', DataAchievment::class);
 
-        $students = Student::with('dataAchievments')->get();
+        $students = Student::with('dataAchievments')->whereClassId(1)->get();
         $classes = ClassStudent::pluck('name', 'id');
-        $reports = [];
+        $dataStudent = Student::with('dataAchievments')->get();
+        $firstClass = ClassStudent::first();
 
-        foreach ($students as $student) {
-            $reports[] = [
-                'student_id' => $student->id,
-                'class' => $student->class_id,
-                'name' => $student->name,
-                'achievmentsCount' => $student->dataAchievments->count(),
-                'totalPoint' => $this->generatePoint($student->dataAchievments)
-            ];
-        }
+        $reports = $this->generateReport($students);
+        $dataReport = $this->generateReport($dataStudent);
 
         return view(
             'app.data_achievments.report',
-            compact('reports', 'classes')
+            compact('reports', 'classes', 'dataReport', 'firstClass')
         );
 
     }
@@ -166,8 +155,10 @@ class DataAchievmentController extends Controller
         $reports = [];
         $student_id = $student->id;
         $student_name = $student->name;
+        $total_point = 0;
 
         foreach ($dataAchievments as $data) {
+            $total_point += $data->achievment->point;
             $reports[] = [
                 'student' => $student->name,
                 'date' => $data->date->toDateString(),
@@ -178,7 +169,7 @@ class DataAchievmentController extends Controller
 
         return view(
             'app.data_achievments.detail',
-            compact('reports', 'student_id', 'student_name')
+            compact('reports', 'student_id', 'student_name', 'total_point')
         );
     }
 
@@ -188,16 +179,28 @@ class DataAchievmentController extends Controller
 
         $class = $request->input("class_student") != 'all' || !is_null($request->input("class_student")) ? $request->input("class_student") : null;
 
-        if (!is_null($class) && $request->input("class_student") != 'all') {
-            $dataClass = ClassStudent::findOrFail($class);
+        $dataClass = ClassStudent::findOrFail($class);
 
-            return Excel::download(new AchievmentExport($class), "laporan_prestasi_$dataClass->code.xlsx");
-        }
-        return Excel::download(new AchievmentExport(null), 'laporan_prestasi.xlsx');
+        return Excel::download(new AchievmentExport($dataClass), "laporan_prestasi_$dataClass->code.xlsx");
     }
 
     public function exportDetail(Student $student) {
         return Excel::download(new DetailAchievmentExport($student->id), "laporan_prestasi_$student->name.xlsx");
+    }
+
+    private function generateReport($collection) {
+        $result = [];
+        foreach ($collection as $student) {
+            $result[] = [
+                'student_id' => $student->id,
+                'class' => $student->class_id,
+                'name' => $student->name,
+                'achievmentsCount' => $student->dataAchievments->count(),
+                'totalPoint' => $this->generatePoint($student->dataAchievments)
+            ];
+        }
+
+        return $result;
     }
 
     private function generatePoint($data)

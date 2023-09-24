@@ -28,8 +28,11 @@
 
                 <div class="table-responsive">
                     <table class="table table-borderless table-hover">
-                        <thead>
+                        <thead class="table-secondary">
                             <tr>
+                                <th class="text-center">
+                                    No
+                                </th>
                                 <th class="text-left">
                                     Nama Siswa
                                 </th>
@@ -45,6 +48,9 @@
                         <tbody>
                             @forelse($reports as $data)
                                 <tr>
+                                    <td class="text-center">
+                                        {{ $loop->index + 1 }}
+                                    </td>
                                     <td>
                                         {{ $data['student'] ?? '-' }}
                                     </td>

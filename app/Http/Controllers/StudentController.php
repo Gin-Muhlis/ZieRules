@@ -24,14 +24,9 @@ class StudentController extends Controller
     {
         $this->authorize('view-any', Student::class);
 
-        $search = $request->get('search', '');
+        $students = Student::all();
 
-        $students = Student::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.students.index', compact('students', 'search'));
+        return view('app.students.index', compact('students'));
     }
 
     /**

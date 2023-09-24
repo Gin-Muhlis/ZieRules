@@ -12,10 +12,8 @@
                     <form>
                         <div class="input-group">
                             <select class="form-control" name="class" id="class">
-                                <option value="empty" disabled selected>Filter Laporan</option>
-                                <option value="all">Semua Kelas</option>
-                                @foreach ($classes as $value => $item)
-                                    <option value="{{ $value }}">{{ $item }}</option>
+                                 @foreach ($classes as $value => $item)
+                                    <option value="{{ $value }}" {{ $value === $firstClass->id ? 'selected' : '' }}>{{ $item }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -38,8 +36,11 @@
 
                 <div class="table-responsive">
                     <table class="table table-borderless table-hover">
-                        <thead>
+                        <thead class="table-secondary">
                             <tr>
+                                <th class="text-center">
+                                    No
+                                </th>
                                 <th class="text-left">
                                     Nama Siswa
                                 </th>
@@ -57,6 +58,9 @@
                         <tbody class="body-table">
                             @forelse($reports as $data)
                                 <tr>
+                                    <td class="text-center">
+                                        {{$loop->index + 1 }}
+                                    </td>
                                     <td>
                                         {{ $data['name'] ?? '-' }}
                                     </td>
@@ -88,13 +92,13 @@
         </div>
     </div>
     <form action="{{ route('data.achievment.export') }}" method="get" class="form-export">
-        <input type="hidden" name="class_student" id="input_class_student">
+        <input type="hidden" name="class_student" id="input_class_student" value="{{ $firstClass->id }}">
     </form>
 @endsection
 @push('scripts')
     <script>
         $(document).ready(function() {
-            const objectString = JSON.stringify(@json($reports))
+            const objectString = JSON.stringify(@json($dataReport))
             const dataReport = JSON.parse(objectString)
 
             $("#class").on("input", (event) => {
@@ -102,12 +106,15 @@
 
                 $("#input_class_student").val(value)
 
-                let students = value !== 'all' ? dataReport.filter(item => item.class == value) : dataReport
+                let students = dataReport.filter(item => item.class == value)
 
                 let markup = ``
 
-                students.forEach(item => {
+                students.forEach((item, index) => {
                     markup += `  <tr>
+                                    <td class="text-center">
+                                        ${index + 1}
+                                    </td>
                                     <td>
                                         ${item.name}
                                     </td>

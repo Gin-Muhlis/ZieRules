@@ -18,14 +18,9 @@ class PresenceController extends Controller
     {
         $this->authorize('view-any', Presence::class);
 
-        $search = $request->get('search', '');
+        $presences = Presence::all();
 
-        $presences = Presence::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.presences.index', compact('presences', 'search'));
+        return view('app.presences.index', compact('presences'));
     }
 
     /**
@@ -46,6 +41,7 @@ class PresenceController extends Controller
         $this->authorize('create', Presence::class);
 
         $validated = $request->validated();
+        $validated['name'] = strtolower($validated['name']);
 
         $presence = Presence::create($validated);
 
@@ -84,6 +80,7 @@ class PresenceController extends Controller
         $this->authorize('update', $presence);
 
         $validated = $request->validated();
+        $validated['name'] = strtolower($validated['name']);
 
         $presence->update($validated);
 

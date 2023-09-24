@@ -21,14 +21,9 @@ class AchievmentController extends Controller
     {
         $this->authorize('view-any', Achievment::class);
 
-        $search = $request->get('search', '');
+        $achievments = Achievment::all();
 
-        $achievments = Achievment::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.achievments.index', compact('achievments', 'search'));
+        return view('app.achievments.index', compact('achievments'));
     }
 
     /**

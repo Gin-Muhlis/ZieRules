@@ -56,6 +56,7 @@ class PermissionsSeeder extends Seeder
         $teacherRole->givePermissionTo($teacherPermission);
 
         Permission::create(['name' => 'list students']);
+        Permission::create(['name' => 'list presences']);
         // membuat role wali-kelas dan asign permission
         $homeroomPermission = Permission::all();
         $homeroomRole = Role::create(['name' => 'wali-kelas']);
@@ -79,13 +80,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update classstudents']);
         Permission::create(['name' => 'delete classstudents']);
 
-        Permission::create(['name' => 'list holidays']);
-        Permission::create(['name' => 'view holidays']);
-        Permission::create(['name' => 'create holidays']);
-        Permission::create(['name' => 'update holidays']);
-        Permission::create(['name' => 'delete holidays']);
 
-        Permission::create(['name' => 'list presences']);
         Permission::create(['name' => 'view presences']);
         Permission::create(['name' => 'create presences']);
         Permission::create(['name' => 'update presences']);

@@ -20,14 +20,9 @@ class HomeroomController extends Controller
     {
         $this->authorize('view-any', Homeroom::class);
 
-        $search = $request->get('search', '');
+        $homerooms = Homeroom::all();
 
-        $homerooms = Homeroom::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.homerooms.index', compact('homerooms', 'search'));
+        return view('app.homerooms.index', compact('homerooms'));
     }
 
     /**

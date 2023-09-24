@@ -23,16 +23,12 @@ class StudentAbsenceController extends Controller
     {
         $this->authorize('view-any', StudentAbsence::class);
 
-        $search = $request->get('search', '');
 
-        $studentAbsences = StudentAbsence::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $studentAbsences = StudentAbsence::all();
 
         return view(
             'app.student_absences.index',
-            compact('studentAbsences', 'search')
+            compact('studentAbsences')
         );
     }
 
@@ -132,27 +128,17 @@ class StudentAbsenceController extends Controller
     {
         $this->authorize('view-any', StudentAbsence::class);
 
-        $students = Student::with('studentAbsences')->get();
+        $students = Student::with('studentAbsences')->whereClassId(1)->get();
         $classes = ClassStudent::pluck('name', 'id');
-        $reports = [];
+        $dataStudent = Student::with('studentAbsences')->get();
+        $firstClass = ClassStudent::first();
 
-        foreach ($students as $student) {
-            $reports[] = [
-                'student_id' => $student->id,
-                'name' => $student->name,
-                'class' => $student->class->id,
-                'className' => $student->class->name,
-                'presences' => $student->studentAbsences()->where('presence_id', 1)->get()->count(),
-                'permissions' => $student->studentAbsences()->where('presence_id', 2)->get()->count(),
-                'sicks' => $student->studentAbsences()->where('presence_id', 3)->get()->count(),
-                'withoutExplanations' => $student->studentAbsences()->where('presence_id', 4)->get()->count(),
-            ];
-        }
-
+        $reports = $this->generateReport($students);
+        $dataReport = $this->generateReport($dataStudent);
 
         return view(
             'app.student_absences.report',
-            compact('reports', 'classes')
+            compact('reports', 'classes', 'dataReport', 'firstClass')
         );
     }
 
@@ -162,11 +148,36 @@ class StudentAbsenceController extends Controller
 
         $class = $request->input("class_student") ?? null;
 
-        if (!is_null($class)) {
-            $dataClass = ClassStudent::findOrFail($class);
-            return Excel::download(new StudentAbsenceExport($class), "laporan_kehadiran_$dataClass->code.xlsx");
-        }
+        $dataClass = ClassStudent::findOrFail($class);
+        return Excel::download(new StudentAbsenceExport($dataClass), "laporan_kehadiran_$dataClass->code.xlsx");
+    }
 
-        return Excel::download(new StudentAbsenceExport(null), 'laporan_kehadiran.xlsx');
+    private function generateReport($collection)
+    {
+        $result = [];
+
+        foreach ($collection as $student) {
+            $presences = 0;
+            $permissions = 0;
+            $sicks = 0;
+            $withoutExplanations = 0;
+            $absences = StudentAbsence::whereStudentId($student->id)->get();
+            foreach ($absences as $absence) {
+                $presences = strtolower($absence->presence->name) == 'hadir' ? $presences + 1 : $presences;
+                $permissions = strtolower($absence->presence->name) == 'izin' ? $permissions + 1 : $permissions;
+                $sicks = strtolower($absence->presence->name) == 'sakit' ? $sicks + 1 : $sicks;
+                $withoutExplanations = strtolower($absence->presence->name) == 'tanpa keterangan' ? $withoutExplanations + 1 : $withoutExplanations;
+            }
+            $result[] = [
+                'student_id' => $student->id,
+                'name' => $student->name,
+                'class' => $student->class->id,
+                'presences' => $presences,
+                'permissions' => $permissions,
+                'sicks' => $sicks,
+                'withoutExplanations' => $withoutExplanations,
+            ];
+        }
+        return $result;
     }
 }

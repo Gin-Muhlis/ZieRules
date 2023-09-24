@@ -25,15 +25,9 @@ class TeacherController extends Controller
     {
         $this->authorize('view-any', Teacher::class);
 
-        $search = $request->get('search', '');
+        $teachers = Teacher::all();
 
-
-        $teachers = Teacher::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.teachers.index', compact('teachers', 'search'));
+        return view('app.teachers.index', compact('teachers'));
     }
 
     /**

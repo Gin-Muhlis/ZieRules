@@ -21,16 +21,12 @@ class HistoryViolationController extends Controller
     {
         $this->authorize('view-any', HistoryViolation::class);
 
-        $search = $request->get('search', '');
 
-        $historyViolations = HistoryViolation::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $historyViolations = HistoryViolation::all();
 
         return view(
             'app.history_violations.index',
-            compact('historyViolations', 'search')
+            compact('historyViolations')
         );
     }
 

@@ -18,16 +18,11 @@ class ClassStudentController extends Controller
     {
         $this->authorize('view-any', ClassStudent::class);
 
-        $search = $request->get('search', '');
-
-        $classStudents = ClassStudent::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $classStudents = ClassStudent::all();
 
         return view(
             'app.class_students.index',
-            compact('classStudents', 'search')
+            compact('classStudents')
         );
     }
 

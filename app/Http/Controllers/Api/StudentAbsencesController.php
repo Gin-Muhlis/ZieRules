@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 require_once app_path() . '/helpers/helpers.php';
 
-use App\Http\Controllers\Controller;
-use App\Models\Student;
-use App\Models\StudentAbsence;
-use Carbon\Carbon;
 use Exception;
+use Carbon\Carbon;
+use App\Models\Student;
+use App\Models\Presence;
 use Illuminate\Http\Request;
+use App\Models\StudentAbsence;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class StudentAbsencesController extends Controller
@@ -55,10 +56,12 @@ class StudentAbsencesController extends Controller
                 ], 422);
             }
 
+            $presence = Presence::whereName('hadir')->first();
+
             $validated['student_id'] = $student->id;
             $validated['date'] = $now;
             $validated['time'] = $time;
-            $validated['presence_id'] = 1;
+            $validated['presence_id'] = $presence->id;
 
             DB::beginTransaction();
 

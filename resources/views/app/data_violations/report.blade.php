@@ -13,7 +13,7 @@
                         <div class="input-group">
                             <select class="form-control" name="class" id="class">
                                 @foreach ($classes as $value => $item)
-                                    <option value="{{ $value }}" {{ $value === 1 ? 'selected' : '' }}>{{ $item }}</option>
+                                    <option value="{{ $value }}" {{ $value === $firstClass->id ? 'selected' : '' }}>{{ $item }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -88,7 +88,7 @@
         </div>
     </div>
      <form action="{{ route('data.violation.export') }}" method="get" class="form-export">
-        <input type="hidden" name="class_student" id="input_class_student" value="1">
+        <input type="hidden" name="class_student" id="input_class_student" value="{{ $firstClass->id }}">
     </form>
 @endsection
 

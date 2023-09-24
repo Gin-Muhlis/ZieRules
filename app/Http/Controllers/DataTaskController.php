@@ -28,12 +28,9 @@ class DataTaskController extends Controller
 
         $search = $request->get('search', '');
 
-        $dataTasks = DataTask::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $dataTasks = DataTask::all();
 
-        return view('app.data_tasks.index', compact('dataTasks', 'search'));
+        return view('app.data_tasks.index', compact('dataTasks'));
     }
 
     /**
@@ -134,24 +131,17 @@ class DataTaskController extends Controller
     {
         $this->authorize('view-any', DataTask::class);
 
-        $students = Student::with('dataTasks')->get();
+        $students = Student::with('dataTasks')->whereClassId(1)->get();
         $classes = ClassStudent::pluck('name', 'id');
+        $dataStudent = Student::with('dataTasks')->get();
+        $firstClass = ClassStudent::first();
 
-        $reports = [];
-
-        foreach ($students as $student) {
-            $reports[] = [
-                'student_id' => $student->id,
-                'class' => $student->class_id,
-                'className' => $student->class->name,
-                'name' => $student->name,
-                'tasksCount' => $student->dataTasks->count(),
-            ];
-        }
+        $reports = $this->generateReport($students);
+        $dataReport = $this->generateReport($dataStudent);
 
         return view(
             'app.data_tasks.report',
-            compact('reports', 'classes')
+            compact('reports', 'classes', 'dataReport', 'firstClass')
         );
 
     }
@@ -184,16 +174,27 @@ class DataTaskController extends Controller
 
         $class = $request->input("class_student") != 'all' || !is_null($request->input("class_student")) ? $request->input("class_student") : null;
 
-        if (!is_null($class) && $request->input("class_student") != 'all') {
-            $dataClass = ClassStudent::findOrFail($class);
+        $dataClass = ClassStudent::findOrFail($class);
 
-            return Excel::download(new TaskExport($class), "laporan_tugas_$dataClass->code.xlsx");
-        }
-        return Excel::download(new TaskExport(null), 'laporan_tugas.xlsx');
+        return Excel::download(new TaskExport($dataClass), "laporan_tugas_$dataClass->code.xlsx");
     }
 
     public function exportDetail(Student $student) {
         return Excel::download(new DetailTaskExport($student->id), "laporan_tugas_$student->name.xlsx");
+    }
+
+    public function generateReport($collection) {
+        $result = [];
+        foreach ($collection as $student) {
+            $result[] = [
+                'student_id' => $student->id,
+                'class' => $student->class_id,
+                'name' => $student->name,
+                'tasksCount' => $student->dataTasks->count(),
+            ];
+        }
+
+        return $result;
     }
 
 }

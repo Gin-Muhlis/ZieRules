@@ -8,6 +8,7 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Presence;
 use Illuminate\Http\Request;
 use App\Models\StudentAbsence;
 use App\Http\Controllers\Controller;
@@ -198,6 +199,34 @@ class TeacherController extends Controller
             });
 
             return $result;
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function listPresence() {
+        try {
+            $this->authorize('teacher-view-any', Presence::class);
+
+            $listPresence = Presence::all();
+
+            $result = [];
+
+            foreach($listPresence as $item) {
+                $result[] = [
+                    'id' => $item->id,
+                    'prsence' => $item->name
+                 ];
+            }
+
+            return response()->json([
+                'status' => 200,
+                'listPresence' => $result
+            ]);
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,

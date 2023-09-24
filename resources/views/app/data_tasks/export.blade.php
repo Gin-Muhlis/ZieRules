@@ -1,11 +1,11 @@
 <table class="table table-borderless table-hover">
     <thead>
         <tr>
-            <th class="text-left">
-                Nama Siswa
+            <th class="text-center">
+                No
             </th>
             <th class="text-left">
-                Kelas
+                Nama Siswa
             </th>
             <th class="text-center">
                 Jumlah Tugas Selesai
@@ -16,10 +16,10 @@
         @forelse($reports as $data)
             <tr>
                 <td>
-                    {{ $data['name'] ?? '-' }}
+                    {{ $loop->index + 1 }}
                 </td>
                 <td>
-                    {{ $data['className'] ?? '-' }}
+                    {{ $data['name'] ?? '-' }}
                 </td>
                 <td class="text-center">
                     {{ $data['tasksCount'] ?? '-' }}
@@ -28,7 +28,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="6">
+                <td colspan="4">
                     @lang('crud.common.no_items_found')
                 </td>
             </tr>

@@ -21,16 +21,12 @@ class HistoryTaskController extends Controller
     {
         $this->authorize('view-any', HistoryTask::class);
 
-        $search = $request->get('search', '');
 
-        $historyTasks = HistoryTask::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $historyTasks = HistoryTask::all();
 
         return view(
             'app.history_tasks.index',
-            compact('historyTasks', 'search')
+            compact('historyTasks')
         );
     }
 

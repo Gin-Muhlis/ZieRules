@@ -21,14 +21,9 @@ class ViolationController extends Controller
     {
         $this->authorize('view-any', Violation::class);
 
-        $search = $request->get('search', '');
+        $violations = Violation::all();
 
-        $violations = Violation::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.violations.index', compact('violations', 'search'));
+        return view('app.violations.index', compact('violations'));
     }
 
     /**

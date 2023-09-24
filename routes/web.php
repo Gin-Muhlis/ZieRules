@@ -8,7 +8,6 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DataTaskController;
@@ -36,8 +35,10 @@ use App\Http\Controllers\HistoryAchievmentController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
 });
 
 Auth::routes();
@@ -74,7 +75,6 @@ Route::prefix('/')
         Route::resource('student-absences', StudentAbsenceController::class);
         Route::resource('articles', ArticleController::class);
         Route::resource('quotes', QuoteController::class);
-        Route::resource('holidays', HolidayController::class);
 
         Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
         Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');

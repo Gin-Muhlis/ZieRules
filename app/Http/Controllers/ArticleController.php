@@ -23,14 +23,9 @@ class ArticleController extends Controller
     {
         $this->authorize('view-any', Article::class);
 
-        $search = $request->get('search', '');
+        $articles = Article::all();
 
-        $articles = Article::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.articles.index', compact('articles', 'search'));
+        return view('app.articles.index', compact('articles'));
     }
 
     /**

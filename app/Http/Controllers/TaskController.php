@@ -21,14 +21,9 @@ class TaskController extends Controller
     {
         $this->authorize('view-any', Task::class);
 
-        $search = $request->get('search', '');
+        $tasks = Task::all();
 
-        $tasks = Task::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.tasks.index', compact('tasks', 'search'));
+        return view('app.tasks.index', compact('tasks'));
     }
 
     /**

@@ -26,16 +26,11 @@ class DataViolationController extends Controller
     {
         $this->authorize('view-any', DataViolation::class);
 
-        $search = $request->get('search', '');
-
-        $dataViolations = DataViolation::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $dataViolations = DataViolation::all();
 
         return view(
             'app.data_violations.index',
-            compact('dataViolations', 'search')
+            compact('dataViolations')
         );
     }
 
@@ -140,32 +135,14 @@ class DataViolationController extends Controller
         $students = Student::with('dataViolations')->whereClassId(1)->get();
         $classes = ClassStudent::pluck('name', 'id');
         $dataStudent = Student::with('dataViolations')->get();
-        $reports = [];
-
-        foreach ($students as $student) {
-            $reports[] = [
-                'student_id' => $student->id,
-                'class' => $student->class_id,
-                'name' => $student->name,
-                'violationsCount' => $student->dataViolations->count(),
-                'totalPoint' => $this->generatePoint($student->dataVIolations)
-            ];
-        }
-
-        $dataReport = [];
-        foreach ($dataStudent as $student) {
-            $dataReport[] = [
-                'student_id' => $student->id,
-                'class' => $student->class_id,
-                'name' => $student->name,
-                'violationsCount' => $student->dataViolations->count(),
-                'totalPoint' => $this->generatePoint($student->dataVIolations)
-            ];
-        }
+        $firstClass = ClassStudent::first();
+        
+        $reports = $this->generateReport($students);
+        $dataReport = $this->generateReport($dataStudent);
 
         return view(
             'app.data_violations.report',
-            compact('reports', 'classes', 'dataReport')
+            compact('reports', 'classes', 'dataReport', 'firstClass')
         );
     }
 
@@ -210,6 +187,21 @@ class DataViolationController extends Controller
 
     public function exportDetail(Student $student) {
         return Excel::download(new DetailViolationExport($student->id), "laporan_pelanggaran_$student->name.xlsx");
+    }
+
+    public function generateReport($collection) {
+        $result = [];
+        foreach ($collection as $student) {
+            $result[] = [
+                'student_id' => $student->id,
+                'class' => $student->class_id,
+                'name' => $student->name,
+                'violationsCount' => $student->dataViolations->count(),
+                'totalPoint' => $this->generatePoint($student->dataVIolations)
+            ];
+        }
+
+        return $result;
     }
 
     private function generatePoint($data)

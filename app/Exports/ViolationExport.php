@@ -22,8 +22,6 @@ class ViolationExport implements FromView, WithTitle, WithEvents
         $this->class = $classFilter;
     }
 
-   
-
     public function view(): View
     {
 

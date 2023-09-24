@@ -65,7 +65,7 @@ class DetailViolationExport implements FromView, WithTitle, WithEvents
                 $event->sheet->insertNewRowBefore(1, 3);
                 $event->sheet->mergeCells('A1:D1');
                 $event->sheet->mergeCells('A2:D2');
-                $event->sheet->setCellValue('A1', 'DATA PELANGGARAN ' . $this->dataStudent->name);
+                $event->sheet->setCellValue('A1', 'Data Prestasi ' . $this->dataStudent->name);
 
    
                 $event->sheet->getStyle('A1:D2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);

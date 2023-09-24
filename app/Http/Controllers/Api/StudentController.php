@@ -93,7 +93,16 @@ class StudentController extends Controller
 
             $absenceStudent = StudentAbsence::with('presence')->whereStudentId($student->id)->orderBy('date', 'desc')->get();
 
+            $presences = 0;
+            $permissions = 0;
+            $sicks = 0;
+            $withoutExplanations = 0;
+
             foreach ($absenceStudent as $absence) {
+                $presences = strtolower($absence->presence->name) == 'hadir' ? $presences + 1 : $presences;
+                $permissions = strtolower($absence->presence->name) == 'izin' ? $permissions + 1 : $permissions;
+                $sicks = strtolower($absence->presence->name) == 'sakit' ? $sicks + 1 : $sicks;
+                $withoutExplanations = strtolower($absence->presence->name) == 'tanpa keterangan' ? $withoutExplanations + 1 : $withoutExplanations;
                 $historyAbsence[] = [
                     'id' => $absence->id,
                     'date' => generateDate($absence->date->toDateString()),
@@ -102,12 +111,14 @@ class StudentController extends Controller
                 ];
             }
 
+            
+
             return response()->json([
                 'status' => 200,
-                'presences' => $student->studentAbsences()->where('presence_id', 1)->get()->count(),
-                'permissions' => $student->studentAbsences()->where('presence_id', 2)->get()->count(),
-                'sicks' => $student->studentAbsences()->where('presence_id', 3)->get()->count(),
-                'withoutExplanations' => $student->studentAbsences()->where('presence_id', 4)->get()->count(),
+                'presences' => $presences,
+                'permissions' => $permissions,
+                'sicks' => $sicks,
+                'withoutExplanations' => $withoutExplanations,
                 'historyAbsence' => $historyAbsence
             ]);
         } catch (Exception $e) {

@@ -20,14 +20,9 @@ class QuoteController extends Controller
     {
         $this->authorize('view-any', Quote::class);
 
-        $search = $request->get('search', '');
+        $quotes = Quote::all();
 
-        $quotes = Quote::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.quotes.index', compact('quotes', 'search'));
+        return view('app.quotes.index', compact('quotes'));
     }
 
     /**

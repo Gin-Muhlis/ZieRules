@@ -21,16 +21,12 @@ class HistoryAchievmentController extends Controller
     {
         $this->authorize('view-any', HistoryAchievment::class);
 
-        $search = $request->get('search', '');
 
-        $historyAchievments = HistoryAchievment::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $historyAchievments = HistoryAchievment::all();
 
         return view(
             'app.history_achievments.index',
-            compact('historyAchievments', 'search')
+            compact('historyAchievments')
         );
     }
 

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Presence;
+use App\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PresencePolicy
@@ -14,6 +15,10 @@ class PresencePolicy
      * Determine whether the presence can view any models.
      */
     public function viewAny(User $user): bool
+    {
+        return $user->hasPermissionTo('list presences');
+    }
+    public function teacherViewAny(Teacher $user): bool
     {
         return $user->hasPermissionTo('list presences');
     }

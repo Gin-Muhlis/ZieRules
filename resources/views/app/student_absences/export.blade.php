@@ -1,11 +1,11 @@
 <table class="table table-borderless table-hover">
     <thead>
         <tr>
-            <th class="text-left">
-                Nama Siswa
+            <th class="text-center">
+                No
             </th>
             <th class="text-left">
-                Kelas
+                Nama Siswa
             </th>
             <th class="text-center">
                 Hadir
@@ -24,11 +24,11 @@
     <tbody>
         @forelse($reports as $data)
             <tr>
-                <td>
-                    {{ $data['name'] ?? '-' }}
+                <td class="text-center">
+                    {{ $loop->index + 1 }}
                 </td>
                 <td>
-                    {{ $data['className'] ?? '-' }}
+                    {{ $data['name'] ?? '-' }}
                 </td>
                 <td class="text-center">
                     {{ $data['presences'] ?? '-' }}
