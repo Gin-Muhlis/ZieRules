@@ -3,21 +3,25 @@
 namespace App\Imports;
 
 use App\Models\Violation;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ViolationImport implements ToModel, WithHeadingRow
+class ViolationImport implements ToCollection, WithHeadingRow
 {
     /**
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        return new Violation([
-            'name' => $row['name'],
-            'point' => $row['point']
-        ]);
+        foreach ($rows as $row) 
+        {
+            Violation::create([
+                'name' => $row['name'],
+                'point' => $row['point']
+            ]);
+        }
     }
 }

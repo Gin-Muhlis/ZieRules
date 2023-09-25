@@ -38,7 +38,7 @@ class StudentController extends Controller
                 'name' => $student->name,
                 'nis' => $student->nis,
                 'gender' => $student->gender,
-                'image' => $student->image ?? 'public/default.jpg',
+                'image' => $student->image,
                 'class' => $student->class->code,
                 'role' => $student->getRoleNames()->first(),
                 'dataViolations' => $dataViolations->count(),

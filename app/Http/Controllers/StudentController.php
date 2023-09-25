@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\StudentImport;
+use Exception;
 use App\Models\Student;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Models\ClassStudent;
+use Illuminate\Http\Request;
+use App\Imports\StudentImport;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StudentStoreRequest;
 use App\Http\Requests\StudentUpdateRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -142,6 +143,7 @@ class StudentController extends Controller
     }
 
     public function import(Request $request) {
+       try {
         $this->authorize('create', Student::class);
 
         $validator = Validator::make($request->all(), [
@@ -159,6 +161,9 @@ class StudentController extends Controller
         Excel::import(new StudentImport, $validated['file']);
 
         return redirect()->back()->with('success', 'Import data berhasil');
+       } catch (Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+       }
 
     }
 }

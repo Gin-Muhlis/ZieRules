@@ -11,6 +11,7 @@
                </div>
                 <div class="col-md-6 text-right">
                     @can('create', App\Models\Student::class)
+                       <button class="btn btn-primary btn-import">Import</button>
                         <a href="{{ route('students.create') }}" class="btn btn-primary">
                             <i class="icon ion-md-add"></i> @lang('crud.common.create')
                         </a>
@@ -106,4 +107,21 @@
             </div>
         </div>
     </div>
+    <form action="{{ route('student.import') }}" method="post" class="d-none form-import" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="file" id="file">
+    </form>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $(".btn-import").on("click", function() {
+                $("#file").click()
+            })
+            $("#file").on("change", function() {
+                $(".form-import").submit()
+            })
+        })
+    </script>
+@endpush

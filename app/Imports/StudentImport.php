@@ -5,12 +5,13 @@ namespace App\Imports;
 use App\Models\ClassStudent;
 use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class StudentImport implements ToModel, WithHeadingRow, WithValidation
+class StudentImport implements ToCollection, WithHeadingRow, WithValidation
 {
     public function rules(): array
     {
@@ -29,33 +30,38 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        $validator = Validator::make($row, [
-            'name' => ['required', 'max:255', 'string'],
-            'nis' => ['required', 'unique:students,nis', 'digits:9', 'numeric'],
-            'password' => ['required'],
-            'gender' => ['required', 'in:laki-laki,perempuan'],
-            'class' => ['required'],
-        ]);
+        foreach ($rows as $row) {
+            $row = $row->toArray();
+         
+            $validator = Validator::make($row, [
+                'name' => ['required', 'max:255', 'string'],
+                'nis' => ['required', 'unique:students,nis', 'digits:9', 'numeric'],
+                'password' => ['required'],
+                'gender' => ['required', 'in:laki-laki,perempuan'],
+                'class' => ['required'],
+                'code' => ['required'],
+            ]);
 
-        if ($validator->fails()) {
-            return null;
+            if ($validator->fails()) {
+                return null;
+            }
+            $class = ClassStudent::whereName($row['class'])->first();
+
+            if (!isset($class)) {
+                return null;
+            }
+            Student::create([
+                'nis' => $row['nis'],
+                'name' => $row['name'],
+                'password' => Hash::make($row['password']),
+                'password_show' => $row['password'],
+                'gender' => $row['gender'],
+                'class_id' => $class->id,
+                'code' => $row['code'],
+                'image' => 'public/default.jpg'
+            ]);
         }
-
-        $class = ClassStudent::whereName($row['class'])->first();
-
-        if (!isset($class)) {
-            return null;
-        }
-
-        return new Student([
-            'nis' => $row['nis'],
-            'name' => $row['name'],
-            'password' => Hash::make($row['password']),
-            'password_show' => $row['password'],
-            'gender' => $row['gender'],
-            'class_id' => $class->id,
-        ]);
     }
 }

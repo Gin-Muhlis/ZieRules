@@ -3,21 +3,25 @@
 namespace App\Imports;
 
 use App\Models\Achievment;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class AchievmentImport implements ToModel, WithHeadingRow
+class AchievmentImport implements ToCollection, WithHeadingRow
 {
     /**
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        return new Achievment([
-            'name' => $row['name'],
-            'point' => $row['point']
-        ]);
+        foreach ($rows as $row) 
+        {
+            Achievment::create([
+                'name' => $row['name'],
+                'point' => $row['point']
+            ]);
+        }
     }
 }
