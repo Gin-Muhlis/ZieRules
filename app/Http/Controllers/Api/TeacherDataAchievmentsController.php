@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\HistoryAchievment;
 use Exception;
+use Illuminate\Http\Request;
+use App\Models\DataAchievment;
+use App\Models\HistoryAchievment;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherDataAchievmentsController extends Controller
@@ -63,7 +64,7 @@ class TeacherDataAchievmentsController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -117,7 +118,7 @@ class TeacherDataAchievmentsController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }

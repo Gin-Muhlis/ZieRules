@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-require_once app_path() . '/Helpers/helpers.php';
+require_once app_path() . '/helpers/helpers.php';
 
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -55,7 +55,7 @@ class StudentController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -79,7 +79,7 @@ class StudentController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -126,7 +126,7 @@ class StudentController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 5000);
         }
     }
 }

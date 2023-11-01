@@ -36,7 +36,7 @@ class ViolationController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -57,7 +57,7 @@ class ViolationController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }

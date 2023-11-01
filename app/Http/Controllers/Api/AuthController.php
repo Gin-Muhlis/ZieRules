@@ -35,7 +35,7 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'Nis atau Password Salah'
-                ]);
+                ], 404);
             }
 
             $student = Student::with('class')->whereNis($request->nis)->firstOrFail();
@@ -98,7 +98,7 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'Email atau Password salah'
-                ]);
+                ], 404);
             }
 
             $teacher = Teacher::whereEmail($request->email)->firstOrFail();

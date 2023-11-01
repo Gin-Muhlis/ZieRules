@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-require_once app_path() . '/Helpers/helpers.php';
+require_once app_path() . '/helpers/helpers.php';
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
@@ -16,50 +16,61 @@ class ArticleController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    public function listArticle() {
-       try {
-        $this->authorize('student-view-any', Article::class);
+    public function listArticle()
+    {
+        try {
+            $this->authorize('student-view-any', Article::class);
 
-        $articles = Article::with('user')->latest()->limit(5)->get();
+            $articles = Article::with('user')->latest()->limit(5)->get();
 
-        $data = [];
+            $data = [];
 
-        foreach ($articles as $article) {
-            $data[] = [
-                'id' => $article->id,
-                'title' => $article->title,
-                'cover' => $article->banner,
-                'writter' => $article->user->name,
-                'date' => generateDate($article->date->toDateString()),
-                'content' => $article->content
-            ];
+            foreach ($articles as $article) {
+                $data[] = [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                    'cover' => $article->banner,
+                    'writter' => $article->user->name,
+                    'date' => generateDate($article->date->toDateString()),
+                    'content' => $article->content
+                ];
+            }
+            return response()->json([
+                'status' => 200,
+                'listArticle' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        return response()->json([
-            'status' => 200,
-            'listArticle' => $data
-        ]);
-       } catch (Exception $e) {
-        return response()->json([
-            'status' => 500,
-            'message' => 'Terjadi kesalahan',
-            'error' => $e->getMessage()
-        ]);
-       }
     }
 
-    public function detailArticle(Article $article) {
+    public function detailArticle(Article $article)
+    {
         $this->authorize('student-view-any', Article::class);
 
-        return response()->json([
-            'status' => 200,
-            'article' => [
-                'id' => $article->id,
-                'title' => $article->title,
-                'cover' => $article->banner,
-                'writter' => $article->user->name,
-                'date' => generateDate($article->date->toDateString()),
-                'content' => $article->content
-            ]
+        try {
+
+            return response()->json([
+                'status' => 200,
+                'article' => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                    'cover' => $article->banner,
+                    'writter' => $article->user->name,
+                    'date' => generateDate($article->date->toDateString()),
+                    'content' => $article->content
+                ]
             ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

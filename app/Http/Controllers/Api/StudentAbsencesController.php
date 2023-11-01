@@ -103,7 +103,7 @@ class StudentAbsencesController extends Controller
                     'status' => 422,
                     'message' => 'Terjadi kesalahan dengan data yang dikirim',
                     'errors' => $validate->errors()
-                ]);
+                ], 422);
             }
             
             $validated = $validate->validate();

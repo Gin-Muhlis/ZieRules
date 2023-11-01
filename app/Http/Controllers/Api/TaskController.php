@@ -31,7 +31,7 @@ class TaskController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -45,6 +45,6 @@ class TaskController extends Controller
         return response()->json([
             'status' => 200,
             'dataTask' => $dataTasks
-        ]);
+        ], 500);
     }
 }

@@ -35,7 +35,7 @@ class TeacherDataViolationsController extends Controller
                     'status' => 422,
                     'message' => 'Terjadi kesalahan dengan data yang dikirim',
                     'error' => $validator->errors()
-                ]);
+                ], 422);
             }
 
             $validated = $validator->validate();
@@ -64,12 +64,13 @@ class TeacherDataViolationsController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
     public function addViolations(request $request)
     {
+       try {
         $this->authorize('teacher-create', DataViolation::class);
 
         $validator = Validator::make($request->all(), [
@@ -84,7 +85,7 @@ class TeacherDataViolationsController extends Controller
                 'status' => 422,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
                 'error' => $validator->errors()
-            ]);
+            ], 422);
         }
 
         $teacher = $request->user();
@@ -106,5 +107,13 @@ class TeacherDataViolationsController extends Controller
             'status' => 200,
             'message' => 'Pelanggaran berhasil ditambahkan'
         ]);
+       } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan dengan data yang dikirim',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

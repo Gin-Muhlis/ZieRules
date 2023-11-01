@@ -35,7 +35,7 @@ class TeacherDataTasksController extends Controller
                 'status' => 422,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
                 'errors' => $validate->errors()
-            ]);
+            ], 422);
         }
 
         $validated = $validate->validate();
@@ -62,14 +62,15 @@ class TeacherDataTasksController extends Controller
             return response()->json([
               'status' => 500,
               'message' => 'Terjadi kesalahan dengan data yang dikirim',
-                'errors' => $e
-            ]);
+                'errors' => $e->getMessage()
+            ], 500);
         }
     }
 
     public function addTasks(Request $request)
     {
-        $this->authorize('teacher-create', DataTask::class);
+        try {
+            $this->authorize('teacher-create', DataTask::class);
 
         $teacher = $request->user();
 
@@ -85,7 +86,7 @@ class TeacherDataTasksController extends Controller
                 'status' => 422,
                 'message' => 'Terjadi kesalahan dengan data yang dikirim',
                 'errors' => $validate->errors()
-            ]);
+            ], 422);
         }
 
         $validated = $validate->validate();
@@ -106,5 +107,13 @@ class TeacherDataTasksController extends Controller
             'status=>' => 200,
             'message' => 'Pencapaian tugas berhasil ditambahkan']
         );
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+              'status' => 500,
+              'message' => 'Terjadi kesalahan dengan data yang dikirim',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -39,7 +39,7 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -58,7 +58,7 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -82,7 +82,7 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -109,7 +109,7 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -152,19 +152,20 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
     private function generateHistory($violations, $achievments, $tasks)
     {
         try {
-            $dataViolations = [];
+                $dataViolations = [];
             foreach ($violations as  $violation) {
                 $dataViolations[] = [
+                    'type' => 'violation',
                     'teacher' => $violation->teacher->name,
                     'student' => $violation->student->name,
-                    'violation' => $violation->violation->name,
+                    'name' => $violation->violation->name,
                     'date' => generateDate($violation->date->toDateString()),
                     'order' => $violation->date->toDateString()
                 ];
@@ -173,9 +174,10 @@ class TeacherController extends Controller
             $dataAchievments = [];
             foreach ($achievments as  $achievment) {
                 $dataAchievments[] = [
+                    'type' => 'achievment',
                     'teacher' => $achievment->teacher->name,
                     'student' => $achievment->student->name,
-                    'aachievment' => $achievment->achievment->name,
+                    'name' => $achievment->achievment->name,
                     'date' => generateDate($achievment->date->toDateString()),
                     'order' => $achievment->date->toDateString()
                 ];
@@ -184,9 +186,10 @@ class TeacherController extends Controller
             $dataTasks = [];
             foreach ($tasks as  $task) {
                 $dataTasks[] = [
+                    'type' => 'task',
                     'teacher' => $task->teacher->name,
                     'student' => $task->student->name,
-                    'task' => $task->task->name,
+                    'name' => $task->task->name,
                     'date' => generateDate($task->date->toDateString()),
                     'order' => $task->date->toDateString()
                 ];
@@ -204,7 +207,7 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -232,7 +235,7 @@ class TeacherController extends Controller
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
                 'error' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }

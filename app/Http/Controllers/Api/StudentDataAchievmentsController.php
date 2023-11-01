@@ -46,7 +46,7 @@ class StudentDataAchievmentsController extends Controller
           'status' => 500,
           'message' => 'Terjadi kesalahan',
           'error' => $e->getMessage()
-        ]);
+        ], 500);
        }
     }
 }
