@@ -18,7 +18,6 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
         return [
             'name' => ['required', 'max:255', 'string'],
             'nis' => ['required', 'unique:students,nis', 'digits:9', 'numeric'],
-            'password' => ['required'],
             'gender' => ['required', 'in:laki-laki,perempuan'],
             'class' => ['required'],
         ];
