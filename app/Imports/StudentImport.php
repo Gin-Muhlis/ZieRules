@@ -38,10 +38,8 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
             $validator = Validator::make($row, [
                 'name' => ['required', 'max:255', 'string'],
                 'nis' => ['required', 'unique:students,nis', 'digits:9', 'numeric'],
-                'password' => ['required'],
                 'gender' => ['required', 'in:laki-laki,perempuan'],
                 'class' => ['required'],
-                'code' => ['required'],
             ]);
 
             if ($validator->fails()) {
@@ -52,16 +50,51 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
             if (!isset($class)) {
                 return null;
             }
-            Student::create([
+            $student = Student::create([
                 'nis' => $row['nis'],
                 'name' => $row['name'],
-                'password' => Hash::make($row['password']),
-                'password_show' => $row['password'],
+                'password' => Hash::make($this->generatePassword()),
+                'password_show' => $this->generatePassword(),
                 'gender' => $row['gender'],
                 'class_id' => $class->id,
-                'code' => $row['code'],
+                'code' => $this->generateCode($row['nis']),
                 'image' => 'public/default.jpg'
             ]);
+
+            $student->assignRole('siswa');
         }
+    }
+
+    private function generatePassword() {
+        $now = new \DateTime();
+        $time = $now->getTimestamp();
+        $year = $now->format('Y');
+    
+        $str = $year . $time;
+        $arrayStr = str_split($str);
+    
+        for ($i = count($arrayStr) - 1; $i > 0; $i--) {
+            $n = random_int(0, $i);
+            [$arrayStr[$i], $arrayStr[$n]] = [$arrayStr[$n], $arrayStr[$i]];
+        }
+    
+        $password = implode('', array_slice($arrayStr, 0, 9));
+    
+        return $password;
+    }
+
+    private function generateCode($nis) {
+        $splitNis = str_split($nis);
+    
+        for ($i = count($splitNis) - 1; $i > 0; $i--) {
+            $n = random_int(0, $i);
+            [$splitNis[$i], $splitNis[$n]] = [$splitNis[$n], $splitNis[$i]];
+        }
+    
+        $randomNum = mt_rand(10, 99);
+    
+        $code = implode('', $splitNis) . $randomNum;
+    
+        return $code;
     }
 }
