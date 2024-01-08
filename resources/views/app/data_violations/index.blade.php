@@ -100,13 +100,6 @@
                                 </tr>
                             @endforelse
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6">
-                                    {!! $dataViolations->render() !!}
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

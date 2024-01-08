@@ -49,11 +49,14 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
             if (!isset($class)) {
                 return null;
             }
+
+            $password = $this->generatePassword();
+            
             $student = Student::create([
                 'nis' => $row['nis'],
                 'name' => $row['name'],
-                'password' => Hash::make($this->generatePassword()),
-                'password_show' => $this->generatePassword(),
+                'password' => Hash::make($password),
+                'password_show' => $password,
                 'gender' => $row['gender'],
                 'class_id' => $class->id,
                 'code' => $this->generateCode($row['nis']),
