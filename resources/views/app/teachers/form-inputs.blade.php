@@ -60,7 +60,7 @@
 
     <x-inputs.group class="col-sm-12">
         <x-inputs.select name="role" label="Role" id="role">
-            <option value="guru-mapel">Guru Mapel</option>
+            <option selected value="guru-mapel">Guru Mapel</option>
             <option value="wali-kelas">Wali Kelas</option>
         </x-inputs.select>
     </x-inputs.group>

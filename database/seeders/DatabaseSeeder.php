@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('zieadmin'),
             ]);
         $this->call(PermissionsSeeder::class);
+        $this->call(PresenceSeeder  ::class);
 
     }
 }

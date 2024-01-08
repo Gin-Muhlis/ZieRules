@@ -44,7 +44,7 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
             if ($validator->fails()) {
                 return null;
             }
-            $class = ClassStudent::whereName($row['class'])->first();
+            $class = ClassStudent::whereCode($row['class'])->first();
 
             if (!isset($class)) {
                 return null;

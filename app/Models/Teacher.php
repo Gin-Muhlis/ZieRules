@@ -46,9 +46,9 @@ class Teacher extends Authenticatable
         return $this->hasMany(DataTask::class);
     }
 
-    public function homerooms()
+    public function homeroom()
     {
-        return $this->hasMany(Homeroom::class);
+        return $this->hasOne(Homeroom::class);
     }
 
     public function historyViolations()

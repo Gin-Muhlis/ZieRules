@@ -64,13 +64,13 @@ class TeacherController extends Controller
 
     public function listStudent(Request $request)
     {
+        
         try {
             $this->authorize('student-view-any', Student::class);
 
             $teacher = $request->user();
 
-
-            $listStudent = Student::where('class_id', $teacher->homerooms[0]->class_id)->get();
+            $listStudent = Student::where('class_id', $teacher->homeroom->class_id)->get();
 
             $dataListStudent = StudentResource::collection($listStudent);
             return response()->json([
@@ -125,7 +125,7 @@ class TeacherController extends Controller
      
             $teacher = $request->user();
 
-            $students = Student::with('studentAbsences')->whereClassId($teacher->homerooms[0]->class_id)->get();
+            $students = Student::with('studentAbsences')->whereClassId($teacher->homeroom->class_id)->get();
 
             $result = [];
             $date = Carbon::now()->format('Y-m-d');

@@ -57,4 +57,41 @@
             <option value="perempuan" {{ $selected == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
         </x-inputs.select>
     </x-inputs.group>
+
+    <x-inputs.group class="col-sm-12">
+        <x-inputs.select name="role" label="Role" id="role">
+            @php $selected = old('role', ($editing ? $teacher->getRoleNames()->first() : '')) @endphp
+            <option value="guru-mapel" {{ $selected == 'guru-mapel' ? 'selected' : '' }}>Guru Mapel</option>
+            <option value="wali-kelas" {{ $selected == 'wali-kelas' ? 'selected' : '' }}>Wali Kelas</option>
+        </x-inputs.select>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-12 class-homerooms d-none">
+        <x-inputs.select name="class_id" label="Kelas" class="select-class" disabled>
+            <option disabled>Silahkan Pilih Kelas</option>
+            @foreach ($classes as $value => $label)
+                <option value="{{ $value }}">{{ $label }}
+                </option>
+            @endforeach
+        </x-inputs.select>
+    </x-inputs.group>
 </div>
+
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            // show and hidden when role teacher
+            $("#role").on("input", function() {
+                let value = $(this).val()
+                console.log(value)
+                if (value === 'wali-kelas') {
+                    $(".class-homerooms").removeClass("d-none");
+                    $(".select-class").removeAttr('disabled')
+                } else {
+                    $(".class-homerooms").addClass("d-none");
+                }
+            })
+        })
+    </script>
+@endpush

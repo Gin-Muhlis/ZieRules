@@ -23,7 +23,6 @@ class StudentAbsenceController extends Controller
     {
         $this->authorize('view-any', StudentAbsence::class);
 
-
         $studentAbsences = StudentAbsence::all();
 
         return view(

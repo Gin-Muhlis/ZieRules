@@ -57,6 +57,9 @@ class PermissionsSeeder extends Seeder
 
         Permission::create(['name' => 'list students']);
         Permission::create(['name' => 'list presences']);
+        Permission::create(['name' => 'list studentabsences']);
+        Permission::create(['name' => 'view studentabsences']);
+        Permission::create(['name' => 'create studentabsences']);
         // membuat role wali-kelas dan asign permission
         $homeroomPermission = Permission::all();
         $homeroomRole = Role::create(['name' => 'wali-kelas']);
@@ -86,9 +89,6 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update presences']);
         Permission::create(['name' => 'delete presences']);
 
-        Permission::create(['name' => 'list studentabsences']);
-        Permission::create(['name' => 'view studentabsences']);
-        Permission::create(['name' => 'create studentabsences']);
         Permission::create(['name' => 'update studentabsences']);
         Permission::create(['name' => 'delete studentabsences']);   
 

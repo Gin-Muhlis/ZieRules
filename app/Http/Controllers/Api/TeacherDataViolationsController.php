@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\DataViolation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HistoryViolation;
@@ -94,6 +95,7 @@ class TeacherDataViolationsController extends Controller
         foreach ($validated['student_id'] as $student) {
             $validated['student_id'] = $student;
             $teacher->dataViolations()->create($validated);
+            
 
             HistoryViolation::create([
                 'teacher_id' => $teacher->id,

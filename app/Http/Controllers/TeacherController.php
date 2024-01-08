@@ -15,6 +15,7 @@ use App\Http\Requests\TeacherUpdateRequest;
 use App\Models\ClassStudent;
 use App\Models\Homeroom;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Role;
 
 class TeacherController extends Controller
 {
@@ -60,7 +61,7 @@ class TeacherController extends Controller
 
         $class_id = false;
 
-        if ($validated['class_id']) {
+        if (isset($validated['class_id'])) {
             $class_id = $validated['class_id'];
             unset($validated['class_id']);
         }
@@ -74,7 +75,6 @@ class TeacherController extends Controller
                 'class_id' => $class_id
             ]);
         }
-
 
         return redirect()
             ->route('teachers.edit', $teacher)
@@ -98,7 +98,9 @@ class TeacherController extends Controller
     {
         $this->authorize('update', $teacher);
 
-        return view('app.teachers.edit', compact('teacher'));
+        $classes = ClassStudent::pluck('name', 'id');
+
+        return view('app.teachers.edit', compact('teacher', 'classes'));
     }
 
     /**
@@ -128,6 +130,28 @@ class TeacherController extends Controller
         }
 
         $teacher->update($validated);
+        $roleName = $teacher->getRoleNames()->first();
+
+        if ($roleName !== $validated['role']) {
+            $class_id = false;
+
+            if (isset($validated['class_id'])) {
+                $class_id = $validated['class_id'];
+                unset($validated['class_id']);
+            }
+
+            if ($validated['role'] == 'wali-kelas') {
+                Homeroom::create([
+                    'teacher_id' => $teacher->id,
+                    'class_id' => $class_id
+                ]);
+            } else if ($validated['role'] == 'guru-mapel') {
+                $teacher->homeroom()->delete();
+            }
+
+            $teacher->removeRole($roleName);
+            $teacher->assignRole($validated['role']);
+        }
 
         return redirect()
             ->route('teachers.edit', $teacher)
@@ -154,7 +178,8 @@ class TeacherController extends Controller
             ->withSuccess(__('crud.common.removed'));
     }
 
-    public function import(Request $request) {
+    public function import(Request $request)
+    {
         $this->authorize('create', Teacher::class);
 
         $validator = Validator::make($request->all(), [
