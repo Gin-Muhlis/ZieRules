@@ -1,23 +1,24 @@
 <?php
 
 
-use App\Http\Controllers\Api\AchievmentController;
-use App\Http\Controllers\Api\ArticleController;
-use App\Http\Controllers\Api\StudentAbsencesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\QuoteController;
-use App\Http\Controllers\Api\StudentController;
-use App\Http\Controllers\Api\StudentDataAchievmentsController;
-use App\Http\Controllers\Api\StudentDataTasksController;
-use App\Http\Controllers\Api\StudentDataViolationsController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\QuoteController;
+use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
-use App\Http\Controllers\Api\TeacherDataAchievmentsController;
-use App\Http\Controllers\Api\TeacherDataTasksController;
-use App\Http\Controllers\Api\TeacherDataViolationsController;
+use App\Http\Controllers\Api\VersionController;
 use App\Http\Controllers\Api\ViolationController;
+use App\Http\Controllers\Api\AchievmentController;
+use App\Http\Controllers\Api\StudentAbsencesController;
+use App\Http\Controllers\Api\StudentDataTasksController;
+use App\Http\Controllers\Api\TeacherDataTasksController;
+use App\Http\Controllers\Api\StudentDataViolationsController;
+use App\Http\Controllers\Api\TeacherDataViolationsController;
+use App\Http\Controllers\Api\StudentDataAchievmentsController;
+use App\Http\Controllers\Api\TeacherDataAchievmentsController;
 
 
 // route siswa
@@ -52,7 +53,6 @@ Route::prefix('student')->group(function () {
     // Artikel
     Route::get('/list/article', [ArticleController::class, 'listArticle']);
     Route::get('/article/{article}', [ArticleController::class, 'detailArticle']);
-
 });
 
 // route guru
@@ -91,3 +91,5 @@ Route::prefix('teacher')->group(function () {
     Route::get('/students/absences', [TeacherController::class, 'presences']);
     Route::post('/add/presence', [StudentAbsencesController::class, 'TeacherAbsenceStudent']);
 });
+
+Route::get('version', [VersionController::class, 'index']);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VersionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -75,6 +76,7 @@ Route::prefix('/')
         Route::resource('student-absences', StudentAbsenceController::class);
         Route::resource('articles', ArticleController::class);
         Route::resource('quotes', QuoteController::class);
+        Route::resource('versions', VersionController::class);
 
         Route::get('data-violations-report', [DataViolationController::class, 'report'])->name('data.violations.report');
         Route::get('data-achievments-report', [DataAchievmentController::class, 'report'])->name('data.achievments.report');
@@ -99,4 +101,5 @@ Route::prefix('/')
         Route::post('task/import', [TaskController::class, 'import'])->name('task.import');
         Route::post('student/import', [StudentController::class, 'import'])->name('student.import');
         Route::post('teacher/import', [TeacherController::class, 'import'])->name('teacher.import');
+
     });

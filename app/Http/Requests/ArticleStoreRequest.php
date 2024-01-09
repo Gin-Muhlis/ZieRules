@@ -25,4 +25,16 @@ class ArticleStoreRequest extends FormRequest
             'content' => ['required'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Judul artikel tidak boleh kosong',
+            'title.max' => 'Nama Prestasi tidak boleh lebih dari 255 karakter',
+            'title.string' => 'Nama harus berupa string',
+            'banner.required' => 'Banner tidak boleh kosong',
+            'banner.max' => 'Baner tidak boleh lebih dari 1MB',
+            'content.required' => 'Konten artikel tidak boleh kosong'
+        ];
+    }
 }

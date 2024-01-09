@@ -23,4 +23,13 @@ class PresenceUpdateRequest extends FormRequest
             'name' => ['required', 'max:255', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama absensi tidak boleh kosong',
+            'name.max' => 'Nama absensi tidak boleh melebihi 255 karakter',
+            'name.string' => 'Nama absensi harus berupa string'
+        ];
+    }
 }

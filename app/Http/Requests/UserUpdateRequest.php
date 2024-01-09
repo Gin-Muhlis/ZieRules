@@ -31,4 +31,19 @@ class UserUpdateRequest extends FormRequest
             'roles' => 'array',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama siswa tidak boleh kosong',
+            'name.max' => 'Nama siswa tidak boleh melebihi 255 karakter',
+            'name.string' => 'Nama siswa harus berupa string',
+            'email.required' => 'email siswa tidak boleh kosong',
+            'email.unique' => 'email telah digunakan, tidak diperbolehkan sama',
+            'email.email' => 'email tidak valid',
+            'password.required' => 'Password tidak boleh kosong',
+            'role.required' => 'Role tidak boleh kosong',
+            'role.array' => 'Format role tidak valid',
+        ];
+    }
 }

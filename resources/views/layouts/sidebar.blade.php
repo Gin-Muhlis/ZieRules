@@ -33,19 +33,19 @@
                         </a>
                         <ul class="nav nav-treeview">
                             @can('view-any', App\Models\Violation::class)
-                            <li class="nav-item">
-                                <a href="{{ route('violations.index') }}" class="nav-link">
-                                    <p>Jenis Pelanggaran</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('view-any', App\Models\DataViolation::class)
-                            <li class="nav-item">
-                                <a href="{{ route('data-violations.index') }}" class="nav-link">
-                                    <p>Data Pelanggaran</p>
-                                </a>
-                            </li>
-                        @endcan
+                                <li class="nav-item">
+                                    <a href="{{ route('violations.index') }}" class="nav-link">
+                                        <p>Jenis Pelanggaran</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view-any', App\Models\DataViolation::class)
+                                <li class="nav-item">
+                                    <a href="{{ route('data-violations.index') }}" class="nav-link">
+                                        <p>Data Pelanggaran</p>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
 
@@ -58,10 +58,10 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                             @can('view-any', App\Models\Achievment::class)
+                            @can('view-any', App\Models\Achievment::class)
                                 <li class="nav-item">
                                     <a href="{{ route('achievments.index') }}" class="nav-link">
-                                        
+
                                         <p>Jenis Prestasi</p>
                                     </a>
                                 </li>
@@ -69,7 +69,7 @@
                             @can('view-any', App\Models\DataAchievment::class)
                                 <li class="nav-item">
                                     <a href="{{ route('data-achievments.index') }}" class="nav-link">
-                                        
+
                                         <p>Data Prestasi</p>
                                     </a>
                                 </li>
@@ -116,26 +116,26 @@
                         </a>
                         <ul class="nav nav-treeview">
                             @can('view-any', App\Models\Presence::class)
-                            <li class="nav-item">
-                                <a href="{{ route('presences.index') }}" class="nav-link">
-                                    <p>Jenis Kehadiran</p>
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('presences.index') }}" class="nav-link">
+                                        <p>Jenis Kehadiran</p>
+                                    </a>
+                                </li>
                             @endcan
                             @can('view-any', App\Models\StudentAbsence::class)
-                            <li class="nav-item">
-                                <a href="{{ route('student-absences.index') }}" class="nav-link">
-                                    <p>Kehadiran Siswa</p>
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('student-absences.index') }}" class="nav-link">
+                                        <p>Kehadiran Siswa</p>
+                                    </a>
+                                </li>
                             @endcan
                         </ul>
                     </li>
 
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                                    <i class="nav-icon icon fa-solid fa-users"></i>
-                            
+                            <i class="nav-icon icon fa-solid fa-users"></i>
+
                             <p>
                                 Identitas
                                 <i class="nav-icon right icon ion-md-arrow-round-back"></i>
@@ -143,33 +143,33 @@
                         </a>
                         <ul class="nav nav-treeview">
                             @can('view-any', App\Models\Student::class)
-                            <li class="nav-item">
-                                <a href="{{ route('students.index') }}" class="nav-link">
-                                    <p>Data Siswa</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('view-any', App\Models\Teacher::class)
-                            <li class="nav-item">
-                                <a href="{{ route('teachers.index') }}" class="nav-link">
-                                    <p>Data Guru</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('view-any', App\Models\Homeroom::class)
-                            <li class="nav-item">
-                                <a href="{{ route('homerooms.index') }}" class="nav-link">
-                                    <p>Data Wali Kelas</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('view-any', App\Models\ClassStudent::class)
-                            <li class="nav-item">
-                                <a href="{{ route('class-students.index') }}" class="nav-link">
-                                    <p>Data Kelas</p>
-                                </a>
-                            </li>
-                        @endcan
+                                <li class="nav-item">
+                                    <a href="{{ route('students.index') }}" class="nav-link">
+                                        <p>Data Siswa</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view-any', App\Models\Teacher::class)
+                                <li class="nav-item">
+                                    <a href="{{ route('teachers.index') }}" class="nav-link">
+                                        <p>Data Guru</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view-any', App\Models\Homeroom::class)
+                                <li class="nav-item">
+                                    <a href="{{ route('homerooms.index') }}" class="nav-link">
+                                        <p>Data Wali Kelas</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view-any', App\Models\ClassStudent::class)
+                                <li class="nav-item">
+                                    <a href="{{ route('class-students.index') }}" class="nav-link">
+                                        <p>Data Kelas</p>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
 
@@ -217,26 +217,33 @@
                         </a>
                         <ul class="nav nav-treeview">
                             @can('view-any', App\Models\Article::class)
-                            <li class="nav-item">
-                                <a href="{{ route('articles.index') }}" class="nav-link">
-                                    <p>Artikel</p>
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('articles.index') }}" class="nav-link">
+                                        <p>Artikel</p>
+                                    </a>
+                                </li>
                             @endcan
                             @can('view-any', App\Models\Quote::class)
-                            <li class="nav-item">
-                                <a href="{{ route('quotes.index') }}" class="nav-link">
-                                    <p>Quote</p>
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('quotes.index') }}" class="nav-link">
+                                        <p>Quote</p>
+                                    </a>
+                                </li>
                             @endcan
                             @can('view-any', App\Models\User::class)
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">
-                                    <p>User</p>
-                                </a>
-                            </li>
-                        @endcan
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}" class="nav-link">
+                                        <p>User</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view-any', App\Models\Version::class)
+                                <li class="nav-item">
+                                    <a href="{{ route('versions.index') }}" class="nav-link">
+                                        <p>Versi</p>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
 

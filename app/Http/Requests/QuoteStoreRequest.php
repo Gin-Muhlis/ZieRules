@@ -24,4 +24,15 @@ class QuoteStoreRequest extends FormRequest
             'teacher_id' => ['required', 'exists:teachers,id'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'quote.required' => 'Quote tidak boleh kosong',
+            'quote.max' => 'Quote tidak boleh melebihi 255 karakter',
+            'quote.string' => 'Quote harus berupa string',
+            'teacher_id.required' => 'Guru tidak boleh kosong',
+            'teacher_id.exists' => 'Guru tidak ditemukan'
+        ];
+    }
 }

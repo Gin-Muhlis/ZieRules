@@ -26,4 +26,16 @@ class StudentAbsenceUpdateRequest extends FormRequest
             'time' => ['required', 'date_format:H:i:s'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'date.required' => 'Tanggal absensi tidak boleh kosong',
+            'date.date' => 'Format tanggal tidak valid',
+            'student_id.required' => 'Siswa tidak boleh kosong',
+            'student_id.exists' => 'Siswa tidak ditemukan',
+            'presence.required' => 'Kehadiran tidak boleh kosong',
+            'presence.exists' => 'Kehadiran tidak ditemukan',
+        ];
+    }
 }

@@ -24,4 +24,15 @@ class ViolationUpdateRequest extends FormRequest
             'point' => ['required', 'numeric'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama pelanggaran tidak boleh kosong',
+            'name.max' => 'Nama pelanggaran tidak boleh lebih dari 255 karakter',
+            'name.string' => 'Nama pelanggaran harus berupa string',
+            'point.required' => 'Poin pelanggaran tidak boleh kosong',
+            'point.numeric' => 'Poin pelanggaran harus berupa angka'
+        ];
+    }
 }

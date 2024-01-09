@@ -24,4 +24,16 @@ class ClassStudentStoreRequest extends FormRequest
             'code' => ['required', 'max:255', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama Kelas tidak boleh kosong',
+            'name.max' => 'Nama kelas tidak boleh lebih dari 255 karakter',
+            'name.string' => 'Nama Kelas harus berupa string',
+            'code.required' => 'Kode Kelas tidak boleh kosong',
+            'code.max' => 'Kode Kelas tidak boleh lebih dari 255 karakter',
+            'code.string' => 'Kode Kelas harus berupa string',
+        ];
+    }
 }

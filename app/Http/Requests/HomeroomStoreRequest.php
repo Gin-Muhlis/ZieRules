@@ -24,4 +24,14 @@ class HomeroomStoreRequest extends FormRequest
             'class_id' => ['required', 'exists:class_students,id'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'class_id.required' => 'Kelas tidak boleh kosong',
+            'class_id.exists' => 'Kelas tidak ditemukan',
+            'teacher_id.required' => 'Guru tidak boleh kosong',
+            'teacher_id.exists' => 'Guru tidak ditemukan',
+        ];
+    }
 }

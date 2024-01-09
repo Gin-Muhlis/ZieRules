@@ -30,4 +30,24 @@ class TeacherStoreRequest extends FormRequest
             'class_id' => ['exists:class_students,id'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama siswa tidak boleh kosong',
+            'name.max' => 'Nama siswa tidak boleh melebihi 255 karakter',
+            'name.string' => 'Nama siswa harus berupa string',
+            'email.required' => 'email siswa tidak boleh kosong',
+            'email.unique' => 'email telah digunakan, tidak diperbolehkan sama',
+            'email.email' => 'email tidak valid',
+            'password.required' => 'Password tidak boleh kosong',
+            'image.image' => 'Gambar siswa harus berupa gambar',
+            'image.max' => 'Gambar siswa tidak boleh melebihi 1MB' ,
+            'gender.required' => 'Gender siswa tidak boleh kosong',
+            'gender.in' => 'Gender siswa tidak valid',
+            'role.required' => 'Role tidak boleh kosong',
+            'role.in' => 'Role tidak valid',
+            'class_id.exists' => 'Kelas tidak ditemukan'
+        ];
+    }
 }

@@ -27,4 +27,20 @@ class DataAchievmentStoreRequest extends FormRequest
             'description' => ['required', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'achievment_id.required' => 'Prestasi tidak boleh kosong',
+            'achievment_id.exists' => 'Prestasi tidak ditemukan',
+            'student_id.required' => 'Siswa tidak boleh kosong',
+            'student_id.exists' => 'Siswa tidak ditemukan',
+            'teacher_id.required' => 'Guru tidak boleh kosong',
+            'teacher_id.exists' => 'Guru tidak ditemukan',
+            'date.required' => 'Tanggal tidak boleh kosong',
+            'date.date' => 'Format tanggal tidak valid',
+            'description.required' => 'Deskripsi tidak boleh kosong',
+            'description.string' => 'Deskrip harus berupa string'
+        ];
+    }
 }

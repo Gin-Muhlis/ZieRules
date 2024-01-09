@@ -24,4 +24,15 @@ class AchievmentStoreRequest extends FormRequest
             'point' => ['required', 'numeric'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama prestasi tidak boleh kosong',
+            'name.max' => 'Nama prestasi tidak boleh lebih dari 255 karakter',
+            'name.string' => 'Nama prestasi harus berupa string',
+            'point.required' => 'Poin prestasi tidak boleh kosong',
+            'point.numeric' => 'Poin prestasi harus berupa angka'
+        ];
+    }
 }
