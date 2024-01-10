@@ -21,7 +21,6 @@ class HistoryViolationController extends Controller
     {
         $this->authorize('view-any', HistoryViolation::class);
 
-
         $historyViolations = HistoryViolation::all();
 
         return view(

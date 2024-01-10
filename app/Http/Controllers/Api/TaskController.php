@@ -45,6 +45,6 @@ class TaskController extends Controller
         return response()->json([
             'status' => 200,
             'dataTask' => $dataTasks
-        ], 500);
+        ]);
     }
 }

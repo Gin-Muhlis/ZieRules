@@ -36,7 +36,7 @@ use App\Http\Controllers\HistoryAchievmentController;
 |
 */
 
-Route::middleware('guest')->group(function() {
+Route::middleware('guest')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
@@ -44,11 +44,13 @@ Route::middleware('guest')->group(function() {
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
+
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
 
@@ -94,7 +96,7 @@ Route::prefix('/')
 
         Route::get('violation-detail/export/{student}', [DataViolationController::class, 'exportDetail'])->name('data.violation.export.detail');
         Route::get('achievment-detail/export/{student}', [DataAchievmentController::class, 'exportDetail'])->name('data.achievment.export.detail');
-        Route::get('task-detail/export/{student}', [DataTaskController::class, 'exportDetail'])->name('data.task.export.detail'); 
+        Route::get('task-detail/export/{student}', [DataTaskController::class, 'exportDetail'])->name('data.task.export.detail');
 
         Route::post('violation/import', [ViolationController::class, 'import'])->name('violation.import');
         Route::post('achievment/import', [AchievmentController::class, 'import'])->name('achievment.import');
