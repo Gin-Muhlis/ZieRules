@@ -75,7 +75,7 @@ class TeacherController extends Controller
             $dataListStudent = StudentResource::collection($listStudent);
             return response()->json([
                 'status' => 200,
-                'dataListStudent' => $dataListStudent
+                'students' => $dataListStudent
             ]);
         } catch (Exception $e) {
             return response()->json([

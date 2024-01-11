@@ -16,17 +16,18 @@ class AchievmentController extends Controller
 
     public function indexStudent()
     {
+        
         try {
             $this->authorize('student-view-any', Achievment::class);
 
-        $achievments = Achievment::latest()->get();
+            $achievments = Achievment::latest()->get();
 
-        $dataAchievments = AchievmentResource::collection($achievments);
-        return response()->json([
-            'status' => 200,
-            'achievments' => $dataAchievments
-        ]);
-        } catch(Exception $e) {
+            $dataAchievments = AchievmentResource::collection($achievments);
+            return response()->json([
+                'status' => 200,
+                'achievments' => $dataAchievments
+            ]);
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Terjadi kesalahan',
@@ -37,22 +38,22 @@ class AchievmentController extends Controller
 
     public function indexTeacher()
     {
-      try {
-        $this->authorize('teacher-view-any', Achievment::class);
+        try {
+            $this->authorize('teacher-view-any', Achievment::class);
 
-        $achievments = Achievment::latest()->get();
+            $achievments = Achievment::latest()->get();
 
-        $dataAchievments = AchievmentResource::collection($achievments);
-        return response()->json([
-            'status' => 200,
-            'achievments' => $dataAchievments
-        ]);
-      } catch (Exception $e) {
-        return response()->json([
-            'status' => 500,
-            'message' => 'Terjadi kesalahan',
-            'error' => $e->getMessage()
-        ], 500);
-      }
+            $dataAchievments = AchievmentResource::collection($achievments);
+            return response()->json([
+                'status' => 200,
+                'achievments' => $dataAchievments
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
