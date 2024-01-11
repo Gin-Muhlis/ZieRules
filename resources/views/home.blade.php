@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row mb-5">
             <div class="p-3 mr-5 mb-5 text-light col-md-6 col-12 col-lg-3 d-flex align-items-start justify-content-center flex-column rounded rounded-2"
-                style="background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(100,43,115,1) 0%, rgba(4,0,4,1) 90% ); height: 130px; box-shadow: 10px 10px 6px rgba(100,43,115,.4)">
+                style="background-image: linear-gradient(111deg,  rgba(100,43,115,1) 0%, rgba(4,0,4,1) 90% ); height: 130px; box-shadow: 10px 10px 6px rgba(100,43,115,.4)">
                 <span class="font-weight-bold" style="font-size: 36px">{{ $data['violation_count'] }}</span>
                 <span style="font-size: 16px">Pelanggaran Dilakukan Siswa</span>
             </div>
@@ -22,6 +22,7 @@
 
         <div class="row">
             <div class="col-md-6 col-12">
+                <label for="select-year" class="label d-block mb-2">Filter Data Grafik</label>
                 <div class="input-group mb-3">
                     <select class="custom-select" id="select-year">
                         <option value="{{ $data['year_now'] }}">{{ $data['year_now'] }}</option>
@@ -50,17 +51,17 @@
         const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober',
             'November', 'Desember'
         ]
-        
+
         function generateChart(violations, achievements, tasks) {
             Highcharts.chart('grafik', {
                 chart: {
-                    type: 'line'
+                    type: 'column'
                 },
                 title: {
                     text: 'Grafik Siswa'
                 },
                 xAxis: {
-                    categories: dataWeb.months
+                    categories: months
                 },
                 yAxis: {
                     title: {
@@ -93,13 +94,13 @@
             }
 
             let newData = {
-                violations: dataWeb.all_violation[`${year}`],
-                achievements: dataWeb.all_achievement[`${year}`],
-                tasks: dataWeb.all_task[`${year}`],
+                violations: dataWeb.all_violation[`${year}`] ?? [],
+                achievements: dataWeb.all_achievement[`${year}`] ?? [],
+                tasks: dataWeb.all_task[`${year}`] ?? [],
             }
 
-            // generateDataChart(newData)
-            
+            generateDataChart(newData)
+
         })
 
         function generateDataChart(data) {
@@ -107,15 +108,17 @@
             let newViolations = []
             let newAchievements = []
             let newTasks = []
+            months.map(month => {
+                let violationsCount = data.violations.filter(item => item['month'] == month).length;
+                let achievementsCount = data.achievements.filter(item => item['month'] == month).length;
+                let tasksCount = data.tasks.filter(item => item['month'] == month).length;
 
-            months.foreach(item => {
-                newViolations.push(data.violations.filter(item => item.month === item).length());
-                newAchievements.push(data.violations.filter(item => item.month === item).length());
-                newTasks.push(data.violations.filter(item => item.month === item).length());
+                newViolations.push(violationsCount);
+                newAchievements.push(achievementsCount);
+                newTasks.push(tasksCount);
             })
-
+   
             generateChart(newViolations, newAchievements, newTasks)
         }
     </script>
 @endpush
-

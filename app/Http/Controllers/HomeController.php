@@ -27,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        
         $violation_count = DataViolation::count();
         $achievement_count = DataAchievment::count();
         $task_count = DataTask::count();

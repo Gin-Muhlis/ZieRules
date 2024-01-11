@@ -40,6 +40,11 @@ return [
             'provider' => 'users',
         ],
 
+        'parent' => [
+            'driver' => 'session',
+            'provider' => 'students',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',

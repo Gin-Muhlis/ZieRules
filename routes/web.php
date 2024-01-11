@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\VersionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -8,9 +7,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\ParentController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\VersionController;
 use App\Http\Controllers\DataTaskController;
 use App\Http\Controllers\HomeroomController;
 use App\Http\Controllers\PresenceController;
@@ -36,14 +37,15 @@ use App\Http\Controllers\HistoryAchievmentController;
 |
 */
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:web,parent')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
+
+    Route::get('/parent/login', [ParentController::class, 'login'])->name('parent');
 });
 
 Auth::routes();
-
 
 Route::prefix('/')
     ->middleware('auth')
@@ -105,3 +107,8 @@ Route::prefix('/')
         Route::post('teacher/import', [TeacherController::class, 'import'])->name('teacher.import');
 
     });
+
+Route::post('/parent/auth', [ParentController::class, 'auth'])->name('parent.auth');
+Route::middleware('auth:parent')->group(function () {
+    Route::get('parent/home', [ParentController::class, 'home'])->name('parent.home');
+});

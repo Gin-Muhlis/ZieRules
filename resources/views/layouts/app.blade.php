@@ -67,7 +67,7 @@
 
         @include('layouts.sidebar')
 
-        <main class="content-wrapper p-5">
+        <main class="content-wrapper">
             @yield('content')
         </main>
     </div>
