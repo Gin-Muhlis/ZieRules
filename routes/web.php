@@ -41,11 +41,11 @@ Route::middleware('guest:web,parent')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
-
-    Route::get('/parent/login', [ParentController::class, 'login'])->name('parent');
 });
 
-Auth::routes();
+Route::prefix('/super-admin')->group(function() {
+    Auth::routes();
+});
 
 Route::prefix('/')
     ->middleware('auth')

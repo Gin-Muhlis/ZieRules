@@ -92,4 +92,4 @@ Route::prefix('teacher')->group(function () {
     Route::post('/add/presence', [StudentAbsencesController::class, 'TeacherAbsenceStudent']);
 });
 
-Route::get('version', [VersionController::class, 'index']);
+Route::get('/version', [VersionController::class, 'index']);
