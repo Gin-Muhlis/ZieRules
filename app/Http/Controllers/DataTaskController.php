@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\DetailTaskExport;
+use App\Models\StudentAbsence;
 use App\Models\Task;
 use App\Models\Student;
 use App\Models\Teacher;

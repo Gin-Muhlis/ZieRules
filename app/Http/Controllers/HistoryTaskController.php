@@ -21,7 +21,6 @@ class HistoryTaskController extends Controller
     {
         $this->authorize('view-any', HistoryTask::class);
 
-
         $historyTasks = HistoryTask::all();
 
         return view(

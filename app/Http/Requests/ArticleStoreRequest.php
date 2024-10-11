@@ -21,7 +21,7 @@ class ArticleStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'max:255', 'string'],
-            'banner' => ['image', 'max:1024', 'required'],
+            'banner' => ['image', 'max:3024', 'required'],
             'content' => ['required'],
         ];
     }

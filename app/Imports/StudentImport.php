@@ -38,52 +38,6 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
     {
         try {
             DB::beginTransaction();
-            $listImage = [];
-            // HANDLE IMAGE START
-            $spreadsheet = IOFactory::load(request()->file('file'));
-            $i = 0;
-
-            foreach ($spreadsheet->getActiveSheet()->getDrawingCollection() as $drawing) {
-                if ($drawing instanceof MemoryDrawing) {
-                    ob_start();
-                    call_user_func(
-                        $drawing->getRenderingFunction(),
-                        $drawing->getImageResource()
-                    );
-                    $imageContents = ob_get_contents();
-                    ob_end_clean();
-                    switch ($drawing->getMimeType()) {
-                        case MemoryDrawing::MIMETYPE_PNG:
-                            $extension = 'png';
-                            break;
-                        case MemoryDrawing::MIMETYPE_GIF:
-                            $extension = 'gif';
-                            break;
-                        case MemoryDrawing::MIMETYPE_JPEG:
-                            $extension = 'jpg';
-                            break;
-                    }
-                } else {
-                    $zipReader = fopen($drawing->getPath(), 'r');
-                    $imageContents = '';
-                    while (!feof($zipReader)) {
-                        $imageContents .= fread($zipReader, 1024);
-                    }
-                    fclose($zipReader);
-                    $extension = $drawing->getExtension();
-                }
-
-                $myFileName = time() . ++$i . '.' . $extension;
-                $storage_path = storage_path('app/public/students');
-                file_put_contents($storage_path . $myFileName, $imageContents);
-                $image_path = $storage_path . $myFileName;
-
-
-                $image_data = str_replace('E:\GIN WEB\GIN WEB\project\ZieRules\ZieRules\storage\app/', '', $image_path);
-
-                $list_image[] = $image_data;
-
-            }
             // HANDLE IMAGE END
             foreach ($rows as $key => $row) {
                 $row = $row->toArray();
@@ -125,7 +79,7 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
                     'gender' => $row['gender'],
                     'class_id' => $class->id,
                     'code' => $this->generateCode($row['nis']),
-                    'image' => $list_image[$key] ?? 'public/default.jpg'
+                    'image' => 'public/default.jpg'
                 ]);
 
                 $student->assignRole('siswa');

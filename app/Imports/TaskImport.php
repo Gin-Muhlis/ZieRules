@@ -18,7 +18,7 @@ class TaskImport implements ToModel, WithHeadingRow
         return new Task([
             'name' => $row['name'],
             'class' => $row['class'],
-            'description' => $row['description']
+            'description' => $row['description'] ?? '-'
         ]);
     }
 }

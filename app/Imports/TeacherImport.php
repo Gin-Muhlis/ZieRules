@@ -35,6 +35,7 @@ class TeacherImport implements ToCollection, WithHeadingRow, WithValidation
      */
     public function collection(Collection $rows)
     {
+
         try {
             foreach ($rows as $key => $row) {
                 $validator = Validator::make($row->toArray(), [
@@ -42,7 +43,7 @@ class TeacherImport implements ToCollection, WithHeadingRow, WithValidation
                     'email' => ['required', 'unique:teachers,email', 'email'],
                     'gender' => ['required', 'in:laki-laki,perempuan'],
                     'role' => ['required', 'in:guru-mapel,wali-kelas'],
-                    'class' => ['string', 'nullable', 'exists:class_students,id'],
+                    'class' => ['string', 'nullable'],
                 ], [
                     'name.required' => 'Nama siswa tidak boleh kosong',
                     'name.max' => 'Nama siswa tidak boleh melebihi 255 karakter',
@@ -54,57 +55,10 @@ class TeacherImport implements ToCollection, WithHeadingRow, WithValidation
                     'gender.in' => 'Gender siswa tidak valid',
                     'role.required' => 'Role tidak boleh kosong',
                     'role.in' => 'Role tidak valid',
-                    'class_id.exists' => 'Kelas tidak ditemukan'
                 ]);
 
                 if ($validator->fails()) {
                     abort(500, 'Terjadi kesalahan dengan data yang diimport');
-                }
-
-                // HANDLE IMAGE START
-                $spreadsheet = IOFactory::load(request()->file('file'));
-                $i = 0;
-
-                foreach ($spreadsheet->getActiveSheet()->getDrawingCollection() as $drawing) {
-                    if ($drawing instanceof MemoryDrawing) {
-                        ob_start();
-                        call_user_func(
-                            $drawing->getRenderingFunction(),
-                            $drawing->getImageResource()
-                        );
-                        $imageContents = ob_get_contents();
-                        ob_end_clean();
-                        switch ($drawing->getMimeType()) {
-                            case MemoryDrawing::MIMETYPE_PNG:
-                                $extension = 'png';
-                                break;
-                            case MemoryDrawing::MIMETYPE_GIF:
-                                $extension = 'gif';
-                                break;
-                            case MemoryDrawing::MIMETYPE_JPEG:
-                                $extension = 'jpg';
-                                break;
-                        }
-                    } else {
-                        $zipReader = fopen($drawing->getPath(), 'r');
-                        $imageContents = '';
-                        while (!feof($zipReader)) {
-                            $imageContents .= fread($zipReader, 1024);
-                        }
-                        fclose($zipReader);
-                        $extension = $drawing->getExtension();
-                    }
-
-                    $myFileName = time() . ++$i . '.' . $extension;
-                    $storage_path = storage_path('app/public/students');
-                    file_put_contents($storage_path . $myFileName, $imageContents);
-                    $image_path = $storage_path . $myFileName;
-                    // HANDLE IMAGE END
-
-                    $image_data = str_replace('E:\GIN WEB\GIN WEB\project\ZieRules\ZieRules\storage\app/', '', $image_path);
-
-                    $list_image[] = $image_data;
-
                 }
 
                 $teacher = Teacher::create([
@@ -113,12 +67,13 @@ class TeacherImport implements ToCollection, WithHeadingRow, WithValidation
                     'password' => Hash::make($this->generatePassword()),
                     'password_show' => $this->generatePassword(),
                     'gender' => $row['gender'],
-                    'image' => $list_image[$key] ?? 'public/default.jpg'
+                    'image' => 'public/default.jpg'
                 ]);
 
                 $teacher->assignRole($row['role']);
 
                 if ($teacher->hasRole('wali-kelas')) {
+
                     $class = ClassStudent::whereCode($row['class'])->first();
 
                     if (!isset($class)) {

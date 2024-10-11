@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\StudentAbsence;
 use App\Models\Teacher;
 use App\Models\Violation;
 use Illuminate\View\View;
