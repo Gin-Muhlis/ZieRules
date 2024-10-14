@@ -1,66 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Zie Rules
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Zie Rules** is a comprehensive admin panel designed to manage and monitor school data for SMK Negeri 1 Cianjur. Built with **Laravel 10** and **PHP 8+**, Zie Rules offers robust functionality for school administration and parent engagement, while also providing a REST API for student management applications.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Admin Panel
+1. **Student Management**  
+   Easily manage student data, including enrollment, performance, and behavior records.
+   
+2. **Teacher Management**  
+   Handle teacher information and monitor their performance.
+   
+3. **Violation Management**  
+   Keep track of student violations and generate reports to ensure proper monitoring.
+   
+4. **Achievement Management**  
+   Record and track student achievements in both academic and non-academic areas.
+   
+5. **Attendance Management**  
+   Manage daily student attendance, generate attendance reports, and track attendance behavior.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+6. **Attendance and Behavior Reports**  
+   Generate detailed reports on student attendance and behavioral trends.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+7. **Multi-User and Role-Based Access**  
+   Support for multiple user types, including administrators, teachers, and parents, with role-based access control to ensure data security and proper access levels.
 
-## Learning Laravel
+### Parent Portal
+Zie Rules also provides a dedicated portal for parents to monitor their child's:
+- **Attendance**  
+- **Violations**  
+- **Achievements**  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Parents can access up-to-date information about their children’s school activities, allowing for better engagement and support.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### REST API
+Zie Rules includes a powerful **REST API** that can be used to integrate student management functionality into other applications. This API allows external systems to access and manipulate data related to:
+- Student records
+- Attendance
+- Violations
+- Achievements
+- Teacher data
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-## Laravel Sponsors
+- **PHP 8.0+**
+- **Laravel 10**
+- **MySQL or PostgreSQL Database**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Installation
 
-### Premium Partners
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Gin-Muhlis/ZieRules.git
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+2. Masuk ke direktori project:
+   ```bash 
+   cd Juragan-Event
 
-## Contributing
+3. Install dependencies:
+   ```bash 
+   composer install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Atur file environment:
+   ```bash
+   - Duplikat file .env.example menjadi .env.
+   - Ubah detail konfigurasi di file .env sesuai dengan pengaturan database dan konfigurasi lainnya.
 
-## Code of Conduct
+5. Jalankan migrasi database:
+   ```bash 
+   php artisan migrate --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. Jalankan server development:
+   ```bash 
+   php artisan serve
